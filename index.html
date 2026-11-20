@@ -19,6 +19,24 @@ h2{font-size:20px;line-height:30px;font-weight:600;letter-spacing:-.02em;margin:
 label.f{display:block;font-size:13px;line-height:19px;color:var(--g600);margin:24px 0 8px;font-weight:600}
 input,select,textarea{width:100%;height:56px;border:1px solid var(--g200);border-radius:16px;padding:0 16px;font:inherit;font-size:17px;background:#fff;color:var(--g900);appearance:none;-webkit-appearance:none}
 textarea{height:112px;padding:14px 16px;line-height:27px;resize:none}
+textarea.big{height:auto;min-height:216px;max-height:60vh;padding:16px;font-size:17px;line-height:27px;overflow:auto}
+.cnt{display:flex;justify-content:space-between;margin-top:8px}
+.ex{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.ex button{display:block;width:100%;text-align:left;border:1px solid var(--g200);background:#fff;border-radius:16px;padding:16px;font:inherit;color:var(--g800)}
+.ex button:active{background:var(--g50)}
+.ex b{display:block;font-size:15px;line-height:24px;font-weight:600;color:var(--g900);margin-bottom:4px}
+.ex span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:13px;line-height:19px;color:var(--g600)}
+.ucard{background:var(--primary-subtle);border-radius:20px;padding:20px;margin:8px 0 16px}
+.ucard .cap{color:var(--g600);margin:0 0 8px}
+.ucard p.rq{font-size:20px;line-height:30px;font-weight:600;color:var(--g900);margin:0 0 12px;letter-spacing:-.02em}
+.ucard p.cf{font-size:15px;line-height:24px;color:var(--g700);margin:0}
+.mrow{display:grid;grid-template-columns:48px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--g100)}
+.mrow b{font-size:17px;line-height:27px;font-weight:700;color:var(--primary)}
+.letter .mrow p{margin:0 0 4px;font-size:17px;line-height:27px}.mrow small{display:block;font-size:13px;line-height:19px;color:var(--g500)}
+.sos{display:block;width:100%;text-align:left;text-decoration:none;border:1px solid var(--g200);border-radius:16px;padding:16px;margin-bottom:8px;color:var(--g900)}
+.sos b{display:block;font-size:20px;line-height:30px}.sos span{font-size:13px;line-height:19px;color:var(--g600)}
+details.fold .dr{font-size:15px;line-height:26px;color:var(--g800)}
+details.fold .dr p{margin:0 0 12px}
 select{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238B95A1' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 16px center;padding-right:36px}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
 .row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
@@ -109,11 +127,19 @@ const frag = new URLSearchParams(location.hash.slice(1));
 const KEY = frag.get("k") || "";
 const IS_TEST = frag.get("test") === "1";
 const $app = document.getElementById("app");
-const S = { screen: "", input: null, id: null, text: "", viz: null, picks: null, stage: 0, rating: {}, resonant: "", feedback: "" };
+const S = { u: null, screen: "", input: null, id: null, text: "", viz: null, picks: null, stage: 0, rating: {}, resonant: "", feedback: "" };
 const LS = { get: (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const EL_ORDER = [["木", "목"], ["火", "화"], ["土", "토"], ["金", "금"], ["水", "수"]];
-const QCHIPS = [["내년에 연애할 수 있을까?", "love"], ["하는 일이 잘 될까?", "work"], ["이직해도 될까?", "job"]];
+const EXAMPLES = [
+  ["친구의 남자친구를 좋아하게 됐어요", "좋아하는 사람이 있는데 제 친구 남자친구예요. 셋이 같이 모이는 자리에서 자꾸 눈이 가고, 걔도 저한테 유독 잘해 주는 것 같아서 더 헷갈려요. 친구한테는 절대 말 못 하고, 마음을 접으려고 일부러 연락도 줄였는데 잘 안 돼요. 제가 나쁜 사람 같아서 괴로워요. 내년엔 이 마음을 잘 접을 수 있겠죠?"],
+  ["회사에서 미국 발령 얘기가 나왔는데 아직 확정이 아니에요", "회사에서 미국 발령 얘기가 나왔는데 아직 확정은 아니에요. 팀장님이 내년 상반기쯤 결정될 거라고만 하셨고, 가면 연봉도 오르고 하고 싶던 일을 할 수 있는데 가족이랑 떨어지는 게 무서워요. 가고 싶은 마음 반, 무서운 마음 반이에요. 아직 얘기 중인데 그래서 진짜 가게 될까요?"],
+  ["헤어진 지 석 달, 다시 만날 수 있을까요", "석 달 전에 제가 헤어지자고 했어요. 그때는 서로 너무 지쳐 있었는데 요즘 자꾸 그 사람이 생각나요. 그 사람은 연락이 없다가 지난주에 제 인스타 스토리를 봤더라고요. 먼저 연락하면 자존심도 상하고, 괜히 다시 상처만 줄까 봐 무서워요. 내년에 우리가 다시 만나게 될 수도 있을까요?"],
+  ["월급을 포기하고 제 가게를 열어도 될까요", "7년 다닌 회사를 그만두고 작은 카페를 열고 싶어요. 모아둔 돈은 4천만 원이고 대출을 받으면 시작은 할 수 있어요. 부모님은 미쳤냐고 하시고 남편은 반대는 안 하는데 표정이 어두워요. 지금 안 하면 평생 후회할 것 같은데, 하고 나서 망하면 더 후회할 것 같아요. 내년에 시작해도 되는 해일까요, 아니면 더 기다려야 할까요?"],
+  ["남편 때문에 시댁과 계속 부딪혀요", "결혼한 지 2년인데 시어머니가 매주 집에 오세요. 남편은 '어머니가 외로우셔서 그래'라며 제 편을 안 들어 줘요. 말을 꺼내면 제가 예민하다고 해서 요즘은 아예 말을 안 하는데, 이대로 가다간 제가 폭발할 것 같아요. 내년에는 이 관계가 좀 나아질 수 있을까요, 아니면 제가 뭔가를 결정해야 하는 해일까요?"],
+  ["오래 짝사랑한 사람에게 고백해도 될까요", "같은 동아리 선배를 2년째 좋아하고 있어요. 친하긴 한데 그냥 후배 이상으로는 안 보는 것 같고, 얼마 전엔 다른 사람 얘기를 하길래 마음이 철렁했어요. 고백하면 이 사이마저 어색해질까 봐 못 하고 있어요. 내년에 제가 용기를 내면 좋은 결과가 있을까요? 언제쯤 말하는 게 좋을지도 궁금해요."],
+];
+const GUIDE = "이렇게 적어 주면 할미가 더 정확하게 봐 줘요\n· 지금 어떤 상황인지 (누가, 어디까지 진행됐는지)\n· 어떻게 되길 바라는지\n· 가장 마음에 걸리는 점";
 const STAGES = ["명식을 펼치고 있어요", "2027년 기운을 맞춰 보고 있어요", "편지를 쓰고 있어요", "글자를 한 번 더 확인하고 있어요"];
 
 function toast(m) { const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
@@ -145,15 +171,20 @@ function offlineScreen(retry, what) {
 
 /* ---------- 1. 입력 ---------- */
 function opts(from, to, suffix, sel) { let h = ""; for (let i = from; i <= to; i++) h += `<option value="${i}"${i === sel ? " selected" : ""}>${i}${suffix}</option>`; return h; }
-function inputScreen() {
+function inputScreen(prefill) {
   const saved = LS.get("halmi_input") || {};
   const last = LS.get("halmi_last");
-  const v = { name: saved.name || "", calendar: saved.calendar || "solar", leap: !!saved.leap, y: saved.y || 1995, m: saved.m || 1, d: saved.d || 1, timeKnown: saved.timeKnown !== false, hour: saved.hour ?? 12, minute: saved.minute ?? 0, gender: saved.gender || "", question: saved.question || "", qtype: saved.qtype || "etc" };
+  const v = { name: saved.name || "", calendar: saved.calendar || "solar", leap: !!saved.leap, y: saved.y || 1995, m: saved.m || 1, d: saved.d || 1, timeKnown: saved.timeKnown !== false, hour: saved.hour ?? 12, minute: saved.minute ?? 0, gender: saved.gender || "", question: prefill ?? (saved.question || "") };
   const yrs = []; for (let y = 2010; y >= 1930; y--) yrs.push(`<option value="${y}"${y === +v.y ? " selected" : ""}>${y}년</option>`);
   show("input", `
-    <h1>내년에 꼭 묻고 싶은 걸<br>할미한테 물어보렴</h1>
-    <p class="sub">생년월일과 질문 하나면 돼요. 사주로 왜 그런지, 언제인지까지 편지로 써 드려요.</p>
+    <h1>내년에 가장 궁금한 것을<br>할미한테 털어놓아 보렴</h1>
+    <p class="sub">길게, 있는 그대로 써 줄수록 할미가 진짜 궁금한 것을 정확히 짚어요.</p>
     ${last ? `<div class="banner"><span>지난번에 받은 편지가 있어요</span><button id="again">다시 보기</button></div>` : ""}
+    <label class="f" for="q" style="margin-top:8px">내 고민</label>
+    <textarea id="q" class="big" maxlength="1200" placeholder="${esc(GUIDE)}">${esc(v.question)}</textarea>
+    <div class="cnt cap"><span id="hint">3줄 이상 쓰면 더 정확해요</span><span id="cnt">0 / 1200</span></div>
+    <label class="f">이런 고민도 많이 와요 <span class="cap" style="font-weight:400">· 눌러서 내 얘기로 고쳐 써요</span></label>
+    <div class="ex" id="ex">${EXAMPLES.map(([t, b], i) => `<button data-i="${i}"><b>${esc(t)}</b><span>${esc(b)}</span></button>`).join("")}</div>
     <label class="f" for="name">할미가 부를 이름</label>
     <input id="name" maxlength="12" placeholder="예: 하윤" value="${esc(v.name)}" autocomplete="off">
     <label class="f">달력</label>
@@ -166,48 +197,80 @@ function inputScreen() {
     <label class="check"><input type="checkbox" id="unk"> 시간은 몰라요</label>
     <label class="f">성별 <span class="cap" style="font-weight:400">(대운 방향을 계산해요)</span></label>
     <div class="seg" id="gen"><button data-v="f">여자</button><button data-v="m">남자</button></div>
-    <label class="f" for="q">내년에 가장 궁금한 것 하나</label>
-    <textarea id="q" maxlength="200" placeholder="예: 내년에 남자친구가 생길까요?">${esc(v.question)}</textarea>
-    <div class="chips" id="chips">${QCHIPS.map(([t]) => `<button class="chip" data-t="${t}">${t}</button>`).join("")}</div>
     <div class="err" id="err"></div>
     <p class="cap" style="margin-top:24px">시험 중인 서비스예요. 풀이는 사주를 바탕으로 한 판단 재료이고, 결정은 내가 해요.</p>
-    ${cta("할미에게 여쭤보기")}`, () => {
+    ${cta("다음")}`, () => {
     const g = (id) => document.getElementById(id);
-    const st = { calendar: v.calendar, gender: v.gender, qtype: v.qtype };
+    const st = { calendar: v.calendar, gender: v.gender };
     const sync = (id, key) => { [...g(id).children].forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === st[key]))); };
+    const grow = () => { const q = g("q"); q.style.height = "auto"; q.style.height = Math.min(q.scrollHeight + 2, window.innerHeight * 0.6) + "px"; const n = q.value.length; g("cnt").textContent = `${n} / 1200`; g("hint").textContent = n === 0 ? "3줄 이상 쓰면 더 정확해요" : n < 60 ? "조금만 더 자세히 써 주면 좋아요" : "좋아요, 할미가 충분히 알아들을 수 있어요"; };
+    g("q").oninput = grow; grow();
+    g("ex").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; g("q").value = EXAMPLES[+b.dataset.i][1]; grow(); g("q").focus(); g("q").setSelectionRange(g("q").value.length, g("q").value.length); g("q").scrollIntoView({ block: "center", behavior: "smooth" }); toast("내 상황에 맞게 고쳐 써 보세요"); };
     sync("cal", "calendar"); sync("gen", "gender");
     g("cal").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; st.calendar = b.dataset.v; sync("cal", "calendar"); g("leapw").style.display = st.calendar === "lunar" ? "flex" : "none"; };
     g("leapw").style.display = st.calendar === "lunar" ? "flex" : "none"; g("leap").checked = v.leap;
     g("gen").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; st.gender = b.dataset.v; sync("gen", "gender"); };
     g("unk").onchange = () => { g("hh").disabled = g("mi").disabled = g("unk").checked; }; g("hrow").addEventListener("click", () => { if (g("unk").checked) { g("unk").checked = false; g("unk").onchange(); g("hh").focus(); } }); g("unk").checked = !v.timeKnown; g("unk").onchange();
-    g("chips").onclick = (e) => { const b = e.target.closest(".chip"); if (!b) return; g("q").value = b.dataset.t; st.qtype = QCHIPS.find((c) => c[0] === b.dataset.t)[1]; [...g("chips").children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); };
-    g("q").oninput = () => { if (!QCHIPS.some((c) => c[0] === g("q").value)) { st.qtype = guessType(g("q").value); [...g("chips").children].forEach((c) => c.setAttribute("aria-pressed", "false")); } };
-    if (v.question) st.qtype = v.qtype;
     if (g("again")) g("again").onclick = () => restore(last);
     g("go").onclick = () => {
-      const inp = { name: g("name").value.trim(), calendar: st.calendar, leap: st.calendar === "lunar" && g("leap").checked, y: +g("y").value, m: +g("m").value, d: +g("d").value, gender: st.gender, question: g("q").value.trim(), qtype: st.qtype };
+      const inp = { name: g("name").value.trim(), calendar: st.calendar, leap: st.calendar === "lunar" && g("leap").checked, y: +g("y").value, m: +g("m").value, d: +g("d").value, gender: st.gender, question: g("q").value.trim() };
       if (!g("unk").checked) { inp.hour = +g("hh").value; inp.minute = +g("mi").value; }
-      const miss = !inp.name ? "부를 이름을 적어 주세요" : !inp.gender ? "성별을 골라 주세요" : inp.question.length < 2 ? "궁금한 것을 한 줄 적어 주세요" : "";
-      if (miss) { g("err").textContent = miss; return; }
+      const miss = inp.question.length < 2 ? "고민을 한 줄이라도 적어 주세요" : !inp.name ? "부를 이름을 적어 주세요" : !inp.gender ? "성별을 골라 주세요" : "";
+      if (miss) { g("err").textContent = miss; if (inp.question.length < 2) g("q").focus(); return; }
       LS.set("halmi_input", { ...inp, timeKnown: inp.hour !== undefined });
-      startReading(inp);
+      understandScreen(inp);
     };
   });
 }
-function guessType(q) { return /연애|남자친구|여자친구|사랑|결혼|인연|썸|애인/.test(q) ? "love" : /이직|퇴사|회사|직장|면접|승진/.test(q) ? "job" : /사업|일이|장사|창업|매출|프리랜서|일 /.test(q) ? "work" : "etc"; }
+
+/* ---------- 1.5 질문 이해 확인 ---------- */
+const ASK_KO = { yes_no: "결과", timing: "시기", how: "방법", choice: "선택", feeling: "마음" };
+async function understandScreen(inp) {
+  show("understand", `<div class="center"><div class="stage" style="justify-content:center"><span class="dot"></span>할미가 네 얘기를 읽고 있어요</div><h1>잠깐만 기다려 주렴</h1><p class="sub">어떤 걸 제일 궁금해하는지 먼저 짚어 볼게요.</p></div>`);
+  let u = null;
+  try {
+    const r = await call({ action: "understand", question: inp.question });
+    if (r.status === 401) return gateScreen();
+    if (r.ok) u = (await r.json()).u;
+  } catch { /* 이해 단계가 안 돼도 풀이는 막지 않는다 */ }
+  if (u && u.crisis) return safetyScreen(inp);
+  if (!u || !u.real_q) return startReading(inp, 0, null);
+  S.u = u;
+  const edit = (initial) => show("understand", `<h1>할미가 잘못 알아들었구나</h1><p class="sub">네가 진짜 궁금한 걸 한 줄로 적어 주렴.</p><textarea id="rq" maxlength="120" style="height:96px" placeholder="예: 미국에 정말 가게 될지">${esc(initial)}</textarea><div class="err" id="err"></div>${cta("이걸로 써 주세요", "go", `<button class="link" id="back" style="display:block;margin:0 auto 4px">처음부터 다시 쓰기</button>`)}`, () => {
+    const g = (id) => document.getElementById(id); g("rq").focus();
+    g("back").onclick = () => inputScreen(inp.question);
+    g("go").onclick = () => { const t = g("rq").value.trim(); if (t.length < 2) { g("err").textContent = "한 줄만 적어 주세요"; return; } startReading(inp, 0, { ...u, real_q: t, ask_type: u.ask_type }); };
+  });
+  show("understand", `<h1>할미가 이렇게 알아들었단다</h1><p class="sub">맞는지 한 번만 확인해 줄래?</p>
+    <div class="ucard"><p class="cap">네가 진짜 궁금한 것 · ${esc(ASK_KO[u.ask_type] || "결과")}</p><p class="rq">${esc(u.real_q)}</p>${u.confirm ? `<p class="cf">${esc(u.confirm)}</p>` : ""}</div>
+    ${u.stage || u.variable ? `<p class="cap">${u.stage ? "지금 상황: " + esc(u.stage) : ""}${u.stage && u.variable ? "<br>" : ""}${u.variable ? "걸린 변수: " + esc(u.variable) : ""}</p>` : ""}
+    ${cta("맞아요, 써 주세요", "go", `${u.alt ? `<button class="btn ghost" id="alt" style="margin-bottom:8px">혹시 이거예요? ${esc(u.alt)}</button>` : ""}<button class="link" id="fix" style="display:block;margin:0 auto 4px">아니에요, 고칠게요</button>`)}`, () => {
+    document.getElementById("go").onclick = () => startReading(inp, 0, u);
+    if (document.getElementById("alt")) document.getElementById("alt").onclick = () => startReading(inp, 0, { ...u, real_q: u.alt, alt: "" });
+    document.getElementById("fix").onclick = () => edit(u.real_q);
+  });
+}
+function safetyScreen(inp) {
+  show("safety", `<h1>먼저, 네 마음이 걱정돼요</h1><p class="sub">지금 많이 힘든 것 같아서, 사주 풀이보다 먼저 전하고 싶어요. 혼자 견디지 않아도 돼요. 지금 곁에 있는 사람에게 힘들다고 말해 주세요. 그리고 아래로 전화하면 바로 이야기를 들어 줘요.</p>
+    <a class="sos" href="tel:109"><b>109</b><span>자살예방상담전화 · 24시간 · 무료</span></a>
+    <a class="sos" href="tel:15770199"><b>1577-0199</b><span>정신건강위기상담 · 24시간 · 무료</span></a>
+    <a class="sos" href="tel:119"><b>119</b><span>지금 위험하다면 바로 응급 연락</span></a>
+    ${cta("다른 고민으로 써 보기", "go")}`, () => { document.getElementById("go").onclick = () => inputScreen(); });
+}
 
 /* ---------- 2. 풀이 ---------- */
 function stepsHtml() { return `<ul class="steps">${STAGES.slice(0, 3).map((t, i) => `<li class="${S.stage === i + 1 ? "on" : S.stage > i + 1 ? "done" : ""}">${S.stage > i + 1 ? "✓ " : ""}${t}</li>`).join("")}</ul>`; }
-async function startReading(inp, tries = 0) {
-  S.input = inp; S.text = ""; S.viz = null; S.picks = null; S.stage = 1; S.id = null;
+async function startReading(inp, tries = 0, u = S.u) {
+  S.u = u; S.input = inp; S.text = ""; S.viz = null; S.picks = null; S.stage = 1; S.id = null;
   show("read", `<h1>할미가 편지를 쓰고 있단다</h1><p class="sub">보통 1분 안팎 걸려요. 쓰는 대로 아래에 나타나요.</p><div id="steps"></div><div id="letter"></div>`);
   document.getElementById("steps").innerHTML = stepsHtml();
   let r;
-  try { r = await call({ action: "read", ...inp, test: IS_TEST }); } catch { return offlineScreen(() => startReading(inp), "편지 쓰기"); }
+  try { r = await call({ action: "read", ...inp, qtype: u?.qtype || "etc", u, test: IS_TEST }); } catch { return offlineScreen(() => startReading(inp, 0, u), "편지 쓰기"); }
+  if (r.status === 422) return safetyScreen(inp);
   if (r.status === 401) return gateScreen();
-  if (r.status === 409) { if (tries > 20) return failScreen(inp); await new Promise((s) => setTimeout(s, 6000)); return startReading(inp, tries + 1); }
+  if (r.status === 409) { if (tries > 20) return failScreen(inp); await new Promise((s) => setTimeout(s, 6000)); return startReading(inp, tries + 1, u); }
   if (r.status === 429) return limitScreen();
-  if (r.status === 400) { const e = await r.json().catch(() => ({})); return inputScreen(), (document.getElementById("err").textContent = e.error === "birth_invalid" ? "그 날짜는 달력에 없어요. 날짜를 다시 확인해 주세요" : "입력을 다시 확인해 주세요"); }
+  if (r.status === 400) { const e = await r.json().catch(() => ({})); return inputScreen(inp.question), (document.getElementById("err").textContent = e.error === "birth_invalid" ? "그 날짜는 달력에 없어요. 날짜를 다시 확인해 주세요" : "입력을 다시 확인해 주세요"); }
   if (!r.ok || !r.body) return failScreen(inp);
   let done = false;
   try {
@@ -217,7 +280,7 @@ async function startReading(inp, tries = 0) {
       buf += dec.decode(value, { stream: true });
       let i; while ((i = buf.indexOf("\n\n")) >= 0) { const chunk = buf.slice(0, i); buf = buf.slice(i + 2); const line = chunk.split("\n").find((l) => l.startsWith("data: ")); if (!line) continue; if (handle(JSON.parse(line.slice(6)))) done = true; }
     }
-  } catch { if (!done) return offlineScreen(() => startReading(inp), "편지 쓰기"); }
+  } catch { if (!done) return offlineScreen(() => startReading(inp, 0, u), "편지 쓰기"); }
   if (!done) return failScreen(inp);
 }
 function handle(ev) {
@@ -230,16 +293,16 @@ function handle(ev) {
   return false;
 }
 function failScreen(inp) {
-  show("fail", `<div class="center"><h1>편지를 끝까지 못 썼어요</h1><p class="sub">잠깐 문제가 있었어요. 입력한 내용은 그대로예요.<br>다시 시도하면 처음부터 새로 써 드려요.</p></div>${cta("다시 써 달라고 하기", "retry", `<button class="link" id="back" style="display:block;margin:0 auto 4px">입력으로 돌아가기</button>`)}`, () => { document.getElementById("retry").onclick = () => startReading(inp); document.getElementById("back").onclick = inputScreen; });
+  show("fail", `<div class="center"><h1>편지를 끝까지 못 썼어요</h1><p class="sub">잠깐 문제가 있었어요. 입력한 내용은 그대로예요.<br>다시 시도하면 처음부터 새로 써 드려요.</p></div>${cta("다시 써 달라고 하기", "retry", `<button class="link" id="back" style="display:block;margin:0 auto 4px">입력으로 돌아가기</button>`)}`, () => { document.getElementById("retry").onclick = () => startReading(inp, 0, S.u); document.getElementById("back").onclick = () => inputScreen(inp.question); });
 }
 function limitScreen() {
   const last = LS.get("halmi_last");
-  show("limit", `<div class="center"><h1>오늘 쓸 수 있는 편지를 다 썼어요</h1><p class="sub">하루에 쓸 수 있는 편지 수가 정해져 있어요.<br>내일 다시 와 주세요.</p></div>${cta(last ? "지난 편지 다시 보기" : "처음으로", "go")}`, () => { document.getElementById("go").onclick = () => (last ? restore(last) : inputScreen()); });
+  show("limit", `<div class="center"><h1>오늘 쓸 수 있는 편지를 다 썼어요</h1><p class="sub">하루에 쓸 수 있는 편지 수가 정해져 있어요.<br>내일 다시 와 주세요.</p></div>${cta(last ? "지난 편지 다시 보기" : "처음으로", "go")}`, () => { document.getElementById("go").onclick = () => (last ? restore(last) : inputScreen("")); });
 }
 async function restore(id) {
   show("read", `<h1>편지를 꺼내 오는 중이에요</h1>`);
   let r; try { r = await call({ action: "get", id }); } catch { return offlineScreen(() => restore(id), "지난 편지"); }
-  if (!r.ok) { LS.set("halmi_last", null); toast("지난 편지를 찾지 못했어요"); return inputScreen(); }
+  if (!r.ok) { LS.set("halmi_last", null); toast("지난 편지를 찾지 못했어요"); return inputScreen(""); }
   const j = await r.json(); S.id = j.id; S.text = j.text; S.viz = j.chart; S.picks = j.picks; S.input = { question: j.question }; finalScreen(j.rated);
 }
 
@@ -257,21 +320,37 @@ function vizElements() {
   const cal = `<div class="viz"><h3>내 질문의 달력</h3><p class="cap">${p ? "할미가 고른 달이에요. 달 경계는 절기 시각 기준이에요." : "할미가 고르는 중이에요."}</p><div class="months">${mons.join("")}</div>${p ? `<div class="legend"><span><i style="background:var(--primary)"></i>기회의 달</span><span><i style="border:2px solid var(--g800)"></i>숨 고를 달</span></div>` : ""}</div>`;
   return { el, sew, cal };
 }
+const MROW = /^(?:2028년\s*)?(\d{1,2})월\s*[·ㆍ]\s*(.+?)\s*[·ㆍ]\s*(.+)$/;
+function paraHtml(t, i, k) {
+  const m = t.match(MROW) || (/^(?:2028년\s*)?\d{1,2}월\s*[·ㆍ]/.test(t) ? t.match(/^(?:2028년\s*)?(\d{1,2})월\s*[·ㆍ]\s*(.+?)(?:,\s*(.+))?$/) : null);
+  if (m) return `<div class="mrow"><b>${m[1]}월</b><div><p>${esc(m[2])}</p>${m[3] ? `<small>${esc(m[3])}</small>` : ""}</div></div>`;
+  return /^—\s*할미가/.test(t) ? `<p class="sign">${esc(t)}</p>` : `<p${i === 0 && k === 0 && /^사랑하는/.test(t) ? ' class="name"' : ""}>${esc(t)}</p>`;
+}
 function renderLetter(final) {
   const box = document.getElementById("letter"); if (!box) return;
   const raw = S.text.replace(/\[\[[^\]]*$/, "").replace(/\[\[[^\]]*\]\]/g, "");
-  const lines = raw.split("\n"); const secs = [{ h: null, p: [] }];
+  const cut = raw.indexOf("=== 서랍 ===");
+  const main = cut >= 0 ? raw.slice(0, cut) : raw, drawer = cut >= 0 ? raw.slice(cut + 12) : "";
+  const lines = main.split("\n"); const secs = [{ h: null, p: [] }];
   for (const l of lines) { if (/^##\s+/.test(l)) secs.push({ h: l.replace(/^##\s+/, ""), p: [] }); else secs[secs.length - 1].p.push(l); }
   const V = vizElements();
   // 시각화 자리: 오프닝 뒤 = 오행, '2027/해' 소제목 앞 = 2027, '달' 소제목 앞 = 달력
   let iSew = secs.findIndex((s, i) => i > 0 && /2027|정미|내년|올해|이 해/.test(s.h || "")); if (iSew < 0) iSew = Math.min(3, secs.length - 1);
   let iCal = secs.findIndex((s, i) => i > 0 && i !== iSew && /달|월|언제|때/.test(s.h || "")); if (iCal < 0) iCal = Math.min(iSew + 1, secs.length - 1);
   const html = secs.map((s, i) => {
-    const paras = s.p.join("\n").split(/\n{1,}/).map((t) => t.trim()).filter(Boolean).map((t, k) => /^—\s*할미가/.test(t) ? `<p class="sign">${esc(t)}</p>` : `<p${i === 0 && k === 0 && /^사랑하는/.test(t) ? ' class="name"' : ""}>${esc(t)}</p>`).join("");
+    const paras = s.p.join("\n").split(/\n{1,}/).map((t) => t.trim()).filter(Boolean).map((t, k) => paraHtml(t, i, k)).join("");
     const pre = (i === iSew && S.viz && secs.length > iSew ? V.sew : "") + (i === iCal && S.viz && secs.length > iCal ? V.cal : "");
     return (s.h ? `<h2 class="lh">${esc(s.h)}</h2>${pre}` : "") + paras + (i === 0 && S.viz && secs.length > 1 ? V.el : "");
   }).join("");
-  box.innerHTML = `<div class="letter">${html}</div>`;
+  let dr = "";
+  if (drawer.trim()) {
+    const blocks = drawer.split(/^#{2,3}\s+/m).map((x) => x.trim()).filter(Boolean);
+    dr = `<h2 class="lh">내 공략서 서랍</h2><p class="cap" style="margin:-4px 0 8px">궁금한 칸만 열어 보세요.</p>` + blocks.map((b, bi) => {
+      const [title, ...rest] = b.split("\n"); const t = title.split("—")[0].trim();
+      return `<details class="fold"${/열두 달/.test(t) ? "" : ""}><summary>${esc(t)}</summary><div class="dr">${rest.join("\n").split(/\n+/).map((x) => x.trim()).filter(Boolean).map((x) => paraHtml(x, 9, 9)).join("")}</div></details>`;
+    }).join("");
+  }
+  box.innerHTML = `<div class="letter">${html}${dr}</div>`;
   if (!final) requestAnimationFrame(() => box.querySelectorAll(".bar i").forEach((i) => (i.style.width = i.style.width)));
 }
 
@@ -281,14 +360,14 @@ function finalScreen(rated) {
   const table = z ? `<details class="fold"><summary>할미가 본 내 사주</summary><table class="t2"><tr><th></th>${z.pillars.map((p) => `<th>${p.label}주</th>`).join("")}</tr><tr><th>글자</th>${z.pillars.map((p) => `<td>${p.gz}</td>`).join("")}</tr><tr><th>천간 십성</th>${z.pillars.map((p) => `<td>${p.ganSS}</td>`).join("")}</tr><tr><th>지지 십성</th>${z.pillars.map((p) => `<td>${p.zhiSS}</td>`).join("")}</tr></table><p class="cap">일간 ${z.dm}(${z.dmWxKo}) · 일간 힘 ${z.strength}${z.timeKnown ? "" : " · 태어난 시간을 몰라 시주는 뺐어요"}</p></details>` : "";
   show("final", `<div id="letter"></div>${table}<p class="cap" style="margin-top:24px">사주는 판단 재료예요. 결정은 내가 해요.</p>${cta(rated ? "다른 질문 하기" : "편지 어땠는지 알려 주기", "go", rated ? "" : `<button class="link" id="other" style="display:block;margin:0 auto 4px">다른 질문 하기</button>`)}`, () => {
     renderLetter(true);
-    document.getElementById("go").onclick = () => (rated ? inputScreen() : evalScreen());
-    const o = document.getElementById("other"); if (o) o.onclick = inputScreen;
+    document.getElementById("go").onclick = () => (rated ? inputScreen("") : evalScreen());
+    const o = document.getElementById("other"); if (o) o.onclick = () => inputScreen("");
   });
 }
 
 /* ---------- 3. 평가 ---------- */
 const QS = [["fun", "읽는 게 재밌었나요?"], ["me", "내 얘기 같았나요?"], ["help", "도움이 됐나요?"], ["heard", "할미가 내 마음을 알아준 것 같았나요?"]];
-function sentences() { return S.text.split(/\n/).filter((l) => !/^##|^—|^사랑하는/.test(l.trim())).join(" ").split(/(?<=[.?!])\s+/).map((s) => s.trim()).filter((s) => s.length >= 14 && s.length <= 90); }
+function sentences() { return S.text.split("=== 서랍 ===")[0].split(/\n/).filter((l) => !/^##|^—|^사랑하는/.test(l.trim())).join(" ").split(/(?<=[.?!])\s+/).map((s) => s.trim()).filter((s) => s.length >= 14 && s.length <= 90); }
 function evalScreen() {
   S.rating = {}; S.resonant = ""; S.feedback = "";
   const sents = sentences();
@@ -311,7 +390,7 @@ function evalScreen() {
   });
 }
 function doneScreen() {
-  show("done", `<div class="center"><h1>알려 줘서 고마워요</h1><p class="sub">남겨 준 점수는 편지를 더 좋게 다듬는 데 써요.</p></div>${cta("다른 질문 하기", "go", `<button class="link" id="view" style="display:block;margin:0 auto 4px">편지 다시 보기</button>`)}`, () => { document.getElementById("go").onclick = inputScreen; document.getElementById("view").onclick = () => finalScreen(true); });
+  show("done", `<div class="center"><h1>알려 줘서 고마워요</h1><p class="sub">남겨 준 점수는 편지를 더 좋게 다듬는 데 써요.</p></div>${cta("다른 질문 하기", "go", `<button class="link" id="view" style="display:block;margin:0 auto 4px">편지 다시 보기</button>`)}`, () => { document.getElementById("go").onclick = () => inputScreen(""); document.getElementById("view").onclick = () => finalScreen(true); });
 }
 window.addEventListener("offline", () => toast("인터넷이 끊겼어요"));
 boot();
