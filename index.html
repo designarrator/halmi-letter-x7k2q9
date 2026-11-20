@@ -147,7 +147,7 @@ function opts(from, to, suffix, sel) { let h = ""; for (let i = from; i <= to; i
 function inputScreen() {
   const saved = LS.get("halmi_input") || {};
   const last = LS.get("halmi_last");
-  const v = { name: saved.name || "", calendar: saved.calendar || "solar", leap: !!saved.leap, y: saved.y || 1995, m: saved.m || 1, d: saved.d || 1, timeKnown: saved.timeKnown === true, hour: saved.hour ?? 12, minute: saved.minute ?? 0, gender: saved.gender || "", question: saved.question || "", qtype: saved.qtype || "etc" };
+  const v = { name: saved.name || "", calendar: saved.calendar || "solar", leap: !!saved.leap, y: saved.y || 1995, m: saved.m || 1, d: saved.d || 1, timeKnown: saved.timeKnown !== false, hour: saved.hour ?? 12, minute: saved.minute ?? 0, gender: saved.gender || "", question: saved.question || "", qtype: saved.qtype || "etc" };
   const yrs = []; for (let y = 2010; y >= 1930; y--) yrs.push(`<option value="${y}"${y === +v.y ? " selected" : ""}>${y}년</option>`);
   show("input", `
     <h1>내년에 꼭 묻고 싶은 걸<br>할미한테 물어보렴</h1>
@@ -161,7 +161,7 @@ function inputScreen() {
     <label class="f">태어난 날</label>
     <div class="row"><select id="y" aria-label="년">${yrs.join("")}</select><select id="m" aria-label="월">${opts(1, 12, "월", +v.m)}</select><select id="d" aria-label="일">${opts(1, 31, "일", +v.d)}</select></div>
     <label class="f">태어난 시간</label>
-    <div class="row"><select id="hh" aria-label="시">${opts(0, 23, "시", +v.hour)}</select><select id="mi" aria-label="분">${opts(0, 59, "분", +v.minute)}</select></div>
+    <div class="row" id="hrow"><select id="hh" aria-label="시">${opts(0, 23, "시", +v.hour)}</select><select id="mi" aria-label="분">${opts(0, 59, "분", +v.minute)}</select></div>
     <label class="check"><input type="checkbox" id="unk"> 시간은 몰라요</label>
     <label class="f">성별 <span class="cap" style="font-weight:400">(대운 방향을 계산해요)</span></label>
     <div class="seg" id="gen"><button data-v="f">여자</button><button data-v="m">남자</button></div>
@@ -178,7 +178,7 @@ function inputScreen() {
     g("cal").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; st.calendar = b.dataset.v; sync("cal", "calendar"); g("leapw").style.display = st.calendar === "lunar" ? "flex" : "none"; };
     g("leapw").style.display = st.calendar === "lunar" ? "flex" : "none"; g("leap").checked = v.leap;
     g("gen").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; st.gender = b.dataset.v; sync("gen", "gender"); };
-    g("unk").onchange = () => { g("hh").disabled = g("mi").disabled = g("unk").checked; }; g("unk").checked = !v.timeKnown; g("unk").onchange();
+    g("unk").onchange = () => { g("hh").disabled = g("mi").disabled = g("unk").checked; }; g("hrow").addEventListener("click", () => { if (g("unk").checked) { g("unk").checked = false; g("unk").onchange(); g("hh").focus(); } }); g("unk").checked = !v.timeKnown; g("unk").onchange();
     g("chips").onclick = (e) => { const b = e.target.closest(".chip"); if (!b) return; g("q").value = b.dataset.t; st.qtype = QCHIPS.find((c) => c[0] === b.dataset.t)[1]; [...g("chips").children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); };
     g("q").oninput = () => { if (!QCHIPS.some((c) => c[0] === g("q").value)) { st.qtype = guessType(g("q").value); [...g("chips").children].forEach((c) => c.setAttribute("aria-pressed", "false")); } };
     if (v.question) st.qtype = v.qtype;
