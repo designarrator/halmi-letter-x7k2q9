@@ -46,10 +46,15 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 .ex button:active{background:var(--g50)}.ex button[aria-pressed=true]{border-color:var(--primary);background:var(--primary-subtle)}
 .ex b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:17px;line-height:27px;font-weight:600;color:var(--g900);min-height:54px}
 .ex span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;line-height:19px;color:var(--g600);margin-top:4px}
-.ucard{background:var(--primary-subtle);border-radius:var(--r20);padding:20px;margin:8px 0 16px}
-.ucard .cap{color:var(--g600);margin:0 0 8px}
-.ucard p.rq{font-size:17px;line-height:27px;font-weight:600;color:var(--g900);margin:0 0 12px;letter-spacing:-.02em}
-.ucard p.cf{font-size:17px;line-height:27px;color:var(--g700)}
+/* A 상세페이지·구매 */
+.dt .ph{margin:24px auto 32px}
+.dt h1{margin-top:0}
+.price{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--g200);margin-top:24px;padding-top:16px;font-size:17px;line-height:27px;color:var(--g700)}
+.price b{font-size:17px;line-height:27px;color:var(--g900);font-weight:700}
+.dt .lockbox h2{font-size:17px;line-height:27px}
+.order{background:var(--g50);border-radius:var(--r20);padding:20px;margin-top:8px}
+.order .cap{margin-bottom:4px}
+.order p.t{font-size:17px;line-height:27px;color:var(--g900);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .sos{display:block;width:100%;text-align:left;text-decoration:none;border:1px solid var(--g200);border-radius:var(--r16);padding:16px;margin-bottom:8px;color:var(--g900)}
 .sos b{display:block;font-size:20px;line-height:30px}.sos span{font-size:13px;line-height:19px;color:var(--g600)}
 /* 하단 버튼 */
@@ -78,8 +83,6 @@ button.link{display:block;width:100%;height:48px;background:none;border:0;font:i
 .vd{background:var(--primary-subtle);border-radius:var(--r20);padding:20px}
 .vd .cap{color:var(--g600);margin-bottom:8px;font-weight:600}
 .vd p.t{font-size:20px;line-height:30px;font-weight:600;letter-spacing:-.02em}
-.wish{background:var(--g50);border-radius:var(--r16);padding:16px}
-.wish .cap{margin-bottom:4px;font-weight:600}.wish p.t{font-size:17px;line-height:27px;font-weight:600}
 .viz{background:var(--g50);border-radius:var(--r20);padding:20px}
 .viz h3{font-size:17px;line-height:27px;font-weight:600;margin:0 0 4px}
 .viz .cap{margin:0 0 16px}
@@ -162,7 +165,7 @@ const frag = new URLSearchParams(location.hash.slice(1));
 const KEY = frag.get("k") || "";
 const IS_TEST = frag.get("test") === "1";
 const $app = document.getElementById("app");
-const S = { u: null, screen: "", input: null, id: null, text: "", viz: null, picks: null, tags: null, stage: 0, run: 0, rating: {}, resonant: "", feedback: "", unlocked: false, price: 0, me: null };
+const S = { paid: null, u: null, screen: "", input: null, id: null, text: "", viz: null, picks: null, tags: null, stage: 0, run: 0, rating: {}, resonant: "", feedback: "", unlocked: false, price: 0, me: null };
 const LS = { get: (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const g = (id) => document.getElementById(id);
@@ -189,7 +192,7 @@ function show(name, html, bind) {
   S.screen = name; $app.innerHTML = `<div class="screen ${name}" data-s="${name}">${html}</div>`; window.scrollTo(0, 0); bind && bind();
 }
 const cta = (label, id = "go", extra = "") => `<div class="cta"><div><button class="btn" id="${id}">${label}</button>${extra}</div></div>`;
-const head = (step, back = true) => `<div class="top">${back ? `<button class="back" id="back" aria-label="뒤로">${CHEV}</button>` : `<span class="sp"></span>`}<div class="prog" aria-label="${step} / 4 단계">${[1, 2, 3, 4].map((n) => `<i class="${n <= step ? "on" : ""}"></i>`).join("")}</div></div>`;
+const head = (step, back = true) => `<div class="top">${back ? `<button class="back" id="back" aria-label="뒤로">${CHEV}</button>` : `<span class="sp"></span>`}<div class="prog" aria-label="${step} / ${STEPS_N} 단계">${[...Array(STEPS_N)].map((_, i) => `<i class="${i < step ? "on" : ""}"></i>`).join("")}</div></div>`;
 async function call(body, signal) { return fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-halmi-key": KEY }, body: JSON.stringify(body), signal }); }
 function sheet({ title, body, ok, no }) {
   return new Promise((res) => {
@@ -207,6 +210,10 @@ function myPrice() {
   if (!PRICES.includes(p)) { p = PRICES[Math.floor(Math.random() * PRICES.length)]; LS.set("halmi_price", p); }
   return (S.price = p);
 }
+/* A/B 껍데기: a=상세페이지형(결제 먼저), b=부분 공개형(세배). 한 사람(브라우저)은 한 버전에 고정. #v=a|b 는 확인용으로 고정값을 바꾼다. */
+const VAR = (() => { const f = frag.get("v"); if (f === "a" || f === "b") { LS.set("halmi_ab", f); return f; } let v = LS.get("halmi_ab"); if (v !== "a" && v !== "b") { v = Math.random() < 0.5 ? "a" : "b"; LS.set("halmi_ab", v); } return v; })();
+const UID = (() => { let u = LS.get("halmi_uid"); if (!/^[a-z0-9-]{8,40}$/.test(u || "")) { u = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + "-" + Math.random().toString(36).slice(2)).toLowerCase(); LS.set("halmi_uid", u); } return u; })();
+const STEPS_N = VAR === "a" ? 4 : 3;
 const ids = () => LS.get("halmi_ids") || [];
 function remember(id) { LS.set("halmi_ids", [id, ...ids().filter((x) => x !== id)].slice(0, 5)); }
 const prevId = () => ids().find((x) => x !== S.id) || null;
@@ -221,23 +228,32 @@ async function logPw(id, patch) {
 async function flushPw() { const q = pwQ(); if (!q.length) return; LS.set("halmi_pw_q", []); for (const rec of q) if (!(await sendPw(rec))) LS.set("halmi_pw_q", [...pwQ(), rec]); }
 const unlockedIds = () => LS.get("halmi_unlocked") || [];
 
+/* A/B 단계 기록: 두 버전 같은 이름(land·start·me·q·pay_view·pay_click·pay_skip·letter·full·rate). 못 보내면 쌓았다가 다시. */
+const evQ = () => LS.get("halmi_ev_q") || [];
+async function sendEv(rec) { try { const r = await call({ action: "event", ...rec }); return r.ok || r.status === 400; } catch { return false; } }
+async function track(step, extra = {}) {
+  const rec = { uid: UID, variant: VAR, step, price: myPrice(), test: IS_TEST, at: new Date().toISOString(), ...extra };
+  if (!(await sendEv(rec))) LS.set("halmi_ev_q", [...evQ(), rec].slice(-50));
+}
+async function flushEv() { const q = evQ(); if (!q.length) return; LS.set("halmi_ev_q", []); for (const rec of q) if (!(await sendEv(rec))) LS.set("halmi_ev_q", [...evQ(), rec]); }
+
 /* ---------- 이력(뒤로가기) ---------- */
 window.addEventListener("popstate", (e) => {
   const n = e.state && e.state.s; S.popping = true;
   try {
-    if (S.screen === "read" || S.screen === "understand") S.run++; // 쓰던 중이면 화면만 떠난다(서버는 끝까지 써서 저장해 둔다)
+    if (S.screen === "read") S.run++; // 쓰던 중이면 화면만 떠난다(서버는 끝까지 써서 저장해 둔다)
     const input = !!S.me;
-    if (n === "me") meScreen(); else if (n === "q") (input ? qScreen(S.input?.question ?? undefined) : bowScreen());
-    else if (n === "understand") (S.u && S.input ? confirmScreen(S.input, S.u) : qScreen(S.input?.question));
+    if (n === "me") meScreen(); else if (n === "q") (input ? qScreen(S.input?.question ?? undefined) : home());
+    else if (n === "buy") (S.input ? buyScreen(S.input) : home());
     else if (n === "result" && S.text) resultScreen(); else if (n === "eval" && S.text) evalScreen();
-    else if (n === "bow" || !input) bowScreen(); else qScreen(S.input?.question);
+    else if (n === "bow" || n === "detail" || !input) home(); else qScreen(S.input?.question);
   } finally { S.popping = false; }
 });
-window.addEventListener("online", flushPw);
+window.addEventListener("online", () => { flushPw(); flushEv(); });
 
 /* ---------- 0. 입장 ---------- */
 async function boot() {
-  try { history.replaceState({ s: "bow" }, ""); } catch {}
+  try { history.replaceState({ s: VAR === "a" ? "detail" : "bow" }, ""); } catch {}
   S.me = LS.get("halmi_me");
   if (!KEY) return gateScreen();
   try {
@@ -245,7 +261,7 @@ async function boot() {
     if (r.status === 401) return gateScreen();
     if (!r.ok) throw 0;
   } catch { return offlineScreen(boot, "처음 화면"); }
-  S.popping = true; bowScreen(); S.popping = false; flushPw();
+  S.popping = true; home(); S.popping = false; flushPw(); flushEv(); track("land");
 }
 function gateScreen() {
   show("gate", `<div class="center"><h1>링크를 다시 확인해 주세요</h1><p class="sub">시험용 링크가 아니거나 주소 일부가 빠졌어요.<br>보내 드린 링크를 처음부터 끝까지 그대로 열어 주세요.</p></div>${cta("다시 열어 보기", "go")}`, () => { g("go").onclick = () => location.reload(); });
@@ -257,11 +273,23 @@ function offlineScreen(retry, what) {
   });
 }
 
-/* ---------- ① 세배 ---------- */
+const home = () => (VAR === "a" ? detailScreen() : bowScreen());
+const startTap = () => { track("start"); (S.me && S.me.name && S.again ? qScreen("") : meScreen()); };
+
+/* ---------- (B) ① 세배 ---------- */
 function bowScreen() {
-  show("bow", `${head(1, false)}<div class="ph" aria-hidden="true"></div><h1>세배하면 할미가<br>고민 하나를 들어준단다</h1>${cta("세배하기")}`, () => {
-    g("go").onclick = () => (S.me && S.me.name ? (S.again ? qScreen("") : meScreen()) : meScreen());
-  });
+  show("bow", `${head(1, false)}<div class="ph" aria-hidden="true"></div><h1>세배하면 할미가<br>고민 하나를 들어준단다</h1>${cta("세배하기")}`, () => { g("go").onclick = startTap; });
+}
+
+/* ---------- (A) ① 상세페이지 ---------- */
+const LETTER_HAS = [["할미의 판정", "내 질문에 될지 안 될지부터 한 줄로"], ["왜 그런지", "내 사주 그림과 2027년 기운으로 풀어요"], ["질문의 달력", "기회의 달 두 번, 숨 고를 달 한 번과 이유"], ["할미의 부탁", "내가 쥘 수 있는 할 일"], ["공략서 서랍", "성격 · 일과 돈 · 사람 · 열두 달"]];
+function detailScreen() {
+  show("detail", `${head(1, false)}<div class="dt"><div class="ph" aria-hidden="true"></div>
+    <h1>내년에 궁금한 거 하나,<br>할미가 사주로 답해 준단다</h1><p class="sub">될지 안 될지, 왜 그런지, 언제인지를 편지 한 통으로 받아요.</p>
+    <div class="lockbox"><h2>편지에 담기는 것</h2><ul>${LETTER_HAS.map(([t, d]) => `<li>${t}<span>${d}</span></li>`).join("")}</ul></div>
+    <div class="price"><span>편지 한 통</span><b>${won(myPrice())}</b></div>
+    <p class="cap" style="margin-top:24px">시험 중인 서비스예요. 사주는 판단 재료이고, 결정은 내가 해요.</p></div>
+    ${cta("운세 보기")}`, () => { g("go").onclick = startTap; });
 }
 
 /* ---------- ② 나 ---------- */
@@ -301,7 +329,7 @@ function meScreen(err) {
       const dt = new Date(me.y, me.m - 1, me.d);
       const miss = !me.name ? "부를 이름을 적어 주세요" : !me.gender ? "성별을 골라 주세요" : me.calendar === "solar" && (dt.getMonth() !== me.m - 1 || dt.getDate() !== me.d) ? "그 날짜는 달력에 없어요. 다시 확인해 주세요" : "";
       if (miss) { g("err").textContent = miss; return; }
-      S.me = me; LS.set("halmi_me", me);
+      S.me = me; LS.set("halmi_me", me); track("me");
       qScreen();
     };
   });
@@ -335,42 +363,24 @@ function qScreen(prefill) {
     g("go").onclick = () => {
       const question = q.value.trim();
       if (question.length < 2) { g("err").textContent = "고민을 한 줄이라도 적어 주세요"; q.focus(); return; }
-      understandScreen({ ...S.me, question });
+      track("q");
+      const inp = { ...S.me, question };
+      VAR === "a" ? buyScreen(inp) : startReading(inp);
     };
   });
 }
 
-/* ---------- ④ 확인 ---------- */
-const ASK_KO = { yes_no: "결과", timing: "시기", how: "방법", choice: "선택", feeling: "마음" };
-async function understandScreen(inp) {
-  const run = ++S.run; S.input = inp;
-  show("understand", `${head(4)}<div class="center" style="padding-top:48px"><div class="stage" style="justify-content:center"><span class="dot"></span>할미가 네 얘기를 읽고 있어요</div><h1>잠깐만 기다려 주렴</h1></div><div class="cta"><div><button class="link" id="back">돌아가기</button></div></div>`, () => { g("back").onclick = () => history.back(); });
-  let u = null;
-  try {
-    const r = await call({ action: "understand", question: inp.question });
-    if (run !== S.run) return;
-    if (r.status === 401) return gateScreen();
-    if (r.ok) u = (await r.json()).u;
-  } catch { if (run !== S.run) return; /* 이해 단계가 안 돼도 풀이는 막지 않는다 */ }
-  if (run !== S.run) return;
-  if (u && u.crisis) return safetyScreen();
-  if (!u || !u.real_q) return startReading(inp, 0, null);
-  S.u = u; confirmScreen(inp, u);
-}
-function confirmScreen(inp, u) {
-  const edit = (initial) => show("understand", `${head(4)}<h1>할미가 잘못 알아들었구나</h1><p class="sub">네가 진짜 궁금한 걸 한 줄로 적어 주렴.</p><textarea id="rq" maxlength="120" style="height:96px" placeholder="예: 미국에 정말 가게 될지">${esc(initial)}</textarea><div class="err" id="err"></div>${cta("이걸로 써 주세요", "go", `<button class="link" id="again">처음부터 다시 쓰기</button>`)}`, () => {
-    g("rq").focus(); g("back").onclick = () => confirmScreen(inp, u);
-    g("again").onclick = () => qScreen(inp.question);
-    g("go").onclick = () => { const t = g("rq").value.trim(); if (t.length < 2) { g("err").textContent = "한 줄만 적어 주세요"; return; } startReading(inp, 0, { ...u, real_q: t, alt: "" }); };
-  });
-  show("understand", `${head(4)}<h1>할미가 이렇게 알아들었단다</h1><p class="sub">맞는지 한 번만 확인해 줄래?</p>
-    <div class="ucard"><p class="cap">네가 진짜 궁금한 것 · ${esc(ASK_KO[u.ask_type] || "결과")}</p><p class="rq">${esc(u.real_q)}</p>${u.confirm ? `<p class="cf">${esc(u.confirm)}</p>` : ""}</div>
-    ${u.stage || u.variable ? `<p class="cap">${u.stage ? "지금 상황: " + esc(u.stage) : ""}${u.stage && u.variable ? "<br>" : ""}${u.variable ? "걸린 변수: " + esc(u.variable) : ""}</p>` : ""}
-    ${cta("맞아요, 써 주세요", "go", `${u.alt ? `<button class="btn ghost" id="alt" style="margin-top:8px">혹시 이거예요? ${esc(u.alt)}</button>` : ""}<button class="link" id="fix">아니에요, 고칠게요</button>`)}`, () => {
+/* ---------- (A) ④ 구매(가짜 결제) ---------- */
+function buyScreen(inp) {
+  S.input = inp; const price = myPrice();
+  show("buy", `${head(4)}<h1>할미 편지 한 통,<br>${won(price)}이에요</h1><p class="sub">결제하면 1분 안팎으로 편지가 와요.</p>
+    <div class="order"><p class="cap">${esc(inp.name)}의 고민</p><p class="t">${esc(inp.question)}</p></div>
+    <div class="lockbox" style="margin-top:24px;border-top:0;padding-top:0"><ul>${LETTER_HAS.map(([t, d]) => `<li>${t}<span>${d}</span></li>`).join("")}</ul></div>
+    ${cta(`${won(price)} 결제하기`, "go", `<button class="link" id="skip">결제 없이 받아 보기</button>`)}`, () => {
+    track("pay_view");
     g("back").onclick = () => history.back();
-    g("go").onclick = () => startReading(inp, 0, u);
-    if (g("alt")) g("alt").onclick = () => startReading(inp, 0, { ...u, real_q: u.alt, alt: "" });
-    g("fix").onclick = () => edit(u.real_q);
+    g("go").onclick = async () => { track("pay_click"); S.paid = "click"; await sheet({ title: "아직 결제는 준비 중이에요", body: "이번엔 무료로 편지를 써 줄게요.", ok: "편지 받기" }); startReading(inp); };
+    g("skip").onclick = () => { track("pay_skip"); S.paid = "skip"; startReading(inp); };
   });
 }
 function safetyScreen() {
@@ -384,15 +394,15 @@ function safetyScreen() {
 /* ---------- 편지 쓰는 중 ---------- */
 function stepsHtml() { return `<ul class="steps">${STAGES.slice(0, 3).map((t, i) => `<li class="${S.stage === i + 1 ? "on" : S.stage > i + 1 ? "done" : ""}">${S.stage > i + 1 ? "✓ " : ""}${t}</li>`).join("")}</ul>`; }
 function waitPaint() { const s = g("steps"); if (s) s.innerHTML = S.stage === 4 ? `<div class="stage"><span class="dot"></span>${STAGES[3]}</div>` : stepsHtml(); const p = g("pic"); if (p && S.viz && !p.innerHTML) p.innerHTML = pictureHtml(); }
-async function startReading(inp, tries = 0, u = S.u) {
-  const run = ++S.run; S.u = u; S.input = inp; S.text = ""; S.viz = null; S.picks = null; S.tags = null; S.stage = 1; S.id = null; S.unlocked = false;
+async function startReading(inp, tries = 0) {
+  const run = ++S.run; S.u = null; S.input = inp; S.text = ""; S.viz = null; S.picks = null; S.tags = null; S.stage = 1; S.id = null; S.unlocked = false;
   show("read", `<h1>할미가 편지를 쓰고 있단다</h1><p class="sub">보통 1분 안팎 걸려요. 기다리는 동안 네 그림부터 보여 줄게요.</p><div id="steps"></div><div id="pic"></div><div class="cta"><div><button class="link" id="cancel">그만두고 돌아가기</button></div></div>`, () => { g("cancel").onclick = () => { S.run++; history.back(); }; waitPaint(); });
   let r;
-  try { r = await call({ action: "read", ...inp, qtype: u?.qtype || "etc", u, test: IS_TEST }); } catch { if (run !== S.run) return; return offlineScreen(() => startReading(inp, 0, u), "편지 쓰기"); }
+  try { r = await call({ action: "read", ...inp, ab: { uid: UID, variant: VAR }, test: IS_TEST }); } catch { if (run !== S.run) return; return offlineScreen(() => startReading(inp, 0), "편지 쓰기"); }
   if (run !== S.run) return drain(r);
   if (r.status === 422) return safetyScreen();
   if (r.status === 401) return gateScreen();
-  if (r.status === 409) { if (tries > 20) return failScreen(inp); await new Promise((s) => setTimeout(s, 6000)); if (run !== S.run) return; return startReading(inp, tries + 1, u); }
+  if (r.status === 409) { if (tries > 20) return failScreen(inp); await new Promise((s) => setTimeout(s, 6000)); if (run !== S.run) return; return startReading(inp, tries + 1); }
   if (r.status === 429) return limitScreen();
   if (r.status === 400) { const e = await r.json().catch(() => ({})); return meScreen(e.error === "birth_invalid" ? "그 날짜는 달력에 없어요. 날짜를 다시 확인해 주세요" : "입력을 다시 확인해 주세요"); }
   if (!r.ok || !r.body) return failScreen(inp);
@@ -404,13 +414,23 @@ async function startReading(inp, tries = 0, u = S.u) {
       buf += dec.decode(value, { stream: true });
       let i; while ((i = buf.indexOf("\n\n")) >= 0) { const chunk = buf.slice(0, i); buf = buf.slice(i + 2); const line = chunk.split("\n").find((l) => l.startsWith("data: ")); if (!line) continue; if (handle(JSON.parse(line.slice(6)), run)) done = true; }
     }
-  } catch { if (!done) { if (run !== S.run) return; return offlineScreen(() => startReading(inp, 0, u), "편지 쓰기"); } }
+  } catch { if (!done) { if (run !== S.run) return; return offlineScreen(() => startReading(inp, 0), "편지 쓰기"); } }
   if (!done && run === S.run) return failScreen(inp);
 }
 async function drain(r) { try { if (r.body) { const rd = r.body.getReader(); while (!(await rd.read()).done); } } catch {} } // 떠난 뒤에도 서버가 끝까지 쓰도록 읽어 둔다
 function handle(ev, run) {
   const live = run === S.run;
-  if (ev.type === "final") { remember(ev.id); LS.set("halmi_draft", ""); if (!live) return true; S.text = ev.text; S.id = ev.id; S.picks = ev.picks; S.tags = ev.tags || null; S.again = true; resultScreen(false); return true; }
+  if (ev.type === "final") {
+    remember(ev.id); LS.set("halmi_draft", ""); if (!live) return true;
+    S.text = ev.text; S.id = ev.id; S.picks = ev.picks; S.tags = ev.tags || null; S.u = ev.u || null; S.again = true;
+    track("letter", { reading_id: ev.id });
+    if (VAR === "a") { // 결제(가짜)를 지나 왔으니 전체 공개. 결제 기록은 편지에도 남긴다(B와 같은 자리).
+      S.unlocked = true; LS.set("halmi_unlocked", [...new Set([...unlockedIds(), ev.id])]);
+      logPw(ev.id, {}).then(() => logPw(ev.id, S.paid === "skip" ? { skipped: true } : { clicked: true }));
+      track("full", { reading_id: ev.id });
+    }
+    resultScreen(false); return true;
+  }
   if (!live) return false;
   if (ev.type === "card") { S.viz = ev.viz; waitPaint(); }
   else if (ev.type === "stage") { S.stage = ev.n; waitPaint(); }
@@ -420,19 +440,19 @@ function handle(ev, run) {
   return false;
 }
 function failScreen(inp) {
-  show("fail", `<div class="center"><h1>편지를 끝까지 못 썼어요</h1><p class="sub">잠깐 문제가 있었어요. 입력한 내용은 그대로예요.<br>다시 시도하면 처음부터 새로 써 드려요.</p></div>${cta("다시 써 달라고 하기", "retry", `<button class="link" id="back">고민으로 돌아가기</button>`)}`, () => { g("retry").onclick = () => startReading(inp, 0, S.u); g("back").onclick = () => qScreen(inp.question); });
+  show("fail", `<div class="center"><h1>편지를 끝까지 못 썼어요</h1><p class="sub">잠깐 문제가 있었어요. 입력한 내용은 그대로예요.<br>다시 시도하면 처음부터 새로 써 드려요.</p></div>${cta("다시 써 달라고 하기", "retry", `<button class="link" id="back">고민으로 돌아가기</button>`)}`, () => { g("retry").onclick = () => startReading(inp, 0); g("back").onclick = () => qScreen(inp.question); });
 }
 function limitScreen() {
   const last = ids()[0];
-  show("limit", `<div class="center"><h1>오늘 쓸 수 있는 편지를 다 썼어요</h1><p class="sub">하루에 쓸 수 있는 편지 수가 정해져 있어요.<br>내일 다시 와 주세요.</p></div>${cta(last ? "지난 편지 다시 보기" : "처음으로", "go")}`, () => { g("go").onclick = () => (last ? restore(last) : bowScreen()); });
+  show("limit", `<div class="center"><h1>오늘 쓸 수 있는 편지를 다 썼어요</h1><p class="sub">하루에 쓸 수 있는 편지 수가 정해져 있어요.<br>내일 다시 와 주세요.</p></div>${cta(last ? "지난 편지 다시 보기" : "처음으로", "go")}`, () => { g("go").onclick = () => (last ? restore(last) : home()); });
 }
 async function restore(id) {
-  show("read", `<h1>편지를 꺼내 오는 중이에요</h1><div class="cta"><div><button class="link" id="cancel">돌아가기</button></div></div>`, () => { g("cancel").onclick = () => bowScreen(); });
+  show("read", `<h1>편지를 꺼내 오는 중이에요</h1><div class="cta"><div><button class="link" id="cancel">돌아가기</button></div></div>`, () => { g("cancel").onclick = () => home(); });
   let r; try { r = await call({ action: "get", id }); } catch { return offlineScreen(() => restore(id), "지난 편지"); }
-  if (!r.ok) { LS.set("halmi_ids", ids().filter((x) => x !== id)); toast("지난 편지를 찾지 못했어요"); return bowScreen(); }
+  if (!r.ok) { LS.set("halmi_ids", ids().filter((x) => x !== id)); toast("지난 편지를 찾지 못했어요"); return home(); }
   const j = await r.json(); S.id = j.id; S.text = j.text; S.viz = j.chart; S.picks = j.picks; S.tags = j.tags || null; S.u = j.chart?.u || null; S.input = { question: j.question };
   const pw = j.chart?.paywall; S.price = pw?.price || S.price;
-  S.unlocked = unlockedIds().includes(j.id) || !pw || !!(pw.clicked || pw.skipped); // 옛 편지(기록 없음)는 다 보여 준다
+  S.unlocked = unlockedIds().includes(j.id) || j.chart?.ab?.variant === "a" || !pw || !!(pw.clicked || pw.skipped); // 옛 편지(기록 없음)·A(결제 먼저)는 다 보여 준다
   resultScreen(!!j.rated);
 }
 
@@ -480,10 +500,6 @@ function toneOf() {
   if (v === "조심") return "쉽진 않지만 열리는 길이 하나 있단다";
   return "할미의 판정";
 }
-function wishText() {
-  if (S.tags?.wish) return S.tags.wish;
-  const rq = S.u?.real_q; return rq ? `네가 정말 궁금했던 건 «${rq}» 이거였지 싶구나.` : ""; // 태그 형식이 깨졌을 때 대신 쓰는 문장
-}
 
 /* ---------- ⑤ 세뱃돈(무료) · ⑥ 결제 선 · ⑦ 전체 · ⑧ 다음 ---------- */
 function resultScreen(rated) {
@@ -491,7 +507,6 @@ function resultScreen(rated) {
   const L = parseLetter(S.text), open = S.unlocked;
   const vs = sents(L.opening.length ? L.opening.join(" ") : (L.secs[0]?.p[0] || ""));
   const verdict = vs.slice(0, 2).join(" "), extraOpen = vs.slice(2).join(" "); // 판정은 두 문장까지만, 넘치는 말은 전체 공개 때 이어서 보여 준다
-  const wish = wishText();
   const twist = S.tags?.twist || "";
   const r1 = L.secs[0], rest = L.secs.slice(1);
   let iSew = rest.findIndex((s) => /2027|정미|내년|올해|이 해/.test(s.h || ""));
@@ -525,11 +540,10 @@ function resultScreen(rated) {
   const bar = open ? (rated ? "" : cta("편지 어땠는지 알려 주기", "go")) : cta(`복주머니 열기 · ${won(myPrice())}`, "go", `<button class="link" id="skip">그냥 다 보기</button>`);
   show("result", `<div class="res">
       <div class="vd"><p class="cap">${esc(toneOf())}</p><p class="t">${esc(verdict)}</p></div>
-      ${wish ? `<div class="wish"><p class="cap">할미가 읽은 네 마음</p><p class="t">${esc(wish)}</p></div>` : ""}
       <div id="pic">${pictureHtml()}</div>
       ${toc}${body}${table}${next}</div>${bar}`, () => {
     if (!open) {
-      if (S.id && !LS.get("halmi_shown_" + S.id)) { LS.set("halmi_shown_" + S.id, 1); logPw(S.id, {}); }
+      if (S.id && !LS.get("halmi_shown_" + S.id)) { LS.set("halmi_shown_" + S.id, 1); logPw(S.id, {}); track("pay_view", { reading_id: S.id }); }
       g("go").onclick = () => unlock("click"); g("skip").onclick = () => unlock("skip");
     } else {
       if (g("go")) g("go").onclick = () => evalScreen();
@@ -541,9 +555,10 @@ function resultScreen(rated) {
 const twistHtml = (t) => `<div class="twist"><p class="cap">의외의 다시 보기</p><p class="t">${esc(t)}</p></div>`;
 async function unlock(kind) {
   const id = S.id;
+  track(kind === "click" ? "pay_click" : "pay_skip", { reading_id: id });
   if (kind === "click") { logPw(id, { clicked: true }); await sheet({ title: "아직 결제는 준비 중이에요", body: "이번엔 다 보여 줄게요.", ok: "다 보기" }); }
   else logPw(id, { skipped: true });
-  S.unlocked = true; LS.set("halmi_unlocked", [...new Set([...unlockedIds(), id])]);
+  S.unlocked = true; LS.set("halmi_unlocked", [...new Set([...unlockedIds(), id])]); track("full", { reading_id: id });
   S.popping = true; resultScreen(false); S.popping = false;
   window.scrollTo(0, 0);
 }
@@ -567,7 +582,7 @@ function evalScreen() {
       go.disabled = true; go.textContent = "보내는 중이에요";
       try {
         const r = await call({ action: "rate", id: S.id, ...S.rating, feedback: g("fb").value.trim(), resonant: S.resonant });
-        if (!r.ok) throw 0; S.rated = true; doneScreen();
+        if (!r.ok) throw 0; S.rated = true; track("rate", { reading_id: S.id }); doneScreen();
       } catch { go.disabled = false; go.textContent = "보내기"; toast("전송이 안 됐어요. 연결을 확인하고 다시 눌러 주세요"); }
     };
   });
