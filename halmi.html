@@ -108,6 +108,8 @@ button.link{display:block;width:100%;height:48px;background:none;border:0;font-f
 .kv{display:grid;grid-template-columns:64px 1fr;gap:8px;padding:12px 0;border-top:1px solid var(--line);font-size:17px;line-height:27px}
 .kv b{font-family:var(--sans);font-size:13px;line-height:27px;font-weight:600;color:var(--ink3)}
 .kv.fix b{color:var(--indigo)}.kv.fix span{font-weight:700}
+.kv.low b{color:var(--persim)}.kv.low span{color:var(--ink)}
+.kv{grid-template-columns:72px 1fr}
 .mrow{display:grid;grid-template-columns:56px 1fr;gap:8px;padding:12px 0;border-top:1px solid var(--line)}
 .mrow b{font-size:17px;line-height:27px;color:var(--indigo)}.mrow.c b{color:var(--persim)}
 .mrow p{margin:0}.mrow small{display:block;font-family:var(--sans);font-size:13px;line-height:19px;color:var(--ink2)}
@@ -178,6 +180,42 @@ button.link{display:block;width:100%;height:48px;background:none;border:0;font-f
 .more p{font-size:17px;line-height:27px}
 .full.bowimg{background-size:100% auto}
 .full.bowimg::before{background:linear-gradient(rgba(246,241,231,0) 62%,rgba(246,241,231,.9) 72%,var(--paper) 80%)}
+
+/* v4: 청월당에서 더 가져온 블록 */
+.bridge{display:flex;align-items:flex-start;gap:12px;margin:40px 0 8px}
+.bridge img{width:48px;height:48px;border-radius:24px;border:1px solid var(--line);flex:none}
+.bridge p{background:var(--white);border:2px solid var(--ink);border-radius:var(--r20);border-top-left-radius:4px;padding:12px 16px;font-family:var(--serif);font-size:17px;line-height:27px;font-weight:700}
+.dae{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.dae div{border:1px solid var(--line);border-radius:var(--r12);padding:8px 0;background:var(--white)}
+.dae div.now{border:2px solid var(--persim)}
+.dae b{display:block;font-family:var(--hanja);font-size:20px;line-height:30px}
+.dae small{display:block;font-size:13px;line-height:19px;color:var(--ink3)}
+.penta{display:block;width:100%;max-width:320px;margin:0 auto}
+.ygs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;margin-top:16px}
+.ygs p{font-size:13px;line-height:19px;color:var(--ink3);margin-bottom:8px}
+.ygs i{display:inline-flex;width:48px;height:48px;border-radius:24px;align-items:center;justify-content:center;font-style:normal;font-family:var(--hanja);font-size:20px;line-height:30px;color:var(--white)}
+.ygs small{display:block;font-size:13px;line-height:19px;margin-top:4px;color:var(--ink2)}
+.gang{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:20px;text-align:center}
+.gang span{height:12px;border-radius:var(--r12);background:var(--line)}
+.gang span.on{background:var(--persim)}
+.gang small{font-size:13px;line-height:19px;color:var(--ink3)}
+.gang small.on{color:var(--ink);font-weight:700}
+.sam{display:flex;align-items:center;gap:16px}
+.sam b{font-family:var(--serif);font-size:20px;line-height:30px}
+.sam .badge{flex:none;width:72px;height:72px;border-radius:36px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:700;font-size:17px;line-height:27px;color:var(--white);background:var(--indigo)}
+.sam .badge.on{background:var(--persim)}
+.flowsvg{display:block;width:100%}
+.bon{position:relative;overflow:hidden}
+.bon img{position:absolute;right:-8px;bottom:-8px;width:136px}
+.bon li{list-style:none;display:flex;gap:8px;align-items:center;font-size:17px;line-height:27px;padding:4px 0}
+.bon ul{margin:12px 0 0;padding:0;max-width:64%}
+.bon li i{flex:none;width:20px;height:20px;border-radius:12px;background:var(--indigo);color:var(--white);font-style:normal;font-size:13px;line-height:20px;text-align:center}
+.paym label{display:flex;align-items:center;gap:12px;height:56px;border-bottom:1px solid var(--line);font-size:17px}
+.paym input{width:20px;height:20px;margin:0;padding:0;border:0;flex:none;appearance:auto;-webkit-appearance:radio;accent-color:var(--indigo)}
+.snow{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.snow i{position:absolute;top:-8px;width:4px;height:4px;border-radius:4px;background:rgba(255,255,255,.85);animation:fall linear infinite}
+@keyframes fall{to{transform:translate(20px,110vh)}}
+.full.land .t3{font-family:var(--serif);font-size:13px;line-height:19px;color:var(--white);text-align:center;margin-top:8px;opacity:.9;text-shadow:0 2px 8px rgba(20,20,50,.5)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -243,7 +281,7 @@ const full = (img, html, cls = "") => `<div class="full ${cls}" style="backgroun
 /* ① 첫 화면 */
 function startScreen() {
   const last = ids()[0];
-  show("start", full("img/A1.jpg", `<p class="t1">2027 정미년</p><h1>막아 주는 할미</h1><p class="t2">내년에 다칠 곳, 할미가 먼저 짚어 주마</p>`, "land") + cta("내 사주 바로 보기", "go", last ? `<button class="link" id="prev">지난 편지 다시 보기</button>` : ""), () => {
+  show("start", full("img/A1.jpg", `<div class="snow">${Array.from({ length: 24 }, (_, i) => `<i style="left:${(i * 37) % 100}%;animation-duration:${6 + (i % 5)}s;animation-delay:-${(i * 0.7).toFixed(1)}s"></i>`).join("")}</div><p class="t1">2027 정미년</p><h1>막아 주는 할미</h1><p class="t2">내년에 다칠 곳, 할미가 먼저 짚어 주마</p><p class="t3">좋은 말은 안 한다. 바닥까지 짚고, 길을 내준다.</p>`, "land") + cta("내 사주 바로 보기", "go", last ? `<button class="link" id="prev">지난 편지 다시 보기</button>` : ""), () => {
     g("go").onclick = () => bowScreen();
     if (g("prev")) g("prev").onclick = () => restore(last);
   });
@@ -326,6 +364,7 @@ function payScreen() {
     <img class="art" src="img/A1.jpg" alt="" style="aspect-ratio:3/1;object-fit:cover;object-position:center 60%">
     <div class="card" style="margin-top:16px"><h3>막아 주는 할미 · 2027 편지 전부</h3><p class="cap" style="margin-top:4px">잠긴 장 모두 · 조심할 것 세 가지 · 열두 달과 조심할 날 · 매일 막는 법</p>
       <div class="price"><span>최종 결제 금액</span><b>${won(price)}</b></div></div>
+    <div class="card paym" style="margin-top:16px"><h3>결제 수단</h3>${["토스페이", "카카오페이", "네이버페이", "신용·체크카드"].map((t, i) => `<label><input type="radio" name="pm" ${i === 0 ? "checked" : ""}> ${t}</label>`).join("")}</div>
     <p class="cap" style="margin-top:16px">시험 중인 서비스예요. 지금은 실제로 돈이 나가지 않아요.</p>
     ${cta(`${won(price)} 결제하기`)}`, () => {
     g("back").onclick = () => history.back();
@@ -400,11 +439,12 @@ const STAMPS = ["첫째 장", "둘째 장", "셋째 장", "넷째 장", "다섯�
 const COVER = ["C1", "C2", "C3", "C4", "C5", "C6"];
 const MID = [["D1", "think"], ["D2", "firm"], ["D3", "worry"], ["D4", "smile"], ["D5", "firm"], ["D6", "smile"]];
 const EL = (ch) => ("甲乙寅卯".includes(ch) ? "wood" : "丙丁巳午".includes(ch) ? "fire" : "戊己辰戌丑未".includes(ch) ? "earth" : "庚辛申酉".includes(ch) ? "metal" : "water");
+const ssLabel = (label, k) => { const r = (S.viz?.ss || []).find((x) => x.label === label); const t = r ? SSZ[r[k]] : ""; return t ? `<br><b style="color:var(--indigo);font-weight:600">${t}</b>` : ""; };
 function myTable() {
   const z = S.viz; if (!z || !z.table) return "";
   const order = ["시", "일", "월", "년"].map((l) => z.table.find((c) => c.label === l)).filter(Boolean);
   const H = { 시: "시 · 앞날", 일: "일 · 나", 월: "월 · 부모", 년: "년 · 어린 시절" };
-  return `<div class="viz"><h3>네 여덟 글자</h3><p class="cap">오른쪽부터 년·월·일·시. 테두리가 너 자신이에요.</p><div class="ms">${order.map((c) => `<div><p class="h">${H[c.label]}</p><div class="c ${c.label === "일" ? "me" : ""}" style="background:var(--w-${EL(c.gan)})">${c.gan}</div><p class="l">${esc(c.ganM)}</p><div class="c" style="background:var(--w-${EL(c.zhi)})">${c.zhi}</div><p class="l">${esc(c.zhiM)}</p></div>`).join("")}</div></div>`;
+  return `<div class="viz"><h3>네 여덟 글자</h3><p class="cap">오른쪽부터 년·월·일·시. 테두리가 너 자신이에요.</p><div class="ms">${order.map((c) => `<div><p class="h">${H[c.label]}</p><div class="c ${c.label === "일" ? "me" : ""}" style="background:var(--w-${EL(c.gan)})">${c.gan}</div><p class="l">${esc(c.ganM)}${ssLabel(c.label, "gan")}</p><div class="c" style="background:var(--w-${EL(c.zhi)})">${c.zhi}</div><p class="l">${esc(c.zhiM)}${ssLabel(c.label, "zhi")}</p></div>`).join("")}</div></div>`;
 }
 function meetHtml() {
   const z = S.viz; if (!z || !z.table) return "";
@@ -425,13 +465,13 @@ function parse(text) {
   for (const l of main.split("\n")) { if (/^##\s+/.test(l) && !/^###/.test(l)) secs.push({ h: l.replace(/^##\s+/, "").trim(), lines: [] }); else if (l.trim()) secs[secs.length - 1].lines.push(l.trim()); }
   return { opening: secs[0].lines.filter((l) => !/^사랑하는/.test(l)), secs: secs.slice(1), drawer };
 }
-const KV = /^(무엇이|왜|언\s*제|막는\s*법)\s*[·ㆍ]\s*(.+)$/;
+const KV = /^(무엇이|왜|언\s*[제때]|막는\s*법|바닥까지\s*가면|할미의\s*역제안)\s*[·ㆍ]\s*(.+)$/;
 const ITEM = /^(색|방향|몸|음식|습관|돌리기)\s*[·ㆍ]\s*(.+)$/;
 const MROW = /^(?:2028년\s*)?(\d{1,2})월\s*[·ㆍ]\s*(.+?)\s*[·ㆍ]\s*(.+)$/;
 const DAYS = /^(?:\d{1,2}월\s*)?조심할\s*날\s*[·ㆍ]\s*(.+)$/;
 function lineHtml(t) {
   let m;
-  if ((m = t.match(KV))) { const k = m[1].replace(/\s+/g, "").replace("막는법", "막는 법"); return `<div class="kv ${k === "막는 법" ? "fix" : ""}"><b>${k}</b><span>${esc(m[2])}</span></div>`; }
+  if ((m = t.match(KV))) { const k = m[1].replace(/\s+/g, "").replace("막는법", "막는 법").replace("바닥까지가면", "바닥까지 가면").replace("할미의역제안", "할미의 역제안").replace("언때", "언제"); const cls = k === "막는 법" || k === "할미의 역제안" ? "fix" : k === "바닥까지 가면" ? "low" : ""; return `<div class="kv ${cls}"><b>${k}</b><span>${esc(m[2])}</span></div>`; }
   if ((m = t.match(ITEM))) return `<div class="kv fix"><b>${m[1]}</b><span>${esc(m[2])}</span></div>`;
   if ((m = t.match(DAYS))) return `<p class="days">조심할 날 ${esc(m[1])}</p>`;
   if ((m = t.match(MROW))) { const n = +m[1]; const c = S.picks?.caution?.includes(n); return `<div class="mrow ${c ? "c" : ""}"><b>${n}월</b><div><p>${esc(m[2])}</p><small>${esc(m[3])}</small></div></div>`; }
@@ -468,6 +508,53 @@ const ttl = (t, sub = "") => `<div class="ttl3"><img class="orn" src="img/O1.png
 function birthLine() { const m = S.me; return m && m.y ? `${m.calendar === "lunar" ? "음력" : "양력"} ${m.y}년 ${m.m}월 ${m.d}일${m.hour !== undefined ? ` ${m.hour}시 ${m.minute || 0}분` : ""} 생` : ""; }
 function riskParts(sec) { const parts = []; let cur = null; for (const l of sec.lines) { if (/^###\s+/.test(l)) { cur = { h: l.replace(/^###\s+/, ""), lines: [] }; parts.push(cur); } else if (cur) cur.lines.push(l); else parts.push({ h: null, lines: [l] }); } return parts; }
 const LOCK = `<span class="lk"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>`;
+const SSZ = { 비견: "같은 편", 겁재: "같은 편", 식신: "내보냄", 상관: "내보냄", 편재: "재물", 정재: "재물", 편관: "자리", 정관: "자리", 편인: "배움", 정인: "배움", 일간: "나" };
+const WXC = { 木: "wood", 火: "fire", 土: "earth", 金: "metal", 水: "water" };
+const bridge = (text, face = "smile") => `<div class="bridge"><img src="${FACE[face]}" alt=""><p>${esc(text)}</p></div>`;
+function daeunHtml() {
+  const z = S.viz; if (!z?.daeun?.length) return "";
+  return `<div class="viz"><h3>${esc(letterName())}의 대운표</h3><p class="cap">10년마다 바뀌는 큰 흐름이에요. 빨간 테두리가 2027년이 걸린 10년이에요.</p><div class="dae">${z.daeun.map((d) => `<div class="${d.gz === z.curDaeun ? "now" : ""}"><small>${d.age}세</small><b>${d.gz}</b><small>${d.year}~</small></div>`).join("")}</div></div>`;
+}
+function ohaengHtml() {
+  const z = S.viz; if (!z?.balance) return "";
+  const pos = { 木: [160, 36], 火: [282, 124], 土: [236, 268], 金: [84, 268], 水: [38, 124] };
+  const cnt = Object.fromEntries(z.balance.map((b) => [b.e, b.now]));
+  const gen = [["木", "火"], ["火", "土"], ["土", "金"], ["金", "水"], ["水", "木"]], ctl = [["木", "土"], ["土", "水"], ["水", "火"], ["火", "金"], ["金", "木"]];
+  const line = ([a, b], c, dash) => `<line x1="${pos[a][0]}" y1="${pos[a][1]}" x2="${pos[b][0]}" y2="${pos[b][1]}" stroke="${c}" stroke-width="2" ${dash ? 'stroke-dasharray="4 4"' : ""} opacity=".7"/>`;
+  const node = (e) => { const [x, y] = pos[e]; return `<circle cx="${x}" cy="${y}" r="28" fill="var(--w-${WXC[e]})"/><text x="${x}" y="${y + 8}" text-anchor="middle" font-size="24" fill="#fff" font-family="Zen Antique">${e}</text><text x="${x}" y="${y + 48}" text-anchor="middle" font-size="13" fill="#6E6459" font-family="Pretendard Variable">${cnt[e]}개</text>`; };
+  const svg = `<svg class="penta" viewBox="0 0 320 330">${gen.map((g) => line(g, "#7C93C8")).join("")}${ctl.map((g) => line(g, "#D9705A", true)).join("")}${Object.keys(pos).map(node).join("")}</svg>`;
+  const steps = ["극약", "태약", "신약", "중화", "신강", "태강", "극왕"], r = z.selfR ?? 0.5;
+  const k = Math.max(0, Math.min(6, Math.round((r - 0.2) / 0.1)));
+  const yg = (e, cap) => e ? `<div><p>${cap}</p><i style="background:var(--w-${WXC[e]})">${e}</i><small>${KO[e]}</small></div>` : `<div><p>${cap}</p><small>없음</small></div>`;
+  return `<div class="viz"><h3>${esc(letterName())}의 오행과 채울 기운</h3><p class="cap">파란 선은 서로 키워 주는 길, 빨간 점선은 누르는 길이에요.</p>${svg}
+    <div class="ygs">${yg(z.useful?.[0], "가장 채울 것")}${yg(z.useful?.[1], "다음으로 채울 것")}${yg(z.avoid?.[0], "덜어 낼 것")}</div>
+    <div class="gang">${steps.map((t, i) => `<span class="${i === k ? "on" : ""}"></span>`).join("")}${steps.map((t, i) => `<small class="${i === k ? "on" : ""}">${t}</small>`).join("")}</div></div>`;
+}
+function samjaeHtml() {
+  const z = S.viz; if (!z?.samjae) return "";
+  const sj = z.samjae;
+  return `<div class="card sam"><span class="badge ${sj.is ? "on" : ""}">${sj.is ? sj.name : "없음"}</span><div><p class="cap">2027년 삼재 여부</p><b>${sj.is ? `${esc(sj.name)} · ${esc(sj.easy)}` : "삼재가 아니다"}</b><p class="cap" style="margin-top:4px">${sj.is ? "크게 벌이기보다 마무리와 점검에 쓰는 해예요. 막는 법은 편지에서 짚어요." : "삼 년 고비는 비켜 가는 해예요."}</p></div></div>`;
+}
+function flowHtml(free) {
+  const z = S.viz; if (!z?.flow) return "";
+  const v = z.flow.map((m) => m.up - m.down), mx = Math.max(1, ...v.map(Math.abs));
+  const W = 320, H = 160, x = (i) => 16 + i * ((W - 32) / 11), y = (n) => H / 2 - (n / mx) * (H / 2 - 16);
+  const pts = v.map((n, i) => `${x(i).toFixed(1)},${y(n).toFixed(1)}`).join(" ");
+  const cIdx = (z.caution || []).map((c) => c.idx);
+  const dots = v.map((n, i) => `<circle cx="${x(i)}" cy="${y(n)}" r="${cIdx.includes(i) ? 6 : 4}" fill="${cIdx.includes(i) ? "var(--persim)" : n >= 0 ? "var(--indigo)" : "var(--ink3)"}"/>`).join("");
+  const labels = z.flow.map((m, i) => `<text x="${x(i)}" y="${H + 16}" text-anchor="middle" font-size="13" fill="#9A8F83" font-family="Pretendard Variable">${parseInt(m.label) || 1}</text>`).join("");
+  return `<div class="viz"><h3>2027 달마다 흐름</h3><p class="cap">위로 갈수록 힘이 붙는 달, 아래로 갈수록 조심할 달이에요. 빨간 점이 할미가 짚은 조심할 달이에요.</p><svg class="flowsvg" viewBox="0 0 ${W} ${H + 24}"><line x1="8" y1="${H / 2}" x2="${W - 8}" y2="${H / 2}" stroke="#E4DACB"/><polyline points="${pts}" fill="none" stroke="var(--indigo)" stroke-width="2"/>${dots}${labels}</svg>${free ? `<p class="cap">달마다 이유와 조심할 날짜는 편지 전부에서 열려요.</p>` : ""}</div>`;
+}
+function guirenHtml() {
+  const z = S.viz; if (!z?.guiren) return "";
+  const SEATP = { 년: "윗사람·집안 어른", 월: "부모·직장 선배", 일: "가장 가까운 사람", 시: "후배·아랫사람" };
+  const g = z.guiren, who = (g.inChart || []).map((x) => SEATP[x]).filter(Boolean);
+  const head = g.in2027 ? "2027년 글자가 바로 네 귀인 글자다. 내년엔 도와줄 사람이 붙는다." : who.length ? `네 사주에서 도와주는 사람은 ${who.join("·")} 쪽에 있다.` : "귀인은 기다리지 말고 찾아가야 하는 사주다.";
+  return `${cut("img/A5.jpg", head, "smile")}`;
+}
+function bonCard(price) {
+  return `<div class="card bon"><p class="stamp">편지 전부</p><h2 style="margin-top:12px">막아 주는 할미 · 2027 총본</h2><ul>${["만세력 뜯어보기", "2027 글자와 맞물림", "조심할 것 세 가지 전부", "바닥까지 가면 · 역제안", "네 고민의 흐름", "열두 달과 조심할 날", "매일 막는 법"].map((t) => `<li><i>✓</i>${t}</li>`).join("")}</ul><div class="price" style="max-width:64%"><span>한 통</span><b>${won(price)}</b></div><img src="img/P1.jpg" alt=""></div>`;
+}
 function freeResult(L) {
   const name = letterName(), price = myPrice(), S2 = L.secs;
   const p3 = S2[2] ? riskParts(S2[2]) : [];
@@ -476,21 +563,25 @@ function freeResult(L) {
   return `${brand()}<div class="res">
     ${cut("img/S1.jpg", `눈 오는 밤에 ${name}${jos(name)}가 왔구나.`.replace("아가", "이가").replace("야가", "가"), "wow")}
     ${cut("img/S2.jpg", "어서 들어오너라. 네 만세력부터 펼쳐 보자.", "smile", "r")}
-    ${ttl(`${esc(name)}의 만세력`, esc(birthLine()))}${myTable()}
-    ${ttl("2027 정미년, 너는 어떤 해")}${verdictCard(L)}
-    ${ttl("네 그림의 체질")}${tempHtml()}${balHtml()}
+    ${ttl(`${esc(name)}의 만세력`, esc(birthLine()))}${myTable()}${daeunHtml()}
+    ${bridge(`${name}${jos(name)}, 먼저 네 몸과 기운부터 보자.`, "think")}${ohaengHtml()}${tempHtml()}
+    ${ttl("2027 정미년, 너는 어떤 해")}${verdictCard(L)}${samjaeHtml()}${flowHtml(true)}
     ${S2[0] ? secHtml(S2[0], 0) : ""}
+    ${bridge("이제 내년 글자를 네 글자에 하나씩 대 보마.", "firm")}
     ${S2[1] ? secHtml(S2[1], 1) : ""}
+    ${guirenHtml()}
+    ${bridge("여기부터는 듣기 불편할 거다. 그래도 끝까지 들어라.", "firm")}
     ${S2[2] ? `<div class="sec letter" id="ch2"><img class="art" src="img/C3.jpg" alt="" loading="lazy"><p class="chap" style="margin-top:16px"><span class="stamp">셋째 장</span> <span class="cap">그래서 조심할 것</span></p><h2 class="lh">${esc(S2[2].h)}</h2>${intro.map(lineHtml).join("")}
       ${risks[0] ? `<div class="risk"><h3>${esc(risks[0].h)}</h3>${risks[0].lines.map(lineHtml).join("")}</div>` : ""}
-      ${risks.slice(1).map((r) => `<div class="lockcard">${LOCK}<h3>${esc(r.h)}</h3><p class="cap">무엇이 · 왜 · 언제 · 막는 법은 편지 전부에서 열려요</p></div>`).join("")}</div>` : ""}
+      ${risks.slice(1).map((r) => `<div class="lockcard">${LOCK}<h3>${esc(r.h)}</h3><p class="cap">바닥까지 가면 어디까지인지, 할미의 역제안은 편지 전부에서 열려요</p></div>`).join("")}</div>` : ""}
+    ${bridge("나머지 둘이 더 아프다. 막는 법까지 같이 봐야 한다.", "worry")}
     ${cut("img/P1.jpg", "여기서부터는 복채가 필요하단다.", "shh")}
     ${ttl("편지 전부를 받으면 열리는 것")}
     <div class="more"><p class="cap">넷째 장 · ${esc(CHAPS()[3])}</p><ul><li>${esc(S2[3]?.h || "")}</li></ul><p class="blurtext" style="margin-top:8px">${esc((S2[3]?.lines.filter(isPlain)[0] || "").slice(0, 80))}</p></div>
     <div class="more"><p class="cap">다섯째 장 · 달마다, 조심할 날까지</p>${months.slice(0, 2).map(lineHtml).join("")}<p class="blurtext">${months.slice(2, 4).map((m) => esc(m)).join(" ")}</p><p class="cap" style="margin-top:8px">나머지 열 달과 조심할 날짜는 편지 전부에서 열려요</p></div>
     <div class="more"><p class="cap">여섯째 장 · 매일 막는 법</p><ul>${["색", "방향", "몸", "음식", "습관", "넘치는 기운 돌리기"].map((t) => `<li>· ${t}</li>`).join("")}</ul></div>
     ${cut("img/S3.jpg", "알고 맞는 해와 모르고 맞는 해는 다르다.", "firm", "r")}
-    <div class="card"><h3>할미 편지 전부</h3><p class="cap" style="margin-top:4px">조심할 것 세 가지 전부 · 네 고민 · 열두 달과 조심할 날 · 매일 막는 법</p><div class="price"><span>한 통</span><b>${won(price)}</b></div></div>
+    ${bonCard(price)}
     <p class="cap" style="margin-top:16px">시험 중인 서비스예요. 사주는 판단 재료이고, 결정은 내가 해요.</p></div>
     ${cta(`할미 편지 전부 받기 · ${won(price)}`)}`;
 }
@@ -504,8 +595,8 @@ function resultScreen() {
   const pv = ids().find((x) => x !== S.id);
   show("result", `${brand()}<div class="res">
     ${cut("img/C0.jpg", (L.opening[0] || "").split(/(?<=[.?!])\s+/)[0] || "", S.tags?.verdict === "조심" ? "firm" : "smile")}
-    ${ttl(`${esc(letterName())}의 만세력`, esc(birthLine()))}${myTable()}
-    ${ttl("2027 정미년, 너는 어떤 해")}${verdictCard(L)}
+    ${ttl(`${esc(letterName())}의 만세력`, esc(birthLine()))}${myTable()}${daeunHtml()}${ohaengHtml()}
+    ${ttl("2027 정미년, 너는 어떤 해")}${verdictCard(L)}${samjaeHtml()}${flowHtml(false)}
     ${toc}
     ${L.secs.map((x, i) => secHtml(x, i)).join("")}
     ${cut("img/C9.jpg", endLine || "다시 열어볼 날에 또 오너라.", "smile", "r")}
