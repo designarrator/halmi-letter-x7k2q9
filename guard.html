@@ -179,6 +179,17 @@ table.t2 th{font-weight:400;color:var(--g500);font-size:13px}
 .mrow.c b{color:var(--danger)}
 .letter p.days{font-size:13px;line-height:19px;color:var(--danger);margin:-4px 0 0 60px;padding-bottom:12px}
 .opt{display:block;width:100%;margin-top:8px}
+.chap{font-size:13px;line-height:19px;font-weight:600;color:var(--primary);margin:0 0 4px}
+.toc a{cursor:pointer;display:grid;grid-template-columns:24px 1fr;gap:8px;padding:12px 0;border-top:1px solid var(--g100);font-size:17px;line-height:27px;color:var(--g800);text-decoration:none}
+.toc a b{color:var(--primary);font-weight:700}
+.mt{width:100%;border-collapse:separate;border-spacing:4px;table-layout:fixed}
+.mt th{font-size:13px;line-height:19px;font-weight:400;color:var(--g500);padding:0}
+.mt td{background:#fff;border:1px solid var(--g200);border-radius:var(--r12);text-align:center;padding:8px 0;vertical-align:top}
+.mt td b{display:block;font-size:20px;line-height:30px;font-weight:600;color:var(--g900)}
+.mt td small{display:block;font-size:13px;line-height:19px;color:var(--g500)}
+.mt td.y{background:var(--g800);border-color:var(--g800)}.mt td.y b,.mt td.y small{color:#fff}
+.mt td em{display:block;font-style:normal;font-size:13px;line-height:19px;font-weight:600;margin-top:4px}
+.mt td em.bad{color:var(--danger)}.mt td em.good{color:var(--primary)}.mt td em.mid{color:var(--g600)}
 </style>
 </head>
 <body>
@@ -355,6 +366,17 @@ function balHtml() {
   return `<div class="bal"><h3>${use ? `채울 기운은 ${esc(use)}` : "채울 기운"}${av ? `, 넘치는 기운은 ${esc(av)}` : ""}</h3><p class="cap">파란 막대가 채울 기운, 옅은 빨강은 2027년에 더해지는 몫이에요.</p>${rows}</div>`;
 }
 
+/* 장 이름(편지 소제목 순서와 같음) */
+const CHAPS = () => ["너는 어떤 사주인지", "2027년이 네 글자와 만나면", "그래서 조심할 것", S.input?.question ? "네 고민에 대입하면" : "가장 크게 챙길 것", "달마다 짚어 보면", "매일 막는 법"];
+function meetHtml() {
+  const z = S.viz; if (!z || !z.table) return "";
+  const mark = (seat) => { const m = (z.meet || []).find((x) => x.seat === seat); if (!m) return ""; const bad = m.rels.some((r) => r !== "합") || m.el === "눌림"; const good = m.rels.includes("합") || m.el === "보태짐"; const EZ = { 충: "부딪힘", 형: "다그침", 파: "깨짐", 해: "서운함", 원진: "서먹함", 합: "묶임" }; const order = ["충", "형", "파", "원진", "해", "합"]; const top = order.find((r) => m.rels.includes(r)); const t = top ? EZ[top] : m.el; return `<em class="${bad ? "bad" : good ? "good" : "mid"}">${esc(t)}</em>`; };
+  const cols = z.table.map((c) => `<th>${c.label}</th>`).join("") + `<th>2027</th>`;
+  const r1 = z.table.map((c) => `<td><b>${c.gan}</b><small>${esc(c.ganM)}</small>${mark(c.label + "간")}</td>`).join("") + `<td class="y"><b>丁</b><small>등불</small></td>`;
+  const r2 = z.table.map((c) => `<td><b>${c.zhi}</b><small>${esc(c.zhiM)}</small>${mark(c.label + "지")}</td>`).join("") + `<td class="y"><b>未</b><small>마른 흙</small></td>`;
+  return `<div class="viz"><h3>내 여덟 글자에 2027년이 닿으면</h3><p class="cap">글자 아래 빨간 말은 부딪히는 자리, 파란 말은 힘이 보태지는 자리예요.</p><table class="mt"><tr>${cols}</tr><tr>${r1}</tr><tr>${r2}</tr></table></div>`;
+}
+
 /* 편지 읽기 */
 function parse(text) {
   const raw = text.replace(/\[\[[^\]]*\]\]/g, "");
@@ -364,31 +386,33 @@ function parse(text) {
   for (const l of main.split("\n")) { if (/^##\s+/.test(l) && !/^###/.test(l)) secs.push({ h: l.replace(/^##\s+/, "").trim(), lines: [] }); else if (l.trim()) secs[secs.length - 1].lines.push(l.trim()); }
   return { opening: secs[0].lines.filter((l) => !/^사랑하는/.test(l)), secs: secs.slice(1), drawer };
 }
-const KV = /^(무엇이|왜|언제|막는 법)\s*[·ㆍ]\s*(.+)$/;
+const KV = /^(무엇이|왜|언\s*제|막는\s*법)\s*[·ㆍ]\s*(.+)$/;
 const ITEM = /^(색|방향|몸|음식|습관|돌리기)\s*[·ㆍ]\s*(.+)$/;
 const MROW = /^(?:2028년\s*)?(\d{1,2})월\s*[·ㆍ]\s*(.+?)\s*[·ㆍ]\s*(.+)$/;
-const DAYS = /^조심할 날\s*[·ㆍ]\s*(.+)$/;
+const DAYS = /^(?:\d{1,2}월\s*)?조심할\s*날\s*[·ㆍ]\s*(.+)$/;
 function lineHtml(t) {
   let m;
-  if ((m = t.match(KV))) return `<div class="kv ${m[1] === "막는 법" ? "fix" : ""}"><b>${m[1]}</b><span>${esc(m[2])}</span></div>`;
+  if ((m = t.match(KV))) { const k = m[1].replace(/\s+/g, "").replace("막는법", "막는 법"); return `<div class="kv ${k === "막는 법" ? "fix" : ""}"><b>${k}</b><span>${esc(m[2])}</span></div>`; }
   if ((m = t.match(ITEM))) return `<div class="kv fix"><b>${m[1]}</b><span>${esc(m[2])}</span></div>`;
   if ((m = t.match(DAYS))) return `<p class="days">조심할 날 ${esc(m[1])}</p>`;
   if ((m = t.match(MROW))) { const n = +m[1]; const c = S.picks?.caution?.includes(n); return `<div class="mrow ${c ? "c" : ""}"><b>${n}월</b><div><p>${esc(m[2])}</p><small>${esc(m[3])}</small></div></div>`; }
   if (/^—\s*할미가/.test(t)) return `<p class="sign">${esc(t)}</p>`;
   return `<p>${esc(t)}</p>`;
 }
-function secHtml(s) {
+function secHtml(s, i) {
   // ### 로 나뉜 조심 카드
   const parts = []; let cur = null;
   for (const l of s.lines) { if (/^###\s+/.test(l)) { cur = { h: l.replace(/^###\s+/, ""), lines: [] }; parts.push(cur); } else if (cur) cur.lines.push(l); else parts.push({ h: null, lines: [l] }); }
   const body = parts.map((p) => (p.h ? `<div class="risk"><h3>${esc(p.h)}</h3>${p.lines.map(lineHtml).join("")}</div>` : p.lines.map(lineHtml).join(""))).join("");
-  return `<div class="sec letter"><h2 class="lh">${esc(s.h)}</h2>${body}</div>`;
+  const name = CHAPS()[i];
+  const viz = i === 0 ? tempHtml() + balHtml() : i === 1 ? meetHtml() : "";
+  return `<div class="sec letter" id="ch${i}">${name ? `<p class="chap">${i + 1} · ${esc(name)}</p>` : ""}<h2 class="lh">${esc(s.h)}</h2>${body}${viz}</div>`;
 }
 function resultScreen() {
   const L = parse(S.text);
   const v = S.tags?.verdict;
   const cap = v === "정리" ? "할미가 정리해 봤단다" : v === "조심" ? "쉽진 않지만 막을 길이 있단다" : "할미의 판정";
-  const sec0 = L.secs[0], rest = L.secs.slice(1);
+  const toc = `<div class="toc"><h2 style="margin-bottom:8px">할미가 하나씩 짚어 줄게</h2>${L.secs.map((x, i) => `<a role="button" tabindex="0" data-ch="${i}"><b>${i + 1}</b><span>${esc(CHAPS()[i] || x.h)}</span></a>`).join("")}</div>`;
   let dr = "";
   if (L.drawer.trim()) {
     const blocks = L.drawer.split(/^#{2,3}\s+/m).map((x) => x.trim()).filter(Boolean);
@@ -397,13 +421,13 @@ function resultScreen() {
   const pv = ids().find((x) => x !== S.id);
   show("result", `<div class="res">
     <div class="vd"><p class="cap">${esc(cap)}</p><p class="t">${esc(L.opening.join(" "))}</p></div>
-    ${tempHtml()}
-    ${sec0 ? secHtml(sec0) : ""}${balHtml()}
-    ${rest.map(secHtml).join("")}${dr}
+    ${toc}
+    ${L.secs.map((x, i) => secHtml(x, i)).join("")}${dr}
     <div class="rows">${pv ? `<button class="rowbtn" id="prev"><div><b>지난번에 받은 편지가 있어요</b><span>다시 보기</span></div>${CHEV_R}</button>` : ""}<button class="rowbtn" id="other"><div><b>다른 고민으로 받기</b><span>새 고민으로 편지 받기</span></div>${CHEV_R}</button></div>
     <p class="cap">사주는 판단 재료예요. 몸이 계속 불편하면 병원에 가 보세요.</p></div>
     ${S.rated ? "" : cta("편지 어땠는지 알려 주기")}`, () => {
     if (g("go")) g("go").onclick = () => evalScreen();
+    document.querySelectorAll(".toc a").forEach((x) => (x.onclick = () => { const t = g("ch" + x.dataset.ch); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 16, behavior: "smooth" }); }));
     g("other").onclick = () => qScreen("");
     if (g("prev")) g("prev").onclick = () => restore(pv);
   });
