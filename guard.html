@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>막아 주는 할미</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* 디자인 키트 값만 쓴다: 글자 24/20/17/13(줄간격 34/30/27/19), 간격 4px 배수, 모서리 12/16/20, 색은 아래 변수만 */
+:root{--g50:#F9FAFB;--g100:#F2F4F6;--g200:#E5E8EB;--g300:#D1D6DB;--g400:#B0B8C1;--g500:#8B95A1;--g600:#6B7684;--g700:#4E5968;--g800:#333D4B;--g900:#191F28;--primary:#3E5BD8;--primary-pressed:#3049B5;--primary-subtle:#EEF1FD;--danger:#E5484D;--r12:12px;--r16:16px;--r20:20px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#fff;color:var(--g900);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;word-break:keep-all;letter-spacing:-.01em;-webkit-text-size-adjust:100%;overflow-x:hidden}
+.screen{max-width:480px;margin:0 auto;padding:8px 20px 160px;min-height:100vh;animation:in .25s ease-out}
+@keyframes in{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+h1{font-size:24px;line-height:34px;font-weight:700;letter-spacing:-.02em;margin:24px 0 8px}
+h2{font-size:20px;line-height:30px;font-weight:600;letter-spacing:-.02em;margin:0}
+p{margin:0}
+button,input,select,textarea{line-height:27px}button{padding:0}
+.sub{font-size:17px;line-height:27px;color:var(--g600);margin:0 0 24px}
+.cap{font-size:13px;line-height:19px;color:var(--g500)}
+.top{display:flex;align-items:center;gap:8px;height:48px;margin:0 -12px 0 -12px}
+.top .sp{width:48px;flex:none}
+.back{width:48px;height:48px;flex:none;border:0;background:none;display:flex;align-items:center;justify-content:center;color:var(--g800)}
+.prog{flex:1;display:flex;gap:4px;padding-right:12px}
+.prog i{flex:1;height:4px;border-radius:var(--r12);background:var(--g200)}.prog i.on{background:var(--primary)}
+.ph{width:240px;height:240px;border-radius:var(--r20);background:var(--g100);margin:48px auto 32px}
+.bow h1{text-align:center;margin-top:0}
+label.f{display:block;font-size:13px;line-height:19px;color:var(--g600);margin:24px 0 8px;font-weight:600}
+input,select,textarea{width:100%;height:56px;border:1px solid var(--g200);border-radius:var(--r16);padding:0 16px;font:inherit;font-size:17px;background:#fff;color:var(--g900);appearance:none;-webkit-appearance:none}
+textarea{height:112px;padding:16px;line-height:27px;resize:none}
+textarea.big{height:auto;min-height:216px;max-height:60vh;overflow:auto}
+select{background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238B95A1' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 16px center;padding-right:36px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)}
+.cnt{display:flex;justify-content:space-between;margin-top:8px}
+.row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
+.seg{display:flex;background:var(--g100);border-radius:var(--r16);padding:4px;gap:4px}
+.seg button{flex:1;height:48px;border:0;border-radius:var(--r12);background:transparent;font:inherit;font-size:17px;font-weight:600;color:var(--g600)}
+.seg button[aria-pressed=true]{background:#fff;color:var(--g900)}
+.check{display:flex;align-items:center;gap:12px;margin-top:12px;font-size:17px;color:var(--g700)}
+.check input{margin:0;width:24px;height:24px;border-radius:var(--r12);padding:0;accent-color:var(--primary);flex:none}
+/* 예시 카드: 가로로 넘김 */
+.ex{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:12px -20px 0;padding:0 20px 4px;scroll-padding:0 20px;scrollbar-width:none}
+.ex::-webkit-scrollbar{display:none}
+.ex button{flex:none;width:264px;scroll-snap-align:start;text-align:left;border:1px solid var(--g200);background:#fff;border-radius:var(--r16);padding:16px;font:inherit;color:var(--g800)}
+.ex button:active{background:var(--g50)}.ex button[aria-pressed=true]{border-color:var(--primary);background:var(--primary-subtle)}
+.ex b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:17px;line-height:27px;font-weight:600;color:var(--g900);min-height:54px}
+.ex span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;line-height:19px;color:var(--g600);margin-top:4px}
+/* A 상세페이지·구매 */
+.dt .ph{margin:24px auto 32px}
+.dt h1{margin-top:0}
+.price{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--g200);margin-top:24px;padding-top:16px;font-size:17px;line-height:27px;color:var(--g700)}
+.price b{font-size:17px;line-height:27px;color:var(--g900);font-weight:700}
+.dt .lockbox h2{font-size:17px;line-height:27px}
+.order{background:var(--g50);border-radius:var(--r20);padding:20px;margin-top:8px}
+.order .cap{margin-bottom:4px}
+.order p.t{font-size:17px;line-height:27px;color:var(--g900);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sos{display:block;width:100%;text-align:left;text-decoration:none;border:1px solid var(--g200);border-radius:var(--r16);padding:16px;margin-bottom:8px;color:var(--g900)}
+.sos b{display:block;font-size:20px;line-height:30px}.sos span{font-size:13px;line-height:19px;color:var(--g600)}
+/* 하단 버튼 */
+.cta{position:fixed;left:0;right:0;bottom:0;padding:16px 20px calc(16px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--g100);z-index:5}
+.cta>div{max-width:480px;margin:0 auto}
+button.btn{width:100%;height:56px;border:0;border-radius:var(--r16);background:var(--primary);color:#fff;font:inherit;font-size:17px;font-weight:600;transition:transform .1s,background .1s}
+button.btn:active{transform:scale(.97);background:var(--primary-pressed)}
+button.btn:disabled{background:var(--g200);color:var(--g400)}
+button.btn.ghost{background:var(--g100);color:var(--g800)}button.btn.ghost:active{background:var(--g200)}
+button.link{display:block;width:100%;height:48px;background:none;border:0;font:inherit;font-size:17px;color:var(--g600);text-decoration:underline}
+.err{font-size:13px;line-height:19px;color:var(--danger);margin-top:8px}
+.center{text-align:center;padding-top:96px}.center h1{margin-top:16px}
+.toast{position:fixed;left:50%;bottom:112px;transform:translateX(-50%);background:var(--g800);color:#fff;font-size:17px;line-height:27px;padding:12px 20px;border-radius:var(--r20);z-index:9;max-width:90%;text-align:center}
+.dim{position:fixed;inset:0;background:var(--g900);opacity:.4;z-index:20}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:#fff;border-radius:var(--r20) var(--r20) 0 0;padding:24px 20px calc(16px + env(safe-area-inset-bottom))}
+.sheet>div{max-width:480px;margin:0 auto}.sheet h2{font-size:17px;line-height:27px;margin-bottom:8px}.sheet .sub{margin-bottom:24px}
+/* 대기 */
+.stage{display:flex;align-items:center;gap:12px;font-size:17px;color:var(--g600);margin:8px 0 24px}
+.dot{width:8px;height:8px;border-radius:var(--r12);background:var(--primary);animation:pulse 1.2s infinite ease-in-out;flex:none}
+@keyframes pulse{50%{opacity:.25;transform:scale(.7)}}
+.steps{list-style:none;padding:0;margin:0 0 24px}
+.steps li{font-size:17px;line-height:27px;color:var(--g400);padding:4px 0}
+.steps li.on{color:var(--g900);font-weight:600}.steps li.done{color:var(--g600)}
+/* 결과 */
+.res{display:flex;flex-direction:column;gap:20px;padding-top:24px}
+.vd{background:var(--primary-subtle);border-radius:var(--r20);padding:20px}
+.vd .cap{color:var(--g600);margin-bottom:8px;font-weight:600}
+.vd p.t{font-size:20px;line-height:30px;font-weight:600;letter-spacing:-.02em}
+.viz{background:var(--g50);border-radius:var(--r20);padding:20px}
+.viz h3{font-size:17px;line-height:27px;font-weight:600;margin:0 0 4px}
+.viz .cap{margin:0 0 16px}
+.bars{display:flex;flex-direction:column;gap:12px}
+.bar{display:grid;grid-template-columns:56px 1fr 24px;align-items:center;gap:12px;font-size:17px}
+.bar .t{height:12px;border-radius:var(--r12);background:var(--g200);overflow:hidden}
+.bar .t i{display:block;height:100%;border-radius:var(--r12);background:var(--g500);transition:width .6s ease-out}
+.bar.me .t i{background:var(--primary)}
+.bar.zero .t{background:none;border:1px dashed var(--g400)}
+.bar b{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.toc h2{margin-bottom:8px}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li{display:grid;grid-template-columns:24px 1fr;gap:8px;padding:12px 0;border-top:1px solid var(--g100);font-size:17px;line-height:27px;color:var(--g800)}
+.toc li b{color:var(--primary);font-weight:700}
+.sec h2.lh{margin:0 0 12px}
+.letter{font-size:17px;line-height:27px;color:var(--g900)}
+.letter p{margin:0 0 16px}
+.letter .sign{text-align:right;color:var(--g700)}
+.letter .name{font-weight:600}
+.blur{max-height:112px;overflow:hidden;filter:blur(4px);-webkit-mask-image:linear-gradient(#000 30%,transparent);mask-image:linear-gradient(#000 30%,transparent);user-select:none;-webkit-user-select:none;pointer-events:none}
+.mrow{display:grid;grid-template-columns:48px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--g100)}
+.mrow b{font-size:17px;line-height:27px;font-weight:700;color:var(--primary)}
+.letter .mrow p{margin:0 0 4px}.mrow small{display:block;font-size:13px;line-height:19px;color:var(--g500)}
+.gz{display:flex;gap:8px;margin-bottom:12px}
+.gz div{flex:1;background:#fff;border:1px solid var(--g200);border-radius:var(--r12);text-align:center;padding:8px 0;font-size:20px;line-height:30px;font-weight:600}
+.gz small{display:block;font-size:13px;line-height:19px;color:var(--g500);font-weight:400}
+.gz div.sew{background:var(--primary);border-color:var(--primary);color:#fff}.gz div.sew small{color:#fff;opacity:.85}
+.pill{display:inline-flex;align-items:center;height:32px;padding:0 12px;border-radius:var(--r20);background:#fff;border:1px solid var(--g200);font-size:13px;color:var(--g800);margin:0 8px 8px 0}
+.pill.chong{border-color:var(--g700);color:var(--g900);font-weight:600}.pill.he{background:var(--primary-subtle);border-color:var(--primary);color:var(--primary);font-weight:600}
+.months{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mo{border-radius:var(--r12);border:1px solid var(--g200);background:#fff;padding:8px 4px;text-align:center;font-size:13px;line-height:19px;color:var(--g500)}
+.mo b{display:block;font-size:17px;line-height:27px;color:var(--g800)}
+.mo.opp{background:var(--primary);border-color:var(--primary);color:#fff}.mo.opp b{color:#fff}
+.mo.rest{border:2px solid var(--g800);color:var(--g800)}
+.legend{line-height:19px;display:flex;gap:16px;margin-top:12px;font-size:13px;color:var(--g600)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:8px;vertical-align:-1px;border-radius:var(--r12)!important}
+.hid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hid div{border:1px dashed var(--g400);border-radius:var(--r12);padding:12px 4px;text-align:center;font-size:13px;line-height:19px;color:var(--g600);background:#fff}
+.hid b{display:block;font-size:17px;line-height:27px;color:var(--g400)}
+.twist{border:1px solid var(--g200);border-radius:var(--r16);padding:16px}
+.twist .cap{margin-bottom:4px;font-weight:600}.twist p.t{font-size:17px;line-height:27px;font-weight:600}
+.lockbox{border-top:1px solid var(--g200);padding-top:24px}
+.lockbox h2{margin-bottom:12px}
+.lockbox li{list-style:none;padding:12px 0;border-top:1px solid var(--g100);font-size:17px;line-height:27px;color:var(--g900);font-weight:600}
+.lockbox ul{margin:0;padding:0}
+.lockbox li span{display:block;font-size:13px;line-height:19px;color:var(--g500);font-weight:400}
+.lockbox .cap{margin-top:12px}
+details.fold{margin:24px 0 0;border-top:1px solid var(--g200);padding-top:8px}
+details.fold summary{list-style:none;font-size:17px;font-weight:600;padding:12px 0;display:flex;justify-content:space-between}
+details.fold summary::after{content:"펼치기";font-size:13px;color:var(--g500);font-weight:400;align-self:center}
+details[open].fold summary::after{content:"접기"}
+details.fold .dr{font-size:17px;line-height:27px;color:var(--g800)}
+details.fold .dr p{margin:0 0 12px}
+table.t2{width:100%;border-collapse:collapse;font-size:17px}
+table.t2 td,table.t2 th{padding:12px 4px;border-bottom:1px solid var(--g100);text-align:center}
+table.t2 th{font-weight:400;color:var(--g500);font-size:13px}
+.rows{display:flex;flex-direction:column;gap:8px}
+.rowbtn{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:72px;text-align:left;border:1px solid var(--g200);background:#fff;border-radius:var(--r16);padding:16px;font:inherit;color:var(--g900)}
+.rowbtn:active{background:var(--g50)}
+.rowbtn b{display:block;font-size:17px;line-height:27px;font-weight:600}.rowbtn span{display:block;font-size:13px;line-height:19px;color:var(--g500)}
+.rowbtn svg{flex:none;color:var(--g400)}
+/* 평가 */
+.q{margin:32px 0 0}.q p{font-size:17px;line-height:27px;font-weight:600;margin:0 0 12px}
+.scale{display:flex;gap:8px}
+.scale button{flex:1;height:56px;border-radius:var(--r16);border:1px solid var(--g200);background:#fff;font:inherit;font-size:17px;font-weight:600;color:var(--g700);transition:transform .1s}
+.scale button:active{transform:scale(.97)}
+.scale button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:#fff}
+.scale+.cap{display:flex;justify-content:space-between;margin-top:8px}
+.sent{display:block;width:100%;text-align:left;border:1px solid var(--g200);background:#fff;border-radius:var(--r16);padding:12px 16px;font:inherit;font-size:17px;line-height:27px;color:var(--g800);margin-bottom:8px}
+.sent[aria-pressed=true]{background:var(--primary-subtle);border-color:var(--primary)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+#hrow select:disabled{pointer-events:none}
+
+/* 막아 주는 할미 */
+.temp{background:var(--g50);border-radius:var(--r20);padding:20px}
+.temp h3,.bal h3{font-size:17px;line-height:27px;font-weight:600;margin:0 0 4px}
+.temp .cap,.bal .cap{margin:0 0 16px}
+.tline{position:relative;height:12px;border-radius:var(--r12);background:linear-gradient(90deg,var(--primary),var(--g200),var(--danger))}
+.tline i{position:absolute;top:-6px;width:4px;height:24px;border-radius:var(--r12);background:var(--g900);transform:translateX(-2px)}
+.tline i.y{background:var(--g500)}
+.tlab{display:flex;justify-content:space-between;margin-top:8px;font-size:13px;line-height:19px;color:var(--g600)}
+.bal{background:var(--g50);border-radius:var(--r20);padding:20px}
+.brow{display:grid;grid-template-columns:56px 1fr 48px;align-items:center;gap:12px;font-size:17px;line-height:27px;padding:4px 0}
+.brow .t{position:relative;height:12px;border-radius:var(--r12);background:var(--g200)}
+.brow .t i{position:absolute;left:0;top:0;height:100%;border-radius:var(--r12);background:var(--g500)}
+.brow .t i.add{background:var(--danger);opacity:.5}
+.brow.use .t i.now{background:var(--primary)}
+.brow b{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.risk{border:1px solid var(--g200);border-radius:var(--r20);padding:20px;margin-bottom:12px}
+.risk h3{font-size:17px;line-height:27px;font-weight:700;margin:0 0 12px}
+.kv{display:grid;grid-template-columns:64px 1fr;gap:8px;padding:8px 0;border-top:1px solid var(--g100);font-size:17px;line-height:27px;color:var(--g800)}
+.kv b{font-size:13px;line-height:27px;font-weight:600;color:var(--g500)}
+.kv.fix b{color:var(--primary)}.kv.fix span{color:var(--g900);font-weight:600}
+.mrow.c b{color:var(--danger)}
+.letter p.days{font-size:13px;line-height:19px;color:var(--danger);margin:-4px 0 0 60px;padding-bottom:12px}
+.opt{display:block;width:100%;margin-top:8px}
+</style>
+</head>
+<body>
+<!-- 막아 주는 할미(11 문서): 2027 조심할 것 + 막는 법. 기존 편지 index.html 과 따로 둔 새 페이지. -->
+<div id="app"></div>
+<script>
+const API = new URLSearchParams(location.search).get("api") || "https://ddtmqpcrfrvdwxtpcsfb.supabase.co/functions/v1/halmi";
+const frag = new URLSearchParams(location.hash.slice(1));
+const KEY = frag.get("k") || "";
+const IS_TEST = frag.get("test") === "1";
+const $app = document.getElementById("app");
+const S = { screen: "", me: null, input: null, id: null, text: "", viz: null, picks: null, tags: null, stage: 0, run: 0, rated: false };
+const LS = { get: (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const g = (id) => document.getElementById(id);
+const KO = { 木: "목", 火: "화", 土: "토", 金: "금", 水: "수" };
+const CHEV = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>`;
+const CHEV_R = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>`;
+const STAGES = ["네 체질을 재고 있어요", "2027년에 부딪히는 곳을 찾고 있어요", "막는 법을 쓰고 있어요", "글자를 한 번 더 확인하고 있어요"];
+const EXAMPLES = [["해외로 가도 될까요", "회사에서 해외 발령 얘기가 나왔는데 아직 확정은 아니에요. 가고 싶은 마음도 있는데 가족이랑 떨어지는 게 무서워요. 가는 게 맞을까요?"], ["이직을 해도 될까요", "지금 회사에 5년 다녔는데 요즘 일이 손에 안 잡혀요. 이직 제안이 하나 왔는데, 내년에 옮겨도 괜찮을까요?"], ["연애가 자꾸 틀어져요", "만나는 사람마다 6개월을 못 넘기고 끝나요. 내년엔 오래 갈 사람을 만날 수 있을까요?"]];
+function toast(m) { const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2400); }
+function show(name, html, bind) { if (S.screen !== name && !S.popping) { try { history.pushState({ s: name }, ""); } catch {} } S.screen = name; $app.innerHTML = `<div class="screen ${name}" data-s="${name}">${html}</div>`; window.scrollTo(0, 0); bind && bind(); }
+const cta = (label, id = "go", extra = "") => `<div class="cta"><div><button class="btn" id="${id}">${label}</button>${extra}</div></div>`;
+const head = (step, back = true) => `<div class="top">${back ? `<button class="back" id="back" aria-label="뒤로">${CHEV}</button>` : `<span class="sp"></span>`}<div class="prog" aria-label="${step} / 3 단계">${[1, 2, 3].map((n) => `<i class="${n <= step ? "on" : ""}"></i>`).join("")}</div></div>`;
+async function call(body) { return fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-halmi-key": KEY }, body: JSON.stringify(body) }); }
+function sheet({ title, body, ok, no }) { return new Promise((res) => { const d = document.createElement("div"); d.innerHTML = `<div class="dim"></div><div class="sheet" role="dialog" aria-modal="true"><div><h2>${esc(title)}</h2><p class="sub">${esc(body)}</p><button class="btn" id="sh-ok">${esc(ok)}</button>${no ? `<button class="link" id="sh-no">${esc(no)}</button>` : ""}</div></div>`; document.body.appendChild(d); const done = (v) => { d.remove(); res(v); }; d.querySelector("#sh-ok").onclick = () => done(true); if (no) { d.querySelector("#sh-no").onclick = () => done(false); d.querySelector(".dim").onclick = () => done(false); } }); }
+const ids = () => LS.get("guard_ids") || [];
+function remember(id) { LS.set("guard_ids", [id, ...ids().filter((x) => x !== id)].slice(0, 5)); }
+
+window.addEventListener("popstate", (e) => {
+  const n = e.state && e.state.s; S.popping = true;
+  try {
+    if (S.screen === "read") S.run++;
+    if (n === "me") meScreen(); else if (n === "q") (S.me ? qScreen(S.input?.question ?? undefined) : startScreen());
+    else if (n === "result" && S.text) resultScreen(); else if (n === "eval" && S.text) evalScreen(); else startScreen();
+  } finally { S.popping = false; }
+});
+window.addEventListener("offline", () => toast("인터넷이 끊겼어요"));
+
+async function boot() {
+  try { history.replaceState({ s: "start" }, ""); } catch {}
+  S.me = LS.get("halmi_me");
+  if (!KEY) return gateScreen();
+  try { const r = await call({ action: "check" }); if (r.status === 401) return gateScreen(); if (!r.ok) throw 0; } catch { return offlineScreen(boot, "처음 화면"); }
+  S.popping = true; startScreen(); S.popping = false;
+}
+function gateScreen() { show("gate", `<div class="center"><h1>링크를 다시 확인해 주세요</h1><p class="sub">시험용 링크가 아니거나 주소 일부가 빠졌어요.<br>보내 드린 링크를 처음부터 끝까지 그대로 열어 주세요.</p></div>${cta("다시 열어 보기")}`, () => { g("go").onclick = () => location.reload(); }); }
+function offlineScreen(retry, what) { show("offline", `<div class="center"><h1>인터넷이 잠깐 끊겼어요</h1><p class="sub">연결되면 ${esc(what)}에서 이어서 할 수 있어요.<br>입력한 내용은 그대로 있어요.</p></div>${cta("다시 시도하기", "retry")}`, () => { g("retry").onclick = () => retry(); window.addEventListener("online", () => S.screen === "offline" && retry(), { once: true }); }); }
+
+/* ① 시작 */
+function startScreen() {
+  const last = ids()[0];
+  show("start", `${head(1, false)}<div class="ph" aria-hidden="true"></div><h1>내년에 다칠 곳,<br>할미가 먼저 막아 주마</h1><p class="sub">2027년에 조심할 것 세 가지와 막는 법을 편지로 받아요.</p>
+    ${cta("조심할 것 보기", "go", last ? `<button class="link" id="prev">지난 편지 다시 보기</button>` : "")}`, () => {
+    g("go").onclick = () => meScreen();
+    if (g("prev")) g("prev").onclick = () => restore(last);
+  });
+}
+
+/* ② 나 */
+function opts(from, to, suffix, sel) { let h = ""; for (let i = from; i <= to; i++) h += `<option value="${i}"${i === sel ? " selected" : ""}>${i}${suffix}</option>`; return h; }
+function meScreen(err) {
+  const v = { name: "", calendar: "solar", leap: false, y: 1995, m: 1, d: 1, timeKnown: true, hour: 12, minute: 0, gender: "", ...(S.me || {}) };
+  const yrs = []; for (let y = 2010; y >= 1930; y--) yrs.push(`<option value="${y}"${y === +v.y ? " selected" : ""}>${y}년</option>`);
+  show("me", `${head(2)}<h1>나를 알려 주렴</h1><p class="sub">태어난 날과 시간으로 네 체질을 재요.</p>
+    <label class="f" for="name" style="margin-top:0">할미가 부를 이름</label><input id="name" maxlength="12" placeholder="예: 하윤" value="${esc(v.name)}" autocomplete="off">
+    <label class="f">태어난 날</label><div class="seg" id="cal"><button data-v="solar">양력</button><button data-v="lunar">음력</button></div>
+    <label class="check" id="leapw" style="display:none"><input type="checkbox" id="leap"> 윤달이에요</label>
+    <div class="row" style="margin-top:8px"><select id="y" aria-label="년">${yrs.join("")}</select><select id="m" aria-label="월">${opts(1, 12, "월", +v.m)}</select><select id="d" aria-label="일">${opts(1, 31, "일", +v.d)}</select></div>
+    <label class="f">태어난 시간</label><div class="row" id="hrow"><select id="hh" aria-label="시">${opts(0, 23, "시", +v.hour)}</select><select id="mi" aria-label="분">${opts(0, 59, "분", +v.minute)}</select></div>
+    <label class="check"><input type="checkbox" id="unk"> 시간은 몰라요</label>
+    <label class="f">성별</label><div class="seg" id="gen"><button data-v="f">여자</button><button data-v="m">남자</button></div>
+    <div class="err" id="err">${esc(err || "")}</div>${cta("다음")}`, () => {
+    const st = { calendar: v.calendar, gender: v.gender };
+    const sync = (id, key) => { [...g(id).children].forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === st[key]))); };
+    sync("cal", "calendar"); sync("gen", "gender");
+    g("cal").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; st.calendar = b.dataset.v; sync("cal", "calendar"); g("leapw").style.display = st.calendar === "lunar" ? "flex" : "none"; };
+    g("leapw").style.display = st.calendar === "lunar" ? "flex" : "none"; g("leap").checked = v.leap;
+    g("gen").onclick = (e) => { const b = e.target.closest("button"); if (!b) return; st.gender = b.dataset.v; sync("gen", "gender"); };
+    g("unk").onchange = () => { g("hh").disabled = g("mi").disabled = g("unk").checked; };
+    g("hrow").addEventListener("click", () => { if (g("unk").checked) { g("unk").checked = false; g("unk").onchange(); g("hh").focus(); } });
+    g("unk").checked = !v.timeKnown; g("unk").onchange();
+    g("back").onclick = () => history.back();
+    g("go").onclick = () => {
+      const me = { name: g("name").value.trim(), calendar: st.calendar, leap: st.calendar === "lunar" && g("leap").checked, y: +g("y").value, m: +g("m").value, d: +g("d").value, gender: st.gender };
+      if (!g("unk").checked) { me.hour = +g("hh").value; me.minute = +g("mi").value; }
+      me.timeKnown = me.hour !== undefined;
+      const dt = new Date(me.y, me.m - 1, me.d);
+      const miss = !me.name ? "부를 이름을 적어 주세요" : !me.gender ? "성별을 골라 주세요" : me.calendar === "solar" && (dt.getMonth() !== me.m - 1 || dt.getDate() !== me.d) ? "그 날짜는 달력에 없어요. 다시 확인해 주세요" : "";
+      if (miss) { g("err").textContent = miss; return; }
+      S.me = me; LS.set("halmi_me", me); qScreen();
+    };
+  });
+}
+
+/* ③ 고민(없어도 됨) */
+function qScreen(prefill) {
+  if (!S.me) return meScreen();
+  const draft = prefill ?? LS.get("guard_draft") ?? "";
+  show("q", `${head(3)}<h1>마음에 걸리는 일이 있니?</h1><p class="sub">적어 주면 그 일과 이어서 막는 법을 알려 줘요. 없으면 비워 둬도 돼요.</p>
+    <textarea id="q" class="big" maxlength="1200" aria-label="내 고민" placeholder="예: 내년에 해외로 가도 될지,&#10;지금 관계가 괜찮을지">${esc(draft)}</textarea>
+    <div class="cnt cap"><span></span><span id="cnt">0 / 1200</span></div>
+    <label class="f">이런 고민도 많이 와요</label>
+    <div class="ex" id="ex">${EXAMPLES.map(([t, b], i) => `<button data-i="${i}" aria-pressed="false"><b>${esc(t)}</b><span>${esc(b)}</span></button>`).join("")}</div>
+    ${cta("편지 받기", "go", `<button class="link" id="none">고민 없이 받기</button>`)}`, () => {
+    const q = g("q");
+    const grow = () => { q.style.height = "auto"; q.style.height = Math.min(q.scrollHeight + 2, window.innerHeight * 0.5) + "px"; g("cnt").textContent = `${q.value.length} / 1200`; LS.set("guard_draft", q.value); [...g("ex").children].forEach((b) => b.setAttribute("aria-pressed", String(q.value === EXAMPLES[+b.dataset.i][1]))); };
+    q.oninput = grow; grow();
+    const fill = (i) => { q.value = EXAMPLES[i][1]; grow(); q.focus(); toast("내 상황에 맞게 고쳐 써 보세요"); };
+    g("ex").onclick = async (e) => { const b = e.target.closest("button"); if (!b) return; const i = +b.dataset.i; if (!q.value.trim()) return fill(i); if (q.value === EXAMPLES[i][1]) return; if (await sheet({ title: "쓴 내용을 이 예시로 바꿀까요?", body: "바꾸면 지금 쓴 내용이 사라져요.", ok: "바꾸기", no: "그대로 둘게요" })) fill(i); };
+    g("back").onclick = () => history.back();
+    g("go").onclick = () => startReading({ ...S.me, question: q.value.trim() });
+    g("none").onclick = () => startReading({ ...S.me, question: "" });
+  });
+}
+function safetyScreen() {
+  show("safety", `<h1>먼저, 네 마음이 걱정돼요</h1><p class="sub">지금 많이 힘든 것 같아서, 사주 풀이보다 먼저 전하고 싶어요. 혼자 견디지 않아도 돼요. 지금 곁에 있는 사람에게 힘들다고 말해 주세요. 그리고 아래로 전화하면 바로 이야기를 들어 줘요.</p>
+    <a class="sos" href="tel:109"><b>109</b><span>자살예방상담전화 · 24시간 · 무료</span></a><a class="sos" href="tel:15770199"><b>1577-0199</b><span>정신건강위기상담 · 24시간 · 무료</span></a><a class="sos" href="tel:119"><b>119</b><span>지금 위험하다면 바로 응급 연락</span></a>
+    ${cta("다른 고민으로 써 보기")}`, () => { g("go").onclick = () => qScreen(""); });
+}
+
+/* 쓰는 중 */
+function stepsHtml() { return `<ul class="steps">${STAGES.slice(0, 3).map((t, i) => `<li class="${S.stage === i + 1 ? "on" : S.stage > i + 1 ? "done" : ""}">${S.stage > i + 1 ? "✓ " : ""}${t}</li>`).join("")}</ul>`; }
+function waitPaint() { const s = g("steps"); if (s) s.innerHTML = S.stage === 4 ? `<div class="stage"><span class="dot"></span>${STAGES[3]}</div>` : stepsHtml(); const p = g("pic"); if (p && S.viz && !p.innerHTML) p.innerHTML = tempHtml(); }
+async function startReading(inp, tries = 0) {
+  const run = ++S.run; S.input = inp; S.text = ""; S.viz = null; S.picks = null; S.tags = null; S.stage = 1; S.id = null; S.rated = false;
+  show("read", `<h1>할미가 편지를 쓰고 있단다</h1><p class="sub">보통 1분 안팎 걸려요. 네 체질부터 보여 줄게요.</p><div id="steps"></div><div id="pic"></div><div class="cta"><div><button class="link" id="cancel">그만두고 돌아가기</button></div></div>`, () => { g("cancel").onclick = () => { S.run++; history.back(); }; waitPaint(); });
+  let r;
+  try { r = await call({ action: "guard", ...inp, test: IS_TEST }); } catch { if (run !== S.run) return; return offlineScreen(() => startReading(inp), "편지 쓰기"); }
+  if (run !== S.run) return drain(r);
+  if (r.status === 422) return safetyScreen();
+  if (r.status === 401) return gateScreen();
+  if (r.status === 409) { if (tries > 20) return failScreen(inp); await new Promise((s) => setTimeout(s, 6000)); if (run !== S.run) return; return startReading(inp, tries + 1); }
+  if (r.status === 429) return limitScreen();
+  if (r.status === 400) { const e = await r.json().catch(() => ({})); return meScreen(e.error === "birth_invalid" ? "그 날짜는 달력에 없어요. 날짜를 다시 확인해 주세요" : "입력을 다시 확인해 주세요"); }
+  if (!r.ok || !r.body) return failScreen(inp);
+  let done = false;
+  try {
+    const rd = r.body.getReader(), dec = new TextDecoder(); let buf = "";
+    for (;;) { const { value, done: d } = await rd.read(); if (d) break; buf += dec.decode(value, { stream: true }); let i; while ((i = buf.indexOf("\n\n")) >= 0) { const ch = buf.slice(0, i); buf = buf.slice(i + 2); const line = ch.split("\n").find((l) => l.startsWith("data: ")); if (!line) continue; if (handle(JSON.parse(line.slice(6)), run)) done = true; } }
+  } catch { if (!done) { if (run !== S.run) return; return offlineScreen(() => startReading(inp), "편지 쓰기"); } }
+  if (!done && run === S.run) return failScreen(inp);
+}
+async function drain(r) { try { if (r && r.body) { const rd = r.body.getReader(); while (!(await rd.read()).done); } } catch {} }
+function handle(ev, run) {
+  const live = run === S.run;
+  if (ev.type === "final") { remember(ev.id); LS.set("guard_draft", ""); if (!live) return true; S.text = ev.text; S.id = ev.id; S.picks = ev.picks; S.tags = ev.tags || null; resultScreen(); return true; }
+  if (!live) return false;
+  if (ev.type === "card") { S.viz = ev.viz; waitPaint(); } else if (ev.type === "stage") { S.stage = ev.n; waitPaint(); } else if (ev.type === "error") throw new Error("gen");
+  return false;
+}
+function failScreen(inp) { show("fail", `<div class="center"><h1>편지를 끝까지 못 썼어요</h1><p class="sub">잠깐 문제가 있었어요. 입력한 내용은 그대로예요.<br>다시 시도하면 처음부터 새로 써 드려요.</p></div>${cta("다시 써 달라고 하기", "retry", `<button class="link" id="back">고민으로 돌아가기</button>`)}`, () => { g("retry").onclick = () => startReading(inp); g("back").onclick = () => qScreen(inp.question); }); }
+function limitScreen() { const last = ids()[0]; show("limit", `<div class="center"><h1>오늘 쓸 수 있는 편지를 다 썼어요</h1><p class="sub">하루에 쓸 수 있는 편지 수가 정해져 있어요.<br>내일 다시 와 주세요.</p></div>${cta(last ? "지난 편지 다시 보기" : "처음으로")}`, () => { g("go").onclick = () => (last ? restore(last) : startScreen()); }); }
+async function restore(id) {
+  show("read", `<h1>편지를 꺼내 오는 중이에요</h1><div class="cta"><div><button class="link" id="cancel">돌아가기</button></div></div>`, () => { g("cancel").onclick = () => startScreen(); });
+  let r; try { r = await call({ action: "get", id }); } catch { return offlineScreen(() => restore(id), "지난 편지"); }
+  if (!r.ok) { LS.set("guard_ids", ids().filter((x) => x !== id)); toast("지난 편지를 찾지 못했어요"); return startScreen(); }
+  const j = await r.json(); S.id = j.id; S.text = j.text; S.viz = j.chart; S.picks = j.picks; S.tags = j.tags || null; S.input = { question: j.question === "(질문 없음)" ? "" : j.question }; S.rated = !!j.rated;
+  resultScreen();
+}
+
+/* 그림: 온도 · 넘침/모자람 */
+function tempHtml() {
+  const z = S.viz; if (!z || !z.climate) return "";
+  const pos = (t) => Math.max(2, Math.min(98, 50 + t * 8));
+  const c = z.climate;
+  return `<div class="temp"><h3>내 그림의 온도</h3><p class="cap">${esc(c.season)}에 태어났어요 · ${esc(c.tempLabel)} · ${esc(c.wetLabel)}. 진한 표시가 지금, 옅은 표시가 2027년 기운이 더해진 뒤예요.</p><div class="tline"><i style="left:${pos(c.temp)}%"></i><i class="y" style="left:${pos(c.temp2027)}%"></i></div><div class="tlab"><span>차가움</span><span>뜨거움</span></div></div>`;
+}
+function balHtml() {
+  const z = S.viz; if (!z || !z.balance) return "";
+  const mx = Math.max(1, ...z.balance.map((b) => b.y2027));
+  const rows = z.balance.map((b) => `<div class="brow ${z.useful.includes(b.e) ? "use" : ""}"><span>${b.e} ${b.ko}</span><div class="t"><i class="add" style="width:${(b.y2027 / mx) * 100}%"></i><i class="now" style="width:${(b.now / mx) * 100}%"></i></div><b>${b.now}${b.y2027 !== b.now ? "→" + b.y2027 : ""}</b></div>`).join("");
+  const use = z.useful.map((e) => `${KO[e]}(${e})`).join("·"), av = z.avoid.map((e) => `${KO[e]}(${e})`).join("·");
+  return `<div class="bal"><h3>${use ? `채울 기운은 ${esc(use)}` : "채울 기운"}${av ? `, 넘치는 기운은 ${esc(av)}` : ""}</h3><p class="cap">파란 막대가 채울 기운, 옅은 빨강은 2027년에 더해지는 몫이에요.</p>${rows}</div>`;
+}
+
+/* 편지 읽기 */
+function parse(text) {
+  const raw = text.replace(/\[\[[^\]]*\]\]/g, "");
+  const cut = raw.indexOf("=== 서랍 ===");
+  const main = cut >= 0 ? raw.slice(0, cut) : raw, drawer = cut >= 0 ? raw.slice(cut + 12) : "";
+  const secs = [{ h: null, lines: [] }];
+  for (const l of main.split("\n")) { if (/^##\s+/.test(l) && !/^###/.test(l)) secs.push({ h: l.replace(/^##\s+/, "").trim(), lines: [] }); else if (l.trim()) secs[secs.length - 1].lines.push(l.trim()); }
+  return { opening: secs[0].lines.filter((l) => !/^사랑하는/.test(l)), secs: secs.slice(1), drawer };
+}
+const KV = /^(무엇이|왜|언제|막는 법)\s*[·ㆍ]\s*(.+)$/;
+const ITEM = /^(색|방향|몸|음식|습관|돌리기)\s*[·ㆍ]\s*(.+)$/;
+const MROW = /^(?:2028년\s*)?(\d{1,2})월\s*[·ㆍ]\s*(.+?)\s*[·ㆍ]\s*(.+)$/;
+const DAYS = /^조심할 날\s*[·ㆍ]\s*(.+)$/;
+function lineHtml(t) {
+  let m;
+  if ((m = t.match(KV))) return `<div class="kv ${m[1] === "막는 법" ? "fix" : ""}"><b>${m[1]}</b><span>${esc(m[2])}</span></div>`;
+  if ((m = t.match(ITEM))) return `<div class="kv fix"><b>${m[1]}</b><span>${esc(m[2])}</span></div>`;
+  if ((m = t.match(DAYS))) return `<p class="days">조심할 날 ${esc(m[1])}</p>`;
+  if ((m = t.match(MROW))) { const n = +m[1]; const c = S.picks?.caution?.includes(n); return `<div class="mrow ${c ? "c" : ""}"><b>${n}월</b><div><p>${esc(m[2])}</p><small>${esc(m[3])}</small></div></div>`; }
+  if (/^—\s*할미가/.test(t)) return `<p class="sign">${esc(t)}</p>`;
+  return `<p>${esc(t)}</p>`;
+}
+function secHtml(s) {
+  // ### 로 나뉜 조심 카드
+  const parts = []; let cur = null;
+  for (const l of s.lines) { if (/^###\s+/.test(l)) { cur = { h: l.replace(/^###\s+/, ""), lines: [] }; parts.push(cur); } else if (cur) cur.lines.push(l); else parts.push({ h: null, lines: [l] }); }
+  const body = parts.map((p) => (p.h ? `<div class="risk"><h3>${esc(p.h)}</h3>${p.lines.map(lineHtml).join("")}</div>` : p.lines.map(lineHtml).join(""))).join("");
+  return `<div class="sec letter"><h2 class="lh">${esc(s.h)}</h2>${body}</div>`;
+}
+function resultScreen() {
+  const L = parse(S.text);
+  const v = S.tags?.verdict;
+  const cap = v === "정리" ? "할미가 정리해 봤단다" : v === "조심" ? "쉽진 않지만 막을 길이 있단다" : "할미의 판정";
+  const sec0 = L.secs[0], rest = L.secs.slice(1);
+  let dr = "";
+  if (L.drawer.trim()) {
+    const blocks = L.drawer.split(/^#{2,3}\s+/m).map((x) => x.trim()).filter(Boolean);
+    dr = `<div class="sec"><h2 class="lh">내 공략서 서랍</h2><p class="cap">궁금한 칸만 열어 보세요.</p>` + blocks.map((b) => { const [title, ...rs] = b.split("\n"); return `<details class="fold"><summary>${esc(title.split("—")[0].trim())}</summary><div class="dr">${rs.map((x) => x.trim()).filter(Boolean).map(lineHtml).join("")}</div></details>`; }).join("") + `</div>`;
+  }
+  const pv = ids().find((x) => x !== S.id);
+  show("result", `<div class="res">
+    <div class="vd"><p class="cap">${esc(cap)}</p><p class="t">${esc(L.opening.join(" "))}</p></div>
+    ${tempHtml()}
+    ${sec0 ? secHtml(sec0) : ""}${balHtml()}
+    ${rest.map(secHtml).join("")}${dr}
+    <div class="rows">${pv ? `<button class="rowbtn" id="prev"><div><b>지난번에 받은 편지가 있어요</b><span>다시 보기</span></div>${CHEV_R}</button>` : ""}<button class="rowbtn" id="other"><div><b>다른 고민으로 받기</b><span>새 고민으로 편지 받기</span></div>${CHEV_R}</button></div>
+    <p class="cap">사주는 판단 재료예요. 몸이 계속 불편하면 병원에 가 보세요.</p></div>
+    ${S.rated ? "" : cta("편지 어땠는지 알려 주기")}`, () => {
+    if (g("go")) g("go").onclick = () => evalScreen();
+    g("other").onclick = () => qScreen("");
+    if (g("prev")) g("prev").onclick = () => restore(pv);
+  });
+}
+
+/* 평가 */
+const QS = [["fun", "읽는 게 재밌었나요?"], ["me", "내 얘기 같았나요?"], ["help", "막는 법이 도움이 됐나요?"], ["heard", "할미가 내 마음을 알아준 것 같았나요?"]];
+function evalScreen() {
+  const rating = {};
+  show("eval", `<h1>편지는 어땠나요?</h1><p class="sub">솔직하게 눌러 주세요. 편지를 더 좋게 만드는 데만 써요.</p>
+    ${QS.map(([k, t]) => `<div class="q"><p>${t}</p><div class="scale" data-k="${k}">${[1, 2, 3, 4, 5].map((n) => `<button data-n="${n}" aria-pressed="false">${n}</button>`).join("")}</div><div class="cap"><span>전혀</span><span>매우</span></div></div>`).join("")}
+    <div class="q"><p>한 줄로 남기고 싶은 말이 있나요? <span class="cap">(선택)</span></p><textarea id="fb" maxlength="300" placeholder="좋았던 점, 아쉬웠던 점 아무거나요"></textarea></div>
+    ${cta("보내기", "go", `<button class="link" id="back">편지로 돌아가기</button>`)}`, () => {
+    const go = g("go"); const upd = () => (go.disabled = !QS.every(([k]) => rating[k])); upd();
+    document.querySelectorAll(".scale").forEach((sc) => (sc.onclick = (e) => { const b = e.target.closest("button"); if (!b) return; rating[sc.dataset.k] = +b.dataset.n; [...sc.children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); upd(); }));
+    g("back").onclick = () => history.back();
+    go.onclick = async () => { go.disabled = true; go.textContent = "보내는 중이에요"; try { const r = await call({ action: "rate", id: S.id, ...rating, feedback: g("fb").value.trim() }); if (!r.ok) throw 0; S.rated = true; doneScreen(); } catch { go.disabled = false; go.textContent = "보내기"; toast("전송이 안 됐어요. 연결을 확인하고 다시 눌러 주세요"); } };
+  });
+}
+function doneScreen() { show("done", `<div class="center"><h1>알려 줘서 고마워요</h1><p class="sub">남겨 준 점수는 편지를 더 좋게 다듬는 데 써요.</p></div>${cta("다른 고민으로 받기", "go", `<button class="link" id="view">편지 다시 보기</button>`)}`, () => { g("go").onclick = () => qScreen(""); g("view").onclick = () => { S.popping = true; resultScreen(); S.popping = false; }; }); }
+boot();
+</script>
+</body>
+</html>
