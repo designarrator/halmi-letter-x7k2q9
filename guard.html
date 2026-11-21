@@ -179,6 +179,7 @@ table.t2 th{font-weight:400;color:var(--g500);font-size:13px}
 .mrow.c b{color:var(--danger)}
 .letter p.days{font-size:13px;line-height:19px;color:var(--danger);margin:-4px 0 0 60px;padding-bottom:12px}
 .opt{display:block;width:100%;margin-top:8px}
+.cut{aspect-ratio:3/2;border-radius:var(--r20);background:var(--g100);display:flex;align-items:flex-end;padding:12px 16px;margin:0 0 20px;font-size:13px;line-height:19px;color:var(--g500)}
 .chap{font-size:13px;line-height:19px;font-weight:600;color:var(--primary);margin:0 0 4px}
 .toc a{cursor:pointer;display:grid;grid-template-columns:24px 1fr;gap:8px;padding:12px 0;border-top:1px solid var(--g100);font-size:17px;line-height:27px;color:var(--g800);text-decoration:none}
 .toc a b{color:var(--primary);font-weight:700}
@@ -367,7 +368,9 @@ function balHtml() {
 }
 
 /* 장 이름(편지 소제목 순서와 같음) */
-const CHAPS = () => ["너는 어떤 사주인지", "2027년이 네 글자와 만나면", "그래서 조심할 것", S.input?.question ? "네 고민에 대입하면" : "가장 크게 챙길 것", "달마다 짚어 보면", "매일 막는 법"];
+const CHAPS = () => ["만세력 뜯어보기", "2027년 글자와 맞물리면", "그래서 조심할 것", S.input?.question ? "네 고민은 이렇게 흐른다" : "제일 크게 막을 것", "달마다", "매일 막는 법"];
+// 장마다 컷 한 장(그림은 다혜가 생성 중, 지금은 자리만). 파일이 생기면 cuts/<이름>.png 로 바꾼다.
+const CUTS = ["할미가 네 만세력을 펼친다", "등불과 마른 흙이 네 글자에 닿는다", "할미가 세 군데를 짚는다", "네 고민을 듣는 할미", "달력에 동그라미를 친다", "할미가 막는 법을 챙겨 준다"];
 function meetHtml() {
   const z = S.viz; if (!z || !z.table) return "";
   const mark = (seat) => { const m = (z.meet || []).find((x) => x.seat === seat); if (!m) return ""; const bad = m.rels.some((r) => r !== "합") || m.el === "눌림"; const good = m.rels.includes("합") || m.el === "보태짐"; const EZ = { 충: "부딪힘", 형: "다그침", 파: "깨짐", 해: "서운함", 원진: "서먹함", 합: "묶임" }; const order = ["충", "형", "파", "원진", "해", "합"]; const top = order.find((r) => m.rels.includes(r)); const t = top ? EZ[top] : m.el; return `<em class="${bad ? "bad" : good ? "good" : "mid"}">${esc(t)}</em>`; };
@@ -406,7 +409,7 @@ function secHtml(s, i) {
   const body = parts.map((p) => (p.h ? `<div class="risk"><h3>${esc(p.h)}</h3>${p.lines.map(lineHtml).join("")}</div>` : p.lines.map(lineHtml).join(""))).join("");
   const name = CHAPS()[i];
   const viz = i === 0 ? tempHtml() + balHtml() : i === 1 ? meetHtml() : "";
-  return `<div class="sec letter" id="ch${i}">${name ? `<p class="chap">${i + 1} · ${esc(name)}</p>` : ""}<h2 class="lh">${esc(s.h)}</h2>${body}${viz}</div>`;
+  return `<div class="sec letter" id="ch${i}">${CUTS[i] ? `<div class="cut" aria-hidden="true">컷 ${i + 1} · ${esc(CUTS[i])}</div>` : ""}${name ? `<p class="chap">${i + 1} · ${esc(name)}</p>` : ""}<h2 class="lh">${esc(s.h)}</h2>${body}${viz}</div>`;
 }
 function resultScreen() {
   const L = parse(S.text);
