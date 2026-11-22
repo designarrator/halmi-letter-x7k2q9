@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>막아 주는 할미 · 2027 신년운세 (랜딩 뼈대)</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 <style>
 /* 랜딩 뼈대 v0 (11/22) — 형식은 청월당 월하소녀 결과 페이지(15 문서 L0~L22)와 같은 순서·길이. 컷은 «장면+대사» 자리, 블록은 chart 계산값.
    색·서체는 임시(원본 결: 흰 바탕·남회 제목·하늘 강조·하단 검정 띠). 다혜 색은 형식 확정 뒤. */
@@ -55,16 +56,18 @@ p{margin:0}
 .ey2{font-family:var(--serif);font-size:18px;letter-spacing:1px}
 .nm2{font-family:var(--serif);font-size:84px;line-height:104px;font-weight:700;margin:4px 0}
 .ln2{font-family:var(--serif);font-size:20px;line-height:32px;margin-top:12px}
-.wish .wtext{position:absolute;z-index:2;left:24%;right:36%;top:52%;text-align:center;font-family:var(--serif);font-size:17px;line-height:27px;color:#3f3424}
-.wish .ring{position:absolute;z-index:2;left:16%;width:56%;top:44%;height:32%}
+.wish .wtext{position:absolute;z-index:2;left:17%;right:27%;top:37%;text-align:center;font-family:"Nanum Pen Script",cursive;font-size:30px;line-height:34px;color:#2a2520;mix-blend-mode:multiply;opacity:.88;transform:rotate(-1.5deg)}
+.wish .ring{position:absolute;z-index:2;left:5%;width:76%;top:28%;height:42%;mix-blend-mode:multiply}
 .wish .ring ellipse{fill:none;stroke:#C0392B;stroke-width:3.2;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;opacity:.85}
 .wish.in .ring ellipse{animation:draw 1.4s .3s ease-out forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
-.ms .grid{position:absolute;z-index:2;left:12%;right:12%;top:16%;bottom:16%;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:rgba(251,246,234,.92);border:2px solid #B9554A;border-radius:6px;padding:10px}
-.ms .grid div{border:1px solid #D9A79F;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:space-around;font-family:var(--serif)}
-.ms .grid small{font-size:13px;color:#8a6a5c}
-.ms .grid b{font-size:34px;line-height:40px;color:#3a2b22;font-weight:700}
-.ms .grid div.me{background:#F6DCD6;border:2px solid #C0392B}
+.ms .grid{position:absolute;z-index:2;left:13%;right:13%;top:14%;bottom:12%;display:grid;grid-template-columns:repeat(4,1fr);mix-blend-mode:multiply}
+.ms .grid div{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-around;font-family:var(--serif);border-left:1px solid rgba(160,60,50,.35)}
+.ms .grid div:first-child{border-left:0}
+.ms .grid small{font-size:13px;color:#7a5a4a}
+.ms .grid b{font-size:36px;line-height:40px;color:#2a201a;font-weight:700}
+.ms .grid i{font-style:normal;font-size:12px;line-height:16px;color:#fff;border-radius:8px;padding:1px 7px;margin-top:-10px;mix-blend-mode:normal}
+.ms .grid div.me::after{content:"";position:absolute;inset:-4px 2px;border:3px solid #C0392B;border-radius:48% 52% 46% 54%/50% 46% 54% 50%;transform:rotate(-3deg);opacity:.75}
 .soul .soulcap{position:absolute;z-index:2;left:0;right:0;bottom:12%;text-align:center;font-family:var(--serif);font-size:20px;line-height:32px;color:#fff;text-shadow:0 2px 10px rgba(10,20,45,.7)}
 .soul .soulcap b{font-size:24px}
 /* 블록 공통 */
@@ -237,6 +240,8 @@ function pn(o) {
   const fx = (o.sfx || []).map((f) => `<span class="sfx" style="left:${f.x}%;top:${f.y}%;transform:rotate(${f.r || -8}deg)">${f.t}</span>`).join("");
   return `<div class="pn ${o.kind || "box"}" style="--h:${o.h || 420}px;--p:${o.pos || "center"}"><img class="im" src="img/${o.img}.jpg" alt="" loading="lazy">${bs}${fx}${o.id ? `<span class="tag">${o.id}${o.video ? " · 영상" : ""}</span>` : ""}</div>`;
 }
+const ELC = { 木: ["목", "#5E9C8F"], 火: ["화", "#D9705A"], 土: ["토", "#C9A25B"], 金: ["금", "#9A948C"], 水: ["수", "#4E5A7A"] };
+const elTag = (ch) => { const [k, c] = ELC[ELOF(ch)]; return `<i style="background:${c}">${k}</i>`; };
 const capt = (html, small = "") => `<p class="cap">${html}${small ? `<small>${small}</small>` : ""}</p>`;
 const blk = (id, inner) => `<section class="blk"><span class="tag">${id}</span>${inner}</section>`;
 const lockList = (items) => `<div class="lock"><svg class="lk" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2" fill="#2B3D47"/><path d="M8 10V7a4 4 0 018 0v3" stroke="#2B3D47" stroke-width="2" fill="none"/></svg><h4>+ 할미가 더 짚어 줄 것</h4><ul>${items.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div>`;
@@ -280,14 +285,13 @@ function render(v) {
   /* L1 */
   H.push(`<div class="wt">`);
   H.push(pn({ id: "L1-1", img: "l/L1-1", h: 520, kind: "full", pos: "center 25%", video: true, b: [{ t: `${esc(NAME)}${voc(NAME)}, 왔구나.<br>네가 적어 둔 소원부터<br>읽어 봤다.`, x: 42, y: 60, w: 54 }] }));
-  H.push(`<div class="pn box wish" style="--h:330px"><img class="im" src="img/l/L1-2.jpg" alt="" loading="lazy"><p class="wtext">「${esc(WISH)}」</p><svg class="ring" viewBox="0 0 200 120"><ellipse cx="100" cy="60" rx="92" ry="48" pathLength="1"/></svg><span class="sfx" style="left:66%;top:80%;transform:rotate(-10deg)">쓱—</span><span class="tag">L1-2 · 내 소원 쪽지</span></div>`);
-  H.push(capt(`<em>${esc(WISH)}</em>.<br>이 줄에 동그라미를 쳐 두마.`));
+  H.push(`<div class="pn box wish" style="--h:330px"><img class="im" src="img/l/L1-2.jpg" alt="" loading="lazy"><p class="wtext">${esc(WISH)}</p><svg class="ring" viewBox="0 0 200 120"><ellipse cx="100" cy="60" rx="92" ry="48" pathLength="1"/></svg><span class="sfx" style="left:62%;top:8%;transform:rotate(-10deg)">쓱—</span><div class="bb" style="left:44%;top:74%;width:50%"><span>이 소원에<br>동그라미를<br>쳐 두마.</span></div><span class="tag">L1-2 · 내 소원 쪽지</span></div>`);
   H.push(pn({ id: "L1-3", img: "l/L1-3", h: 330, kind: "boxR", pos: "center 30%", b: [{ t: "그래, 이 마음<br>할미가 안다.", x: -22, y: 6, w: 48 }, { t: "그런데 소원만 보고<br>달리면 넘어진다.", x: -22, y: 56, w: 52 }] }));
   H.push(pn({ id: "L1-4", img: "l/L1-4", h: 260, kind: "tilt", pos: "center", sfx: [{ t: "톡, 톡", x: 60, y: 58, r: -12 }], b: [{ t: "소원보다 먼저<br><b>네 여덟 글자</b>부터<br>펴 보자.", x: 46, y: -20, w: 52 }] }));
-  H.push(`<div class="pn box ms" style="--h:360px"><img class="im" src="img/l/L1-5.jpg" alt="" loading="lazy"><div class="grid">${["시", "일", "월", "년"].map((l) => { const c = T[l]; return `<div class="${l === "일" ? "me" : ""}"><small>${l}</small><b>${c ? c.gan : "?"}</b><b>${c ? c.zhi : "?"}</b></div>`; }).join("")}</div><span class="tag">L1-5 · 내 만세력</span></div>`);
-  H.push(capt(`${esc(birthText())}`, "오른쪽부터 년·월·일·시. 빨간 칸이 너 자신이다."));
+  H.push(`<div class="pn box ms" style="--h:360px"><img class="im" src="img/l/L1-5.jpg" alt="" loading="lazy"><div class="grid">${["시", "일", "월", "년"].map((l) => { const c = T[l]; return `<div class="${l === "일" ? "me" : ""}"><small>${l}</small><b>${c ? c.gan : "?"}</b>${c ? elTag(c.gan) : ""}<b>${c ? c.zhi : "?"}</b>${c ? elTag(c.zhi) : ""}</div>`; }).join("")}</div><span class="tag">L1-5 · 내 만세력</span></div>`);
+  H.push(capt(`${esc(birthText())}`, "오른쪽부터 년·월·일·시. 붉게 동그라미 친 칸이 너 자신이다."));
   H.push(pn({ id: "L1-6", img: "l/L1-6", h: 460, kind: "full", pos: "center 20%", video: true, b: [{ t: `여기,<br>일 자리의 <b>${esc(meCh)}</b>.<br>이게 바로 너다.`, x: 46, y: 58, w: 50 }] }));
-  H.push(`<div class="pn full soul" style="--h:300px"><img class="im" src="img/l/L1-7.jpg" alt="" loading="lazy"><p class="soulcap"><b>${esc(baseCh)}</b> ${esc(base)} 위에 선<br><b>${esc(meCh)}</b> ${esc(me)}</p><span class="tag">L1-7 · 내 글자 그림</span></div>`);
+  H.push(`<div class="pn full soul" style="--h:300px"><img class="im" src="img/s/${encodeURIComponent(meCh + baseCh)}.jpg" onerror="this.onerror=null;this.src='img/l/L1-7.jpg'" alt="" loading="lazy"><p class="soulcap"><b>${esc(baseCh)}</b> ${esc(base)} 위에 선<br><b>${esc(meCh)}</b> ${esc(me)}</p><span class="tag">L1-7 · 내 글자 그림</span></div>`);
   H.push(capt(`남들 눈엔 꿋꿋이 버티는 사람인데,<br><em>속은 늘 다음 계절만 기다리지.</em>`, `${born}에 태어난 ${esc(me)}라서 그렇다.`));
   H.push(`<p class="dots">⋮</p>`);
   H.push(capt(`2026년을 먼저 짚어 보니<br><em>이때 많이 버거웠겠구나.</em>`));
@@ -297,8 +301,7 @@ function render(v) {
   /* L3 */
   H.push(`<div class="wt">`);
   H.push(pn({ id: "L3-1", img: "l/L3-1", h: 320, kind: "boxL", pos: "center 30%", b: [{ t: "조금만 일찍 왔으면<br>덜 다쳤을 거다.", x: 56, y: -8, w: 44 }] }));
-  H.push(pn({ id: "L3-2", img: "l/L3-2", h: 260, kind: "full", pos: "center", b: [{ t: "괜찮다.<br><b>2027년은</b><br>미리 막으면 된다.", x: 50, y: -18, w: 46 }] }));
-  H.push(capt(`<em>${esc(LOVE)}</em>이라고 했지.<br>«${esc(askShort)}»도 물었고.`, "그것까지 같이 보마."));
+  H.push(pn({ id: "L3-2", img: "l/L3-2", h: 260, kind: "full", pos: "center", b: [{ t: "괜찮다.<br><b>2027년은</b><br>미리 막으면 된다.", x: 50, y: -18, w: 46 }, { t: `<b>${esc(LOVE)}</b>이라 했지.<br>물어본 그 일까지<br>같이 보마.`, x: 2, y: 56, w: 48 }] }));
   H.push(pn({ id: "L3-3", img: "l/L3-3", h: 480, kind: "boxR", pos: "center 25%", video: true, sfx: [{ t: "스르륵", x: -18, y: 70, r: -6 }], b: [{ t: "아까 네가 뽑은<br>제비부터 펴 보마.", x: -24, y: 4, w: 50 }] }));
   H.push(pn({ id: "L3-4", img: "l/L3-4", h: 260, kind: "tilt", pos: "center 40%", sfx: [{ t: "흠…", x: 70, y: 10, r: 8 }], b: [{ t: `…<b>${esc(SHORTV(v.yearVerdict))}</b><br>해로구나.`, x: 6, y: 62, w: 48 }] }));
   H.push(`</div>`);
@@ -309,8 +312,7 @@ function render(v) {
   H.push(pn({ id: "L5-1", img: "l/L5-1", h: 500, kind: "full", pos: "center 22%", video: true, b: [{ t: "좋다고 풀어지지 말고,<br>나쁘다고<br>주저앉지도 마라.", x: 44, y: 58, w: 52 }] }));
   H.push(capt(`정미년은<br><em>미리 아는 사람만 덜 다치는 해</em>다.`));
   H.push(pn({ id: "L5-2", img: "l/L5-2", h: 280, kind: "tilt", pos: "center", sfx: [{ t: "짤랑", x: 66, y: 18, r: 10 }], b: [{ t: `그중에<br><b>돈</b>이 제일 먼저 샌다.`, x: 4, y: 6, w: 50 }] }));
-  H.push(pn({ id: "L5-3", img: "l/L5-3", h: 340, kind: "boxL", pos: "center 30%", b: [{ t: `<b>${esc(cm[0]?.m || "●월")}</b>에<br><span class="blur">카드값으로</span><br>크게 나간다.`, x: 52, y: -10, w: 46 }, { t: "꽉 쥐고 있어라.", x: 54, y: 62, w: 42 }] }));
-  H.push(capt(`«${esc(askShort)}»<br><em>돈부터 막아야 그 길도 열린다.</em>`));
+  H.push(pn({ id: "L5-3", img: "l/L5-3", h: 340, kind: "boxL", pos: "center 30%", b: [{ t: `<b>${esc(cm[0]?.m || "●월")}</b>에<br><span class="blur">카드값으로</span><br>크게 나간다.`, x: 52, y: -10, w: 46 }, { t: "네가 물은 그 일도<br><b>돈부터 막아야</b><br>길이 열린다.", x: 50, y: 58, w: 48 }] }));
   H.push(`</div>`);
   /* L6 재물 */
   const wScore = 40 + A.find((a) => a[0] === "재물운")[1] * 10;
