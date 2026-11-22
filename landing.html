@@ -35,11 +35,10 @@ p{margin:0}
 .pn.full .im{-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
 .pn .tag{top:8px;left:8px}
 .bb{position:absolute;z-index:3;background:#fff;border:1.5px solid #3a3a3a;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--sans);font-size:16px;line-height:24px;color:#1d1d1d;padding:22px 20px;aspect-ratio:1.15/1;box-sizing:border-box}
-.bb::after{content:"";position:absolute;width:18px;height:18px;background:#fff;border-right:1.5px solid #3a3a3a;border-bottom:1.5px solid #3a3a3a}
-.bb.tb::after{bottom:-9px;left:30%;transform:rotate(45deg) skew(12deg,12deg)}
-.bb.tbr::after{bottom:-9px;right:30%;transform:rotate(45deg) skew(12deg,12deg)}
-.bb.tt::after{top:-9px;left:40%;transform:rotate(225deg) skew(12deg,12deg)}
 .bb.think{border-style:dashed}
+.bb{opacity:0;transform:scale(.6);transition:opacity .25s ease-out,transform .35s cubic-bezier(.3,1.6,.5,1)}
+.bb.in{opacity:1;transform:scale(1)}
+.sfx{opacity:0;transition:opacity .2s .25s}.sfx.in{opacity:1}
 .bb b{color:#B0473A;font-weight:700}
 .sfx{position:absolute;z-index:3;font-family:var(--serif);font-weight:700;font-size:30px;color:#1d1d1d;-webkit-text-stroke:5px #fff;paint-order:stroke;letter-spacing:2px}
 .cap{text-align:center;font-family:var(--serif);font-size:22px;line-height:34px;color:#4a4a4a;padding:24px 28px 8px}
@@ -281,7 +280,7 @@ function render(v) {
   H.push(blk("L4 총운", `<p class="ey">2027년</p><p class="tt" style="font-size:30px;line-height:40px">${esc(NAME)} 님의 총운은 <span style="color:var(--sky)">${grade}</span>이다</p><div class="win"><b>${grade}</b></div><p class="oneline">${esc(v.yearVerdict)}</p><div class="grade">${GRADES.map((g) => `<span class="${g === grade ? "on" : ""}">${g}</span>`).join("")}</div><div class="dv"></div><p style="font-size:13px;color:#999;text-align:center">약한 곳부터 보여 줘요 ${EX}</p><div class="area">${A.map(([n, s], i) => `<span class="${i === 0 ? "low" : ""}">${n}</span><span class="moons">${[1, 2, 3, 4, 5].map((k) => `<i class="${k <= s ? "" : "e"}"></i>`).join("")}</span>`).join("")}</div><p class="sj">2027년 삼재 여부 : <b>${v.samjae.is ? esc(v.samjae.name) : "무삼재"}</b></p>`));
   /* L5 */
   H.push(`<div class="wt">`);
-  H.push(pn({ id: "L5-1", img: "A4", h: 380, kind: "full", pos: "center 22%", video: true, b: [{ t: "좋다고 풀어지지 말고,<br>나쁘다고<br>주저앉지도 마라.", x: 44, y: 56, w: 52 }] }));
+  H.push(pn({ id: "L5-1", img: "C2", h: 380, kind: "full", pos: "center 22%", video: true, b: [{ t: "좋다고 풀어지지 말고,<br>나쁘다고<br>주저앉지도 마라.", x: 44, y: 56, w: 52 }] }));
   H.push(capt(`정미년은<br><em>미리 아는 사람만 덜 다치는 해</em>다.`));
   H.push(pn({ id: "L5-2", img: "C3", h: 300, kind: "boxR", pos: "center 30%", b: [{ t: `그중에<br><b>돈</b>이 제일 먼저 샌다.`, x: -24, y: 8, w: 50 }] }));
   H.push(pn({ id: "L5-3", img: "P1", h: 240, kind: "tilt", pos: "center 40%", sfx: [{ t: "짤랑", x: 8, y: 20, r: -10 }], b: [{ t: `<b>${esc(cm[0]?.m || "●월")}</b>에<br><span class="blur">카드값으로</span><br>크게 나간다.`, x: 46, y: -22, w: 50 }] }));
@@ -328,6 +327,8 @@ function render(v) {
   H.push(`<section class="rec"><span class="tag">L22 추천</span><h3>이런 사람한테 권한다</h3><ul><li>좋은 말만 듣다가 또 넘어진 사람</li><li>내년에 어디서 다칠지 미리 알고 싶은 사람</li><li>큰 결정(이직·이사·결혼) 앞에 선 사람</li><li>돈이 왜 새는지 모르겠는 사람</li><li>피해야 할 사람을 가려내고 싶은 사람</li><li>막는 법까지 손에 쥐고 싶은 사람</li></ul></section>`);
   H.push(`<section class="letter"><span class="tag">L22 할미 편지</span><h3>“좋은 말은 남들이 해 준다.<br>할미는 막아 주마.”</h3><p>${esc(NAME)}아. 할미는 좋은 말로 시작하지 않는다. 다칠 곳이 먼저 보이면 그것부터 말한다. 듣기 싫어도 끝까지 들어라. 짚은 곳마다 막는 법을 같이 쥐여 줄 테니. ${EX}</p><p class="sig">2026년 겨울 밤,<br>끝까지 네 편인 할미가</p></section>`);
   document.getElementById("app").innerHTML = H.join("");
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -18% 0px" });
+  document.querySelectorAll(".bb,.sfx").forEach((el, i) => { el.style.transitionDelay = (el.classList.contains("sfx") ? 0.25 : 0) + "s"; io.observe(el); });
   /* 패 뽑기 */
   const picked = [];
   document.querySelectorAll("#fan button").forEach((b) => (b.onclick = () => {
