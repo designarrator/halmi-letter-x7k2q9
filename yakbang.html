@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>할미약방 · 2027 정미년</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
+/* 할미약방 v1 (11/23) — 정본: personal-vault/projects/사주 할미/17 할미약방 전체 흐름.md
+   입력(S1~S8, 한 화면씩) → 결과(R1~R17, 내려 읽기, 하단 고정 버튼) → 결제(P1) → 약 달이기(P2).
+   손으로 하는 것 6가지: 맥 짚기(S6) · 약재 저울(R3) · 약연 긁기(R5) · 서랍 세 칸(R7) · 약첩 끈 묶기(R16) · 부채질(P2). */
+@font-face{font-family:"GB";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiBatang.woff") format("woff");font-display:swap}
+@font-face{font-family:"HSB";src:url("fonts/GapyeongHanseokbong.woff2") format("woff2");font-display:swap}
+:root{--ink:#2B2219;--ink2:#6B5A49;--ink3:#A0907D;--paper:#F7EFE2;--card:#FFFBF4;--wood:#5A3A24;--amber:#E9A94B;--red:#B8402F;--redS:#F6E1DA;--navy:#2E4A62;--line:#E8DCC8;--serif:"GB",serif;--sans:"Pretendard Variable",Pretendard,-apple-system,sans-serif;--brush:"HSB","GB",serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#120D09;color:var(--ink);font-family:var(--sans);word-break:keep-all}
+p{margin:0}
+button{font:inherit;cursor:pointer}
+#app{max-width:448px;margin:0 auto;background:var(--paper);min-height:100vh;position:relative;overflow:hidden}
+.ex{display:inline-block;font-family:var(--sans);font-size:11px;line-height:14px;color:var(--red);border:1px solid var(--red);border-radius:6px;padding:0 5px;margin-left:4px;vertical-align:middle;font-weight:400}
+
+/* ── 입력 화면(한 화면씩) ── */
+.sc{position:relative;min-height:100vh;display:flex;flex-direction:column;background:#1b130d;animation:fade .45s ease-out}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sc .pic{position:relative;height:60vh;min-height:420px;overflow:hidden}
+.sc.form-sc .pic{height:40vh;min-height:300px}
+.sc .pic img{width:100%;height:100%;object-fit:cover;object-position:center 30%;animation:drift 14s ease-in-out infinite alternate}
+@keyframes drift{from{transform:scale(1.02)}to{transform:scale(1.08) translateY(-1.5%)}}
+.sc .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,0) 55%,var(--paper))}
+.sc .low{position:relative;flex:1;background:var(--paper);padding:0 22px 132px;margin-top:-1px}
+.say{font-family:var(--serif);font-size:19px;line-height:31px;color:var(--ink);text-align:center;min-height:62px}
+.say+.say{margin-top:10px}
+.hint{font-size:13px;line-height:20px;color:var(--ink3);text-align:center;margin-top:8px}
+.bot{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:12px 20px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(rgba(247,239,226,0),var(--paper) 30%)}
+.bot>div{max-width:448px;margin:0 auto}
+.btn{width:100%;height:56px;border:0;border-radius:16px;background:var(--wood);color:#FFF4E2;font-size:17px;font-weight:600;box-shadow:0 2px 0 #3a2416}
+.btn:disabled{opacity:.35}
+.lnk{display:block;width:100%;background:none;border:0;color:var(--ink2);text-decoration:underline;font-size:14px;margin-top:8px;height:28px}
+/* 첫 화면 */
+.s1 .pic{height:100vh}
+.s1 .pic::after{background:linear-gradient(rgba(8,14,34,.55),rgba(8,14,34,0) 45%,rgba(8,14,34,.5))}
+.s1 .tt{position:absolute;z-index:2;left:0;right:0;top:11vh;text-align:center;color:#FFF7E6;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+.s1 .tt .y{font-family:var(--serif);font-size:17px;letter-spacing:2px}
+.s1 .tt h1{font-family:var(--serif);font-size:56px;line-height:70px;margin:8px 0 6px;font-weight:700;letter-spacing:4px}
+.s1 .tt .a{font-family:var(--serif);font-size:22px;line-height:32px}
+.s1 .tt .b{font-family:var(--serif);font-size:15px;line-height:24px;opacity:.85;margin-top:6px}
+.snow{position:absolute;inset:0;z-index:1;pointer-events:none}
+.snow i{position:absolute;top:-10px;width:5px;height:5px;border-radius:50%;background:#fff;opacity:.75;animation:fall linear infinite}
+@keyframes fall{to{transform:translate(18px,105vh)}}
+/* 입력칸 */
+.slip{display:block;width:100%;min-height:120px;margin-top:14px;border:1px solid var(--line);border-radius:12px;background:#FFFDF7;padding:14px 16px;font-family:"Nanum Pen Script",cursive;font-size:26px;line-height:32px;color:#2a2520;resize:none}
+.slip::placeholder{color:#c4b6a3}
+.form{margin-top:16px;display:grid;gap:10px}
+.form label{font-size:13px;color:var(--ink2)}
+.form input{width:100%;height:50px;border:1px solid var(--line);border-radius:12px;background:#FFFDF7;padding:0 14px;font-size:17px;color:var(--ink)}
+.seg{display:flex;gap:8px}
+.seg button{flex:1;height:44px;border-radius:12px;border:1px solid var(--line);background:#FFFDF7;color:var(--ink2);font-size:15px}
+.seg button.on{background:var(--wood);color:#FFF4E2;border-color:var(--wood)}
+.row2{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.chk{font-size:14px;color:var(--ink2);display:flex;gap:6px;align-items:center;white-space:nowrap}
+.err{font-size:13px;color:var(--red);min-height:18px}
+.sent{margin-top:16px;font-family:var(--serif);font-size:17px;line-height:30px;color:var(--ink2);text-align:center}
+.sent select{font-family:var(--sans);font-size:16px;height:40px;border-radius:10px;border:1px solid var(--line);background:#FFFDF7;color:var(--ink);padding:0 8px;margin:0 4px}
+/* 맥 짚기 */
+.pulse-zone{position:absolute;z-index:3;left:50%;top:79%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;touch-action:none}
+.pulse-zone::before,.pulse-zone::after{content:"";position:absolute;inset:30px;border-radius:50%;border:2px solid rgba(255,230,190,.9);animation:ring 1.1s ease-out infinite}
+.pulse-zone::after{animation-delay:.55s}
+@keyframes ring{from{transform:scale(.6);opacity:1}to{transform:scale(1.6);opacity:0}}
+.pulse-zone.hold::before,.pulse-zone.hold::after{border-color:#ff9a7a;animation-duration:.8s}
+.pulse-zone b{position:absolute;inset:44px;border-radius:50%;background:rgba(255,240,220,.85)}
+.prog{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin:14px 0 4px}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--amber),var(--red));transition:width .15s linear}
+.steam{text-align:center;font-size:13px;color:var(--ink3)}
+/* 표지 */
+.cover{position:relative;height:100vh;overflow:hidden}
+.cover img{width:100%;height:100%;object-fit:cover}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(10,15,35,.45),rgba(10,15,35,.1) 45%,rgba(10,15,35,.55))}
+.cover .ct{position:absolute;z-index:2;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#FFF7E6;text-shadow:0 2px 16px rgba(0,0,0,.6);text-align:center}
+.cover .ey{font-family:var(--serif);font-size:16px;letter-spacing:1px}
+.cover .nm{font-family:var(--serif);font-weight:700;font-size:72px;line-height:92px;margin:6px 0;letter-spacing:4px}
+.cover .ln{font-family:var(--serif);font-size:20px;line-height:32px}
+.cover .down{margin-top:28px;font-size:13px;opacity:.8;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(6px)}}
+
+/* ── 결과(웹툰) ── */
+.res{background:#fff;padding-bottom:150px}
+.wt{padding:28px 0 12px}
+.pn{position:relative;margin:0 0 56px}
+.pn .im{display:block;width:100%;height:var(--h,420px);object-fit:cover;object-position:var(--p,center)}
+.pn.box{margin-left:28px;margin-right:28px}.pn.box .im{border:2px solid #1d1d1d}
+.pn.boxL{margin-left:16px;margin-right:84px}.pn.boxL .im{border:2px solid #1d1d1d}
+.pn.boxR{margin-left:84px;margin-right:16px}.pn.boxR .im{border:2px solid #1d1d1d}
+.pn.tilt .im{clip-path:polygon(0 6%,100% 0,100% 94%,0 100%)}
+.pn.full .im{-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent)}
+.bb{position:absolute;z-index:3;background:#fff;border:1.5px solid #3a3a3a;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;line-height:24px;color:#1d1d1d;padding:22px 18px;aspect-ratio:1.15/1;opacity:0;transform:scale(.6);transition:opacity .25s,transform .35s cubic-bezier(.3,1.6,.5,1)}
+.bb.in{opacity:1;transform:scale(1)}
+.bb b{color:var(--red)}
+.sfx{position:absolute;z-index:3;font-family:var(--serif);font-weight:700;font-size:28px;color:#1d1d1d;-webkit-text-stroke:5px #fff;paint-order:stroke;opacity:0;transition:opacity .2s .3s}
+.sfx.in{opacity:1}
+.cap{text-align:center;font-family:var(--serif);font-size:21px;line-height:34px;color:#4a4038;padding:16px 26px 40px}
+.cap em{font-style:normal;color:var(--red)}
+.cap small{display:block;font-family:var(--sans);font-size:13px;line-height:20px;color:#999;margin-top:8px}
+/* 쪽지·맥 기록지 */
+.wish .wt2{position:absolute;z-index:2;left:24%;right:24%;top:33%;text-align:center;font-family:"Nanum Pen Script",cursive;font-size:29px;line-height:34px;color:#2a2520;mix-blend-mode:multiply;transform:rotate(-1.5deg)}
+.wish .ring{position:absolute;z-index:3;left:12%;width:76%;top:24%;height:42%;overflow:visible;mix-blend-mode:multiply}
+.wish .ring path{fill:none;stroke:#C8352A;stroke-width:9;stroke-linecap:round;opacity:.85;stroke-dasharray:1;stroke-dashoffset:1}
+.wish.in .ring path{animation:draw 1.1s .3s cubic-bezier(.5,0,.3,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.ms .grid{position:absolute;z-index:2;left:15%;right:15%;top:22%;bottom:22%;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:10px 8px;background:linear-gradient(160deg,#F8EBCF,#F1DDB6);border:1px solid #D8BF92;border-radius:3px;box-shadow:0 6px 14px rgba(90,50,20,.28);transform:rotate(-1.2deg)}
+.ms .grid::before{content:"";position:absolute;inset:5px;border:1.5px solid rgba(178,60,46,.55);pointer-events:none}
+.ms .grid div{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-around;font-family:var(--serif);border-left:1px solid rgba(178,60,46,.35)}
+.ms .grid div:first-child{border-left:0}
+.ms .grid small{font-size:12px;color:#7a5a4a}
+.ms .grid b{font-size:30px;line-height:34px;color:#2a201a}
+.ms .grid i{font-style:normal;font-size:11px;line-height:15px;color:#fff;border-radius:8px;padding:0 6px;margin-top:-8px}
+.ms .grid div.me{background:rgba(192,57,43,.16);border-radius:4px;box-shadow:inset 0 0 0 1.5px rgba(192,57,43,.7)}
+.soul{position:relative;margin:0 0 40px}
+.soul img{display:block;width:100%;height:300px;object-fit:cover}
+.soul p{position:absolute;left:0;right:0;bottom:12%;text-align:center;font-family:var(--serif);font-size:20px;line-height:32px;color:#fff;text-shadow:0 2px 10px rgba(10,20,45,.75)}
+/* 블록 */
+.blk{position:relative;margin:8px 14px 48px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 20px}
+.blk .ey{font-family:var(--serif);font-size:15px;color:var(--ink2);text-align:center}
+.blk .tt{font-family:var(--serif);font-size:24px;line-height:34px;color:var(--wood);text-align:center;margin:4px 0 16px}
+.blk .dv{width:120px;height:1px;background:var(--line);margin:0 auto 18px}
+.ask{font-family:var(--serif);font-size:16px;line-height:26px;color:var(--ink2);text-align:center;margin-bottom:12px}
+/* 저울 */
+.scale svg{display:block;margin:0 auto;width:100%;max-width:320px}
+.wbtns{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+.wbtns button{height:58px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:13px;color:var(--ink2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.wbtns button b{font-family:var(--serif);font-size:18px;color:var(--ink)}
+.wbtns button.on{background:#F3E6D0;border-color:#C9A25B}
+.wres{margin-top:14px;display:grid;gap:6px}
+.wres div{display:grid;grid-template-columns:40px 1fr 44px;gap:8px;align-items:center;font-size:14px;color:var(--ink2)}
+.wres span.bar{height:10px;border-radius:10px;background:#EFE6D7;overflow:hidden}.wres span.bar i{display:block;height:100%;border-radius:10px}
+.wres b{text-align:right;font-variant-numeric:tabular-nums}
+/* 약연 긁기 */
+.grind{position:relative;border-radius:16px;overflow:hidden;margin-top:6px}
+.grind canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;touch-action:none;transition:opacity .6s}
+.gradeCard{padding:24px 16px;text-align:center;background:#FBF3E3}
+.gradeCard .g{font-family:var(--serif);font-weight:700;font-size:56px;line-height:66px;color:var(--red)}
+.gradeCard .l{font-family:var(--serif);font-size:18px;line-height:28px;color:var(--ink);margin-top:4px}
+.grades{display:flex;gap:4px;justify-content:center;margin:14px 0 4px;flex-wrap:wrap}
+.grades span{font-size:12px;padding:3px 8px;border-radius:12px;background:#EFE6D7;color:#8a7a68}
+.grades span.on{background:var(--wood);color:#fff}
+.area{display:grid;grid-template-columns:90px 1fr;gap:8px 12px;margin-top:16px;font-size:15px;color:#6b5a49}
+.area .low{color:var(--red);font-weight:600}
+.moons i{display:inline-block;width:15px;height:15px;border-radius:50%;background:#E3B85A;margin-right:4px}.moons i.e{background:#EAE0CF}
+/* 탈 카드 */
+.tal{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff;margin-top:12px}
+.tal h4{margin:0 0 10px;font-family:var(--serif);font-size:19px;color:var(--wood)}
+.tal .r{display:grid;grid-template-columns:78px 1fr;gap:8px;font-size:15px;line-height:23px;padding:5px 0;border-top:1px dashed #eee}
+.tal .r:first-of-type{border-top:0}
+.tal .r b{font-size:12px;line-height:22px;color:#fff;background:#8a6a4e;border-radius:6px;text-align:center;height:22px}
+.tal .r b.w{background:var(--red)}.tal .r b.g{background:#3e7a5e}
+.lock{position:relative;margin-top:14px;border-radius:14px;background:#F4EDE2;padding:18px}
+.lock h5{margin:0 0 10px;font-size:15px;text-align:center;color:var(--wood)}
+.lock li{list-style:none;font-size:15px;line-height:24px;padding:3px 0;color:#4a3f35}
+.lock li::before{content:"✓";display:inline-block;width:17px;height:17px;border-radius:50%;background:#C9A25B;color:#fff;font-size:11px;line-height:17px;text-align:center;margin-right:8px}
+.lock ul{margin:0;padding:0}
+.blur{filter:blur(5px);user-select:none}
+/* 서랍 */
+.drawers{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:10px;border-radius:12px;background:#6B4329;box-shadow:inset 0 0 0 3px #4d2f1d}
+.drawers button{position:relative;height:74px;border:0;border-radius:6px;background:linear-gradient(#9A6A45,#85583A);box-shadow:inset 0 0 0 2px #5e3b25;color:#FFEFD6;transition:transform .3s}
+.drawers button::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border-radius:50%;border:3px solid #D9B464}
+.drawers button.open{transform:translateY(-4px) scale(1.04);background:#F6EAD3;box-shadow:inset 0 0 0 2px #C9A25B,0 6px 10px rgba(0,0,0,.3);color:var(--ink)}
+.drawers button.open::after{display:none}
+.drawers button span{font-family:var(--serif);font-size:16px;display:block}
+.drawers button small{font-size:11px;line-height:14px;display:block;margin-top:2px}
+.drawers button.bad small{color:var(--red)}.drawers button.good small{color:#3e7a5e}
+.react{min-height:24px;margin-top:12px;font-family:var(--serif);font-size:16px;line-height:26px;text-align:center;color:var(--wood)}
+/* 마음·몸·사람 */
+.flowsvg{width:100%;height:auto}
+.day{border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:10px;background:#fff}
+.day h4{margin:0 0 6px;font-family:var(--serif);font-size:18px;color:#5a6f7d}
+.day.bad h4{color:var(--red)}
+.day p{font-size:15px;line-height:23px;color:#4a3f35}
+.clip{border-radius:14px;background:#FAF4E6;border:1px solid #E7DCC2;padding:18px}
+.clip h4{margin:0;font-family:var(--serif);font-size:18px;text-align:center}
+.clip small{display:block;text-align:center;font-size:12px;color:#8a7a68;margin:4px 0 10px}
+.clip li{list-style:none;font-family:var(--serif);font-size:17px;line-height:32px;color:#5a4a3a;border-bottom:1px dashed #E7DCC2}
+.clip ul{margin:0;padding:0}
+.avoidp{border:1px solid var(--red);background:var(--redS);border-radius:14px;padding:14px;font-size:15px;line-height:23px}
+.avoidp b{color:var(--red)}
+.guiren{margin-top:16px;display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
+.guiren img{width:120px;height:160px;object-fit:cover;border-radius:60px 60px 12px 12px;border:4px solid #D8B86A}
+.guiren div p{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:7px 0;font-size:14px;color:#8a7a68}
+.guiren div p b{font-family:var(--serif);color:var(--ink);font-size:15px}
+/* 덤·목차·가격 */
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 48px}
+.keys div{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.keys img{display:block;width:100%;height:120px;object-fit:cover}
+.keys p{padding:10px 12px 12px;font-size:13px;line-height:19px;color:var(--ink2)}
+.keys p b{display:block;font-family:var(--serif);font-size:16px;color:var(--wood);margin-bottom:2px}
+.toc{margin:0 14px 48px}
+.toc h3{font-family:var(--serif);text-align:center;font-size:22px;color:var(--wood);margin:0 0 14px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.ch .no{display:inline-block;background:var(--wood);color:#FFF4E2;font-size:12px;border-radius:6px;padding:1px 8px}
+.ch h4{margin:6px 0;font-family:var(--serif);font-size:18px}
+.ch li{list-style:none;font-size:14px;line-height:26px;color:#4a3f35}
+.ch ul{margin:0;padding:0}
+.price{margin:0 14px 24px;background:linear-gradient(#F6E9D2,#FFFBF4);border:1px solid var(--line);border-radius:20px;padding:24px 20px}
+.price h3{font-family:var(--serif);font-weight:700;text-align:center;font-size:40px;line-height:50px;margin:0;color:var(--wood);font-weight:400}
+.price .r{display:flex;justify-content:space-between;font-size:15px;padding:7px 0;color:#6b5a49}
+.price .fin{border-top:1px solid var(--line);margin-top:6px;padding-top:12px;display:flex;justify-content:space-between;align-items:baseline}
+.price .fin b{font-size:28px}
+.letter{margin:0 14px 24px;background:#FAF3E4;border-radius:20px;padding:26px 22px;font-family:var(--serif);font-size:17px;line-height:31px;color:#3a2f25}
+.letter .sig{text-align:right;margin-top:14px}
+/* 하단 고정 */
+.cta{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(30,20,12,.94);padding:8px 16px calc(12px + env(safe-area-inset-bottom));display:none}
+.cta.on{display:block}
+.cta>div{max-width:448px;margin:0 auto}
+.cta p{text-align:center;color:#fff;font-size:13px;line-height:20px;margin-bottom:6px}.cta p b{color:#FDE047;font-variant-numeric:tabular-nums}
+.cta button{width:100%;height:52px;border:0;border-radius:12px;background:linear-gradient(90deg,#B8402F,#D8603F);color:#fff;font-size:17px;font-weight:600}
+/* 끈 묶기 */
+.tie{position:fixed;inset:0;z-index:50;background:rgba(20,12,6,.8);display:flex;align-items:center;justify-content:center}
+.tie .box{position:relative;width:min(88vw,400px)}
+.tie img{width:100%;border-radius:16px;display:block}
+.tie svg{position:absolute;inset:0;width:100%;height:100%}
+.tie path{fill:none;stroke:#C0392B;stroke-width:7;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.3s ease-in-out forwards}
+.tie p{position:absolute;left:0;right:0;bottom:-48px;text-align:center;color:#FFEFD6;font-family:var(--serif);font-size:18px}
+/* 결제·부채질 */
+.pay{padding:24px 20px 140px;min-height:100vh;background:var(--paper)}
+.pay h2{font-size:20px;margin:8px 0 16px}
+.opt{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:8px;background:#fff}
+.opt.on{border-color:var(--wood);box-shadow:inset 0 0 0 1px var(--wood)}
+.opt s{color:#aaa;font-size:12px;margin-right:6px}.opt em{font-style:normal;color:var(--red);font-size:12px;margin-right:4px}
+.fan-zone{position:absolute;z-index:3;left:8%;bottom:6%;width:44%;height:30%;border-radius:20px;background:rgba(0,0,0,.08);border:2px dashed rgba(255,230,190,.8);display:flex;align-items:center;justify-content:center;color:#FFEFD6;font-size:14px;text-shadow:0 1px 4px #000}
+.fire{position:absolute;z-index:2;left:18%;bottom:14%;width:22%;height:12%;border-radius:50%;background:radial-gradient(#FFD36B,#F2702B 60%,transparent 70%);filter:blur(4px);opacity:.3;transition:opacity .2s,transform .2s}
+.tag{position:absolute;top:8px;left:8px;z-index:4;font-size:11px;background:rgba(0,0,0,.5);color:#fff;padding:1px 6px;border-radius:6px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="cta" id="cta"><div><p>할인혜택 종료까지 <b id="timer">--:--:--:--</b></p><button id="buy">할미 약첩 전부 받기</button></div></div>
+<script>
+const KEY = (location.hash.match(/k=([^&]+)/) || [])[1] || "";
+const Q = new URLSearchParams(location.search);
+const API = Q.get("api") || "https://ddtmqpcrfrvdwxtpcsfb.supabase.co/functions/v1/halmi";
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const IMG = (n) => `img/y/${n}.jpg`;
+const WXK = { 木: "목", 火: "화", 土: "토", 金: "금", 水: "수" }, WXN = { 木: "나무", 火: "불", 土: "흙", 金: "쇠", 水: "물" };
+const WXC = { 木: "#5E9C8F", 火: "#D9705A", 土: "#C9A25B", 金: "#9A948C", 水: "#4E5A7A" };
+const CTL = { 木: "土", 火: "金", 土: "水", 金: "木", 水: "火" }, GEN = { 木: "火", 火: "土", 土: "金", 金: "水", 水: "木" };
+const ELOF = (c) => ("甲乙寅卯".includes(c) ? "木" : "丙丁巳午".includes(c) ? "火" : "戊己辰戌丑未".includes(c) ? "土" : "庚辛申酉".includes(c) ? "金" : "水");
+const hasJ = (w) => { const c = w.charCodeAt(w.length - 1) - 0xac00; return c >= 0 && c % 28 > 0; };
+const voc = (w) => (hasJ(w) ? "아" : "야");
+const EX = '<span class="ex">예시 값</span>';
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const LS = { get: (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } }, set: (k, v) => localStorage.setItem(k, JSON.stringify(v)) };
+
+/* 입력값 (데모: ?demo=1 이면 다혜 예시로 바로 결과) */
+let U = LS.get("yak_user") || { wish: "", name: "", y: "", m: "", d: "", cal: "solar", hour: "", minute: "", known: true, gender: "f", love: "", loveLen: "" };
+if (Q.get("demo")) U = { wish: "내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요?", name: "다혜", y: 1999, m: 1, d: 22, cal: "solar", hour: 17, minute: 30, known: true, gender: "f", love: "연애중", loveLen: "1년 ~ 3년" };
+const save = () => LS.set("yak_user", U);
+let CH = null, chP = null;
+function fetchChart() {
+  if (chP) return chP;
+  const body = { action: "chart", y: +U.y, m: +U.m, d: +U.d, hour: U.known ? +U.hour : null, minute: U.known ? +U.minute : null, calendar: U.cal, gender: U.gender };
+  chP = fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-halmi-key": KEY }, body: JSON.stringify(body) }).then((r) => r.json()).then((j) => { if (!j.ok) throw new Error(j.error || "fail"); CH = j.viz; CH.gender = U.gender; return CH; });
+  return chP;
+}
+
+/* 말이 한 글자씩 */
+async function typeTo(el, text, speed = 38) { el.textContent = ""; for (const ch of text) { el.textContent += ch; await sleep(ch === "…" || ch === "." ? speed * 5 : speed); } }
+async function says(lines, box) { box.innerHTML = lines.map(() => `<p class="say"></p>`).join(""); const ps = box.querySelectorAll(".say"); for (let i = 0; i < lines.length; i++) { await typeTo(ps[i], lines[i]); await sleep(260); } }
+function show(html, bot = "") { $("#app").innerHTML = html; $("#cta").classList.remove("on"); window.scrollTo(0, 0); const b = document.querySelector(".bot"); if (b) b.remove(); if (bot) document.body.insertAdjacentHTML("beforeend", `<div class="bot"><div>${bot}</div></div>`); }
+const scr = (img, inner, cls = "") => `<section class="sc ${cls}"><div class="pic"><img src="${IMG(img)}" alt=""></div><div class="low">${inner}</div></section>`;
+
+/* S1 첫 화면 */
+function S1() {
+  const snow = Array.from({ length: 36 }, (_, i) => `<i style="left:${(i * 29) % 100}%;width:${3 + (i % 3)}px;height:${3 + (i % 3)}px;animation-duration:${7 + (i % 6)}s;animation-delay:-${(i * 0.6).toFixed(1)}s"></i>`).join("");
+  show(`<section class="sc s1"><div class="pic"><img src="${IMG("S1")}" alt=""><div class="snow">${snow}</div><div class="tt"><p class="y">2027 정미년</p><h1>할미약방</h1><p class="a">아프기 전에 짓는 약</p><p class="b">때와 맥을 짚어, 미리 막는 집</p></div></div></section>`, `<button class="btn" id="go">약방 문 열기</button>`);
+  $("#go").onclick = S2;
+}
+/* S2 문 열기 */
+async function S2() {
+  show(scr("S2a", `<div id="say"></div>`), `<button class="btn" id="go" disabled>할미, 저 어디가 안 좋아요?</button>`);
+  await says(["아이고, 우리 아가 왔구나. 이 추운 밤에… 얼른 들어와서 몸부터 녹이거라.", "벌써 또 한 해가 저무는구나. 세월 참 빠르지… 곧 2027년이란다."], $("#say"));
+  await sleep(500);
+  document.querySelector(".pic img").src = IMG("S2b");
+  await says(["그런데 얼굴이 왜 이리 핼쑥하누. 쯧쯧… 맥을 한번 짚어 봐야겠구나. 몇 군데 탈이 보이는구먼."], $("#say"));
+  $("#go").disabled = false; $("#go").onclick = S3;
+}
+/* S3 마음에 걸리는 것 */
+async function S3() {
+  show(scr("S3", `<div id="say"></div><textarea class="slip" id="wish" maxlength="200" placeholder="예) 내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요?">${esc(U.wish)}</textarea>`, "form-sc"), `<button class="btn" id="go">다 적었어요</button><button class="lnk" id="skip">딱히 없어요</button>`);
+  $("#go").onclick = () => { U.wish = $("#wish").value.trim(); save(); S4(); };
+  $("#skip").onclick = () => { U.wish = ""; save(); S4(); };
+  await says(["급할 거 하나 없다. 따뜻할 때 차부터 한 모금 마시거라.", "내년 생각하면 자꾸 마음에 걸리는 거 있지? 그거 하나만 여기 적어 보련?"], $("#say"));
+}
+/* S4 접수표 */
+async function S4() {
+  const b8 = U.y ? `${U.y}${String(U.m).padStart(2, "0")}${String(U.d).padStart(2, "0")}` : "";
+  const tm = U.known && U.hour !== "" ? `${String(U.hour).padStart(2, "0")}:${String(U.minute).padStart(2, "0")}` : "";
+  show(scr("S4", `<div id="say"></div><div class="form">
+    <div><label>이름</label><input id="nm" maxlength="10" value="${esc(U.name)}" placeholder="홍길동"></div>
+    <div><label>생년월일</label><div class="row2"><input id="bd" inputmode="numeric" maxlength="8" value="${b8}" placeholder="생년월일 8자리 (예: 19990122)"><div class="seg" style="width:120px"><button data-c="solar" class="${U.cal === "solar" ? "on" : ""}">양력</button><button data-c="lunar" class="${U.cal === "lunar" ? "on" : ""}">음력</button></div></div></div>
+    <div><label>태어난 시간</label><div class="row2"><input id="tm" inputmode="numeric" maxlength="5" value="${tm}" placeholder="예: 13:20" ${U.known ? "" : "disabled"}><label class="chk"><input type="checkbox" id="unk" ${U.known ? "" : "checked"} style="width:auto;height:auto"> 모름</label></div></div>
+    <div><label>성별</label><div class="seg" id="gd"><button data-g="f" class="${U.gender === "f" ? "on" : ""}">여자</button><button data-g="m" class="${U.gender === "m" ? "on" : ""}">남자</button></div></div>
+    <p class="err" id="err"></p></div>`, "form-sc"), `<button class="btn" id="go">할미한테 맡기기</button>`);
+  document.querySelectorAll("[data-c]").forEach((b) => (b.onclick = () => { U.cal = b.dataset.c; document.querySelectorAll("[data-c]").forEach((x) => x.classList.toggle("on", x === b)); }));
+  document.querySelectorAll("[data-g]").forEach((b) => (b.onclick = () => { U.gender = b.dataset.g; document.querySelectorAll("[data-g]").forEach((x) => x.classList.toggle("on", x === b)); }));
+  $("#unk").onchange = (e) => { $("#tm").disabled = e.target.checked; };
+  $("#go").onclick = () => {
+    const nm = $("#nm").value.trim(), bd = $("#bd").value.replace(/\D/g, ""), t = $("#tm").value.replace(/[^\d]/g, "");
+    if (!nm) return ($("#err").textContent = "이름을 적어 주거라.");
+    if (bd.length !== 8) return ($("#err").textContent = "생년월일은 8자리로 적어 주거라. 예) 19990122");
+    const y = +bd.slice(0, 4), m = +bd.slice(4, 6), d = +bd.slice(6, 8);
+    if (y < 1920 || y > 2015 || m < 1 || m > 12 || d < 1 || d > 31) return ($("#err").textContent = "날짜가 맞는지 한 번 더 봐 주거라.");
+    const unk = $("#unk").checked; let hh = "", mi = "";
+    if (!unk) { if (t.length < 3) return ($("#err").textContent = "시간은 13:20처럼 적거나 «모름»을 눌러라."); hh = +t.slice(0, t.length - 2); mi = +t.slice(-2); if (hh > 23 || mi > 59) return ($("#err").textContent = "시간이 맞는지 봐 주거라."); }
+    Object.assign(U, { name: nm, y, m, d, known: !unk, hour: hh, minute: mi }); save(); chP = null; fetchChart().catch(() => {}); S5();
+  };
+  await says(["먼저 언제 태어났는지부터 적어 보거라. 타고난 바탕이 거기 다 적혀 있거든."], $("#say"));
+}
+/* S5 마음 주는 사람 */
+async function S5() {
+  const LV = ["선택 안함", "솔로", "연애중", "짝사랑중", "썸타는중", "기혼"], LL = ["선택 안함", "3개월 미만", "3개월 ~ 1년", "1년 ~ 3년", "3년 ~ 5년", "5년 이상"];
+  const opt = (a, v) => a.map((x) => `<option ${x === v ? "selected" : ""}>${x}</option>`).join("");
+  show(scr("S5", `<div id="say"></div><p class="sent">지금은 <select id="lv">${opt(LV, U.love || "선택 안함")}</select> 상태예요.</p><p class="sent">기간은 <select id="ll">${opt(LL, U.loveLen || "선택 안함")}</select> 이에요.</p><p class="hint">답하지 않아도 넘어갈 수 있어요.</p>`, "form-sc"), `<button class="btn" id="go">다음으로</button>`);
+  $("#go").onclick = () => { const a = $("#lv").value, b = $("#ll").value; U.love = a === "선택 안함" ? "" : a; U.loveLen = b === "선택 안함" ? "" : b; save(); S6(); };
+  await says([`${U.name}${hasJ(U.name) ? "이" : ""}라… 고것 참, 이름도 곱구나.`, "하나만 더 묻자꾸나. 요새 마음 주는 사람은 있니?"], $("#say"));
+}
+/* S6 맥 짚기 (꾹 누르기) */
+async function S6() {
+  fetchChart().catch(() => {});
+  show(`<section class="sc"><div class="pic" style="height:66vh"><img src="${IMG("S6")}" alt="" style="animation:none"><div class="pulse-zone" id="pz"><b></b></div></div><div class="low"><div id="say"></div><div class="prog"><i id="pg"></i></div><p class="steam" id="st">손목을 꾹 누르고 있어요</p></div></section>`, `<button class="btn" id="go" disabled>표지 보기</button>`);
+  await says(["태어난 때는 타고난 바탕이고, 맥은 지금 네 기운이란다. 둘을 같이 봐야 앞날이 보이지.", "자, 손목 이리 내 보거라. 가만히, 빼지 말고."], $("#say"));
+  const SUB = ["…어디 가만있어 보자", "아이고, 손목이 이게 뭐냐. 얼음장이네", "맥이 가라앉았구나. 요새 많이 지쳤지", "내년 이맘때까지 어디서 탈이 나는지, 할미가 보고 있단다"];
+  let p = 0, holding = false, last = 0, beat = 0, done = false;
+  const pz = $("#pz"), st = $("#st"), sayBox = $("#say");
+  const start = (e) => { e.preventDefault(); if (done) return; holding = true; pz.classList.add("hold"); last = performance.now(); loop(); };
+  const stop = () => { if (done || !holding) return; holding = false; pz.classList.remove("hold"); st.textContent = "아직이다, 조금만 더. 다시 꾹 눌러 보거라"; };
+  pz.addEventListener("pointerdown", start); window.addEventListener("pointerup", stop); pz.addEventListener("pointerleave", stop);
+  async function loop() {
+    if (!holding || done) return;
+    const now = performance.now(); p = Math.min(1, p + (now - last) / 9000); last = now;
+    $("#pg").style.width = p * 100 + "%";
+    const i = Math.min(SUB.length - 1, Math.floor(p * SUB.length)); if (sayBox.dataset.i != i) { sayBox.dataset.i = i; sayBox.innerHTML = `<p class="say">${SUB[i]}</p>`; }
+    st.textContent = "맥 짚는 중…";
+    if (now - beat > 850) { beat = now; navigator.vibrate?.([40, 110, 30]); }
+    if (p >= 1) {
+      done = true; holding = false; pz.classList.remove("hold"); st.textContent = "약탕기 물이 다 끓었다";
+      try { await fetchChart(); sayBox.innerHTML = `<p class="say">됐다. 이제 손 거둬도 된다.</p>`; $("#go").disabled = false; $("#go").onclick = S8; }
+      catch { sayBox.innerHTML = `<p class="say">맥이 잘 안 잡히는구나. 링크를 다시 확인해 주거라.</p>`; }
+      return;
+    }
+    requestAnimationFrame(loop);
+  }
+}
+/* S8 표지 → 결과 */
+function S8() {
+  show(`<section class="cover"><img src="${IMG("S8")}" alt=""><div class="ct"><p class="ey">${U.y}년 ${String(U.m).padStart(2, "0")}월 ${String(U.d).padStart(2, "0")}일생</p><p class="nm">${esc(U.name)}</p><p class="ln">${esc(U.name)}의 2027년,<br>다칠 곳부터 짚어 보마</p><p class="down">아래로 내려 읽어요 ↓</p></div></section><div id="res"></div>`);
+  $("#cta").classList.add("on");
+  renderResult(CH);
+}
+
+/* ── 결과 ── */
+function pn(o) {
+  const bs = (o.b || []).map((b) => `<div class="bb" style="left:${b.x}%;top:${b.y}%;width:${b.w || 52}%"><span>${b.t}</span></div>`).join("");
+  const fx = (o.sfx || []).map((f) => `<span class="sfx" style="left:${f.x}%;top:${f.y}%;transform:rotate(${f.r || -8}deg)">${f.t}</span>`).join("");
+  return `<div class="pn ${o.kind || "box"}" style="--h:${o.h || 420}px;--p:${o.pos || "center"}"><img class="im" src="${IMG(o.img)}" alt="" loading="lazy">${bs}${fx}</div>`;
+}
+const capt = (h, s = "") => `<p class="cap">${h}${s ? `<small>${s}</small>` : ""}</p>`;
+const lockList = (t, items) => `<div class="lock"><h5>🔒 ${t}</h5><ul>${items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>`;
+const GRADES = ["대길", "길", "중길", "소길", "말길", "흉", "대흉"];
+const gradeOf = (v) => (/힘이 붙/.test(v.yearVerdict) ? "길" : /섞인/.test(v.yearVerdict) ? "소길" : /정리/.test(v.yearVerdict) ? "소길" : "말길");
+const shortV = (t) => (/조심/.test(t) ? "조심해서 지나갈 해" : /힘이 붙/.test(t) ? "힘이 붙는 해" : /섞인/.test(t) ? "좋고 나쁨이 섞인 해" : /정리/.test(t) ? "차분히 정리할 해" : t);
+function areas(v) {
+  const dm = ELOF(v.dm), use = new Set(v.useful), avoid = new Set(v.avoid);
+  const wealth = CTL[dm], officer = Object.keys(CTL).find((e) => CTL[e] === dm), parent = Object.keys(GEN).find((e) => GEN[e] === dm), child = GEN[dm];
+  const sc = (e) => 3 + (use.has(e) ? 1 : 0) - (avoid.has(e) ? 1 : 0);
+  const c = (n) => Math.max(1, Math.min(5, n));
+  return [["돈", c(sc(wealth))], ["마음", c(sc(v.gender === "m" ? wealth : officer))], ["일·명예", c(sc(officer))], ["시험·계약", c(sc(parent))], ["몸", c(sc(child) - (v.climate?.tempLabel === "차가운 사주" ? 1 : 0))]].sort((a, b) => a[1] - b[1]);
+}
+const ORG = { 木: ["간·담", ["간 초음파", "간기능 혈액검사", "담낭 초음파", "눈 검사", "근육·힘줄 검사"], "간 쪽"], 火: ["심장·소장", ["심전도", "심장 초음파", "혈압 24시간 측정", "소장 검사", "혈관 검사"], "가슴이 늘 서늘했지? 심장 쪽"], 土: ["위·비장", ["위내시경", "복부 초음파", "혈당 검사", "췌장 검사", "소화기 검사"], "속이 자주 더부룩했지? 위장 쪽"], 金: ["폐·대장", ["흉부 X-ray", "폐기능 검사", "대장내시경", "피부 검사", "비염 검사"], "숨이 자주 짧았지? 폐 쪽"], 水: ["신장·방광", ["신장기능 혈액검사", "소변 검사", "방광 초음파", "호르몬 검사", "골밀도 검사"], "허리가 자주 시렸지? 콩팥 쪽"] };
+const REL = (dmE, e) => (e === dmE ? ["친구·동료", "같은 편"] : GEN[dmE] === e ? ["후배·아랫사람", "내가 챙기는 사람"] : CTL[dmE] === e ? ["돈이 얽힌 사람", "거래 상대"] : CTL[e] === dmE ? ["윗사람·상사", "나를 재는 사람"] : ["어른·스승", "나를 받쳐 주는 사람"]);
+function flowSvg(v) {
+  const vals = v.flow.map((m) => m.up - m.down), mx = Math.max(1, ...vals.map(Math.abs));
+  const W = 340, H = 140, x = (i) => 16 + i * ((W - 32) / 11), y = (n) => H / 2 - (n / mx) * (H / 2 - 14);
+  const cI = v.caution.map((c) => c.idx), oI = v.chance;
+  return `<svg class="flowsvg" viewBox="0 0 ${W} ${H + 22}"><line x1="8" y1="${H / 2}" x2="${W - 8}" y2="${H / 2}" stroke="#E8DCC8"/><polyline points="${vals.map((n, i) => `${x(i)},${y(n)}`).join(" ")}" fill="none" stroke="#8a6a4e" stroke-width="2"/>${vals.map((n, i) => `<circle cx="${x(i)}" cy="${y(n)}" r="${cI.includes(i) || oI.includes(i) ? 6 : 3.5}" fill="${cI.includes(i) ? "#B8402F" : oI.includes(i) ? "#3e7a5e" : "#C9B79F"}"/>`).join("")}${v.flow.map((m, i) => `<text x="${x(i)}" y="${H + 16}" text-anchor="middle" font-size="12" fill="#8a7a68">${parseInt(m.label)}</text>`).join("")}</svg>`;
+}
+const MK = (lab) => { const n = parseInt(lab); return ["", "정월", "이월", "삼월", "사월", "오월", "유월", "칠월", "팔월", "구월", "시월", "동짓달", "섣달"][n] || lab; };
+
+function renderResult(v) {
+  const NAME = U.name, T = Object.fromEntries((v.table || []).map((c) => [c.label, c]));
+  const meCh = T["일"]?.gan || "", baseCh = T["월"]?.zhi || "", me = T["일"]?.ganM || "", base = T["월"]?.zhiM || "";
+  const months = v.flow.map((m) => m.label), cm = v.caution.map((c) => ({ m: months[c.idx], days: c.days })), om = v.chance.map((i) => months[i]);
+  const bad = cm[0] || { m: "", days: [] }, badK = MK(bad.m);
+  const pctArr = Object.entries(v.pct), weak = pctArr.sort((a, b) => a[1] - b[1])[0][0], heavy = Object.entries(v.pct).sort((a, b) => b[1] - a[1])[0][0];
+  const [org, checks, orgSay] = ORG[weak];
+  const dmE = ELOF(v.dm), [avP] = REL(dmE, v.avoid[0]), [gP, gDesc] = REL(dmE, v.useful[0]);
+  const grade = gradeOf(v), A = areas(v);
+  const cold = v.climate?.tempLabel === "차가운 사주";
+  const wishQ = U.wish ? U.wish.replace(/[?？.]+$/, "") : "";
+  const H = [];
+  /* R1 고민 쪽지 */
+  H.push(`<div class="wt">`);
+  if (U.wish) {
+    H.push(pn({ img: "R1a", h: 460, kind: "full", pos: "center 25%", b: [{ t: "네가 적은 것부터<br>읽어 봤다.", x: 50, y: 60, w: 46 }] }));
+    H.push(`<div class="pn box wish" style="--h:340px"><img class="im" src="${IMG("R1b")}" alt=""><p class="wt2">${esc(U.wish)}</p><svg class="ring" viewBox="0 0 200 120" preserveAspectRatio="none"><path pathLength="1" d="M150 14 C 118 2, 52 4, 22 26 C -2 44, 4 84, 42 104 C 84 124, 160 116, 188 86 C 206 64, 196 26, 160 14 C 132 6, 96 8, 70 16"/></svg><div class="bb" style="left:46%;top:72%;width:50%"><span>…그래그래,<br>이게 마음에<br>걸렸구나.</span></div></div>`);
+    H.push(capt(`걱정 마라. 이건 할미가<br><em>맨 끝에 꼭 답해 주마.</em>`, "맥부터 보고."));
+  }
+  /* R2 맥 기록지 */
+  H.push(pn({ img: "R2a", h: 280, kind: "tilt", pos: "center", sfx: [{ t: "톡, 톡", x: 60, y: 60, r: -10 }], b: [{ t: "네 여덟 글자를<br>맥 기록지에<br>적어 보자.", x: 4, y: -22, w: 50 }] }));
+  const EL = { 木: ["목", "#5E9C8F"], 火: ["화", "#D9705A"], 土: ["토", "#C9A25B"], 金: ["금", "#9A948C"], 水: ["수", "#4E5A7A"] };
+  const tag = (c) => { const [k, col] = EL[ELOF(c)]; return `<i style="background:${col}">${k}</i>`; };
+  H.push(`<div class="pn box ms" style="--h:360px"><img class="im" src="${IMG("R2b")}" alt=""><div class="grid">${["시", "일", "월", "년"].map((l) => { const c = T[l]; return `<div class="${l === "일" ? "me" : ""}"><small>${l}</small><b>${c ? c.gan : "?"}</b>${c ? tag(c.gan) : ""}<b>${c ? c.zhi : "?"}</b>${c ? tag(c.zhi) : ""}</div>`; }).join("")}</div></div>`);
+  H.push(capt(`${U.y}년 ${U.m}월 ${U.d}일${U.known ? ` ${U.hour}시 ${U.minute}분` : ""} 생`, "맥 기록지 · 오른쪽부터 년·월·일·시, 붉은 칸이 너 자신이다"));
+  H.push(capt(`여기 이 <em>${esc(meCh)}</em> 자가 바로 너란다.<br>${esc(me)} 하나지.`));
+  /* R3 체질 + 저울 */
+  H.push(`<div class="soul"><img src="img/s/${encodeURIComponent(meCh + baseCh)}.jpg" onerror="this.src='img/l/L1-7.jpg'" alt=""><p>${esc(baseCh)} ${esc(base)} 위에 선<br>${esc(meCh)} ${esc(me)}</p></div>`);
+  H.push(pn({ img: "R3a", h: 260, kind: "box", pos: "center", b: [{ t: "네 몸에 든 기운을<br>저울에 한번<br>달아 보자꾸나.", x: 48, y: -26, w: 50 }] }));
+  H.push(`<section class="blk scale" id="scale"><p class="ey">체질 저울</p><p class="tt">하나씩 올려 보거라</p><svg viewBox="0 0 320 170"><line x1="160" y1="30" x2="160" y2="150" stroke="#8a6a4e" stroke-width="5"/><rect x="120" y="148" width="80" height="10" rx="4" fill="#8a6a4e"/><g id="beam" style="transform-origin:160px 40px;transition:transform .6s cubic-bezier(.3,1.4,.5,1)"><line x1="50" y1="40" x2="270" y2="40" stroke="#C9A25B" stroke-width="6" stroke-linecap="round"/><path d="M50 40 L30 100 M50 40 L70 100 M270 40 L250 100 M270 40 L290 100" stroke="#C9A25B" stroke-width="1.5"/><ellipse cx="50" cy="102" rx="34" ry="8" fill="#C9A25B"/><ellipse cx="270" cy="102" rx="34" ry="8" fill="#C9A25B"/><text id="pl" x="50" y="94" text-anchor="middle" font-size="13" fill="#5a3a24"></text><text x="270" y="94" text-anchor="middle" font-size="12" fill="#8a7a68">고른 무게</text></g><circle cx="160" cy="40" r="7" fill="#8a6a4e"/></svg><div class="wbtns">${["木", "火", "土", "金", "水"].map((e) => `<button data-e="${e}"><b>${WXN[e]}</b>${WXK[e]}</button>`).join("")}</div><div class="wres" id="wres"></div><p class="react" id="wsay"></p></section>`);
+  H.push(pn({ img: "R3b", h: 420, kind: "full", pos: "center 30%", b: [{ t: `그런데 아이고…<br>${WXN[heavy]}이 한쪽으로 쿵.<br><b>${WXN[weak]}은 하나도 없구나.</b>`, x: 46, y: 58, w: 52 }] }));
+  H.push(capt(`힘들어도 내색 한 번 안 하지.<br><em>그러다 한꺼번에 와르르 무너지고…</em>`, "할미는 그게 제일 속상하단다."));
+  /* R4 2026 */
+  H.push(pn({ img: "R4", h: 420, kind: "boxR", pos: "center 30%", b: [{ t: "올해 맥도<br>아직 남아 있구나…<br>쯧쯧, 고생 많았네.", x: -24, y: 54, w: 50 }] }));
+  H.push(`<section class="blk" style="background:linear-gradient(#7A1F1F,#A8352A);color:#fff;border:0"><p class="ey" style="color:#fbd">2026년, ${esc(NAME)}${hasJ(NAME) ? "이" : ""}가 넘어진 곳 ${EX}</p><div style="background:#fff;color:#222;border-radius:12px;padding:12px 14px;margin-top:12px;font-size:15px;line-height:30px"><p><b style="color:#B8402F">5월</b> 일한 만큼 남지 않던 통장</p><p class="blur"><b>●월</b> 이 길이 맞나 흔들리던 마음</p><p class="blur"><b>●월</b> 쉬어도 안 풀리던 몸</p></div></section>`);
+  H.push(capt(`그때 진작 할미한테 왔으면<br><em>덜 다쳤을 것을.</em>`));
+  H.push(`</div>`);
+  /* R5 약연 → 총운 */
+  H.push(`<div class="wt">`);
+  H.push(pn({ img: "R5a", h: 440, kind: "full", pos: "center 30%", b: [{ t: "이제 내년 맥이다.<br>이걸 네 손으로<br>곱게 갈아 보거라.", x: 46, y: 56, w: 52 }] }));
+  H.push(`<section class="blk"><p class="ey">2027년 ${esc(NAME)}의 앞날 맥</p><p class="tt">약재를 갈면 바닥에 적혀 있단다</p><div class="grind" id="grind"><div class="gradeCard"><p class="g">${grade}</p><p class="l">${shortV(v.yearVerdict)}</p><div class="grades">${GRADES.map((g) => `<span class="${g === grade ? "on" : ""}">${g}</span>`).join("")}</div><p style="font-size:13px;color:#8a7a68;margin-top:6px">삼재: ${v.samjae?.is ? esc(v.samjae.name) : "무삼재"}</p></div><canvas id="gc"></canvas></div><div id="after" style="display:none"><div class="dv" style="margin-top:20px"></div><p style="font-size:13px;color:#8a7a68;text-align:center">약한 데부터 보여 주마 ${EX}</p><div class="area">${A.map(([n, s], i) => `<span class="${i === 0 ? "low" : ""}">${n}</span><span class="moons">${[1, 2, 3, 4, 5].map((k) => `<i class="${k <= s ? "" : "e"}"></i>`).join("")}</span>`).join("")}</div></div></section>`);
+  H.push(pn({ img: "R5c", h: 300, kind: "box", pos: "center 30%", sfx: [{ t: "흠…", x: 70, y: 8, r: 8 }], b: [{ t: "할미는 듣기 좋은<br>소리는 못 한다.", x: 46, y: -24, w: 50 }] }));
+  H.push(capt(`내년엔 마른 불기운이 확 들어온단다.<br>${cold ? "언 땅이 갑자기 녹으면 어찌 되겠니. <em>질척해지지.</em>" : "<em>안 그래도 마른 데에 불이 붙는 셈이지.</em>"}`));
+  H.push(capt(`정미년은,<br><em>모르고 맞으면 크게 다치는 해</em>란다.`));
+  /* R6 돈 */
+  H.push(pn({ img: "R6a", h: 280, kind: "tilt", pos: "center", sfx: [{ t: "짤랑", x: 64, y: 14, r: 10 }], b: [{ t: "제일 먼저 새는 건<br><b>돈</b>이구나.", x: 4, y: -20, w: 48 }] }));
+  H.push(pn({ img: "R6b", h: 340, kind: "boxL", pos: "center 30%", b: [{ t: `<b>${badK}</b>이란다.<br>석 달을 꼬박 모은 게<br>한 번에 빠져나가겠어.`, x: 50, y: -8, w: 50 }] }));
+  H.push(`<section class="blk"><p class="ey">탈 ① 돈</p><p class="tt">${badK}, 크게 새는 돈</p><div class="tal"><h4>${badK} 큰 지출</h4><div class="r"><b>무엇이</b><span>들어오는 것보다 나가는 게 먼저 보이는 달 ${EX}</span></div><div class="r"><b>왜</b><span>네 맥에 ${WXN[v.avoid[0]]} 기운이 넘쳐 쌓아 둔 게 흔들린다 ${EX}</span></div><div class="r"><b>언제</b><span>${badK}${bad.days?.[0] ? `, 특히 ${bad.days[0].replace("/", "월 ")}일 앞뒤` : ""}</span></div><div class="r"><b class="w">그냥 두면</b><span>석 달 모은 게 한 번에 빈다 ${EX}</span></div><div class="r"><b class="g">할미 처방</b><span>큰 결제는 그달을 넘겨서 해라. 들어오는 날 바로 따로 묶어 두거라. ${EX}</span></div></div>${lockList("나머지 약첩에 든 것", ["돈이 새는 달과 막는 날", "돈 때문에 멀어질 사람", "집·이사, 움직일 때와 멈출 때", "큰돈 들어오기 전 꼭 막을 것"])}</section>`);
+  /* R7 일 · 서랍 */
+  H.push(pn({ img: "R7a", h: 440, kind: "full", pos: "center 30%", b: [{ t: "일은 말이다,<br>잘하는 것보다<br><b>때를 아는 게</b> 먼저란다.", x: 46, y: 56, w: 52 }] }));
+  H.push(`<section class="blk"><p class="ey">탈 ② 일</p><p class="tt">서랍 열두 칸이 내년 열두 달</p><p class="ask">손 가는 대로 세 칸만 열어 보련?</p><div class="drawers" id="dr">${months.map((m, i) => `<button data-i="${i}" aria-label="서랍"></button>`).join("")}</div><p class="react" id="drsay"></p><div id="drlock"></div></section>`);
+  /* R8 마음 */
+  H.push(pn({ img: "R8a", h: 280, kind: "tilt", pos: "center", sfx: [{ t: "톡", x: 70, y: 30, r: 10 }], b: [{ t: `${U.love ? `<b>${esc(U.love)}</b>이라 했지?` : "마음 쪽도 봤다."}<br>고운 얘기만<br>해 주고 싶다만…`, x: 50, y: -20, w: 48 }] }));
+  H.push(pn({ img: "R8b", h: 420, kind: "boxR", pos: "center 30%", b: [{ t: `<b>${badK}</b>에 뱉은 말은<br>주워 담지를 못한단다.`, x: -24, y: 54, w: 50 }] }));
+  H.push(`<section class="blk"><p class="ey">탈 ③ 마음</p><p class="tt">달마다 마음 흐름</p>${flowSvg(v)}<p style="font-size:12px;color:#8a7a68;text-align:center">붉은 점 부딪히는 달 · 초록 점 좋은 달</p><div class="day bad"><h4>먼저 조심할 날 · ${bad.days?.[0] ? bad.days[0].replace("/", "월 ") + "일" : badK}</h4><p>말 한마디가 크게 번지는 날이다. 이날은 결론을 미루거라. ${EX}</p></div>${om.slice(0, 2).map((m, i) => `<div class="day ${i ? "blur" : ""}"><h4>그래도 좋은 달 · ${MK(m)}</h4><p>마음이 잘 닿는 달이다. 하고 싶던 말은 이때 하거라. ${EX}</p></div>`).join("")}${lockList("나머지 약첩에 든 것", ["다투고 나서 되돌리는 법", "인연이 시작되는 자리", "헤어진 인연, 다시 올까", "결혼 얘기가 오가는 때"])}</section>`);
+  /* R9 몸 */
+  H.push(pn({ img: "R9a", h: 420, kind: "full", pos: "center 30%", sfx: [{ t: "칙—", x: 10, y: 58, r: -8 }], b: [{ t: "그런데 마음보다<br><b>몸</b>이 먼저<br>탈이 나겠구나.", x: 48, y: 56, w: 50 }] }));
+  H.push(pn({ img: "R9b", h: 260, kind: "tilt", pos: "center", b: [{ t: `${WXN[weak]} 기운이 없으니<br>${orgSay} 맥이<br>약하단다.`, x: 46, y: -24, w: 52 }] }));
+  H.push(`<section class="blk"><p class="ey">탈 ④ 몸</p><p class="tt">늦기 전에 볼 것</p><div class="clip"><h4>${esc(org)} · 미리 받아 볼 검사</h4><small>*의학적 진단이 아닌 참고 정보예요</small><ul>${checks.map((c, i) => `<li class="${i ? "blur" : ""}">${c}</li>`).join("")}</ul></div>${lockList("나머지 약첩에 든 것", ["내 체질에 맞는 밥상", "태어날 때부터 약한 곳", "속 끓이는 게 몸으로 가는 길", "2027년 크게 다칠 수 있는 때"])}</section>`);
+  H.push(pn({ img: "R9c", h: 320, kind: "boxL", pos: "center 30%", sfx: [{ t: "쪼르륵", x: 6, y: 70, r: -6 }], b: [{ t: "밥 거르지 말고.<br>내년 봄 오기 전에<br><b>꼭 한 번</b> 봐 두거라.", x: 50, y: -10, w: 50 }] }));
+  /* R10 사람 */
+  H.push(pn({ img: "R10a", h: 440, kind: "boxR", pos: "center 25%", b: [{ t: "사람 복은 있단다.<br>그건 걱정 마라.", x: -24, y: 6, w: 48 }, { t: "그런데 이 녀석은 꼭…<br><b>피해야 할 사람</b>한테<br>먼저 정을 주더구나.", x: -24, y: 58, w: 52 }] }));
+  H.push(pn({ img: "R10b", h: 260, kind: "full", pos: "center", b: [{ t: "밝은 쪽은 붙잡고,<br>어두운 쪽은<br><b>돌아가거라.</b>", x: 4, y: 50, w: 48 }] }));
+  H.push(`<section class="blk"><p class="ey">탈 ⑤ 사람</p><p class="tt">피할 사람, 붙잡을 사람</p><div class="avoidp"><b>먼저 피할 사람</b><br>${esc(avP)} 쪽에서 오는 부탁. ${WXN[v.avoid[0]]} 기운 센 사람이 너를 지치게 한다. ${EX}</div><div class="guiren"><img src="${IMG("R10c")}" alt=""><div><p><span>어디서</span><b>${esc(gP)}</b></p><p><span>어떤 사람</span><b>${esc(gDesc)}</b></p><p><span>기운</span><b>${WXN[v.useful[0]]} 기운</b></p><p><span>도움 받는 때</span><b>${MK(om[0] || "")}</b></p></div></div>${lockList("나머지 약첩에 든 것", ["밖에서 듣게 될 말", "가까워질 사람과 멀어질 사람", "가족과 부딪히는 진짜 이유"])}</section>`);
+  H.push(`</div>`);
+  /* R11 답 */
+  H.push(`<div class="wt">`);
+  if (U.wish) {
+    H.push(pn({ img: "R11", h: 460, kind: "full", pos: "center 25%", b: [{ t: `자, 아까 네가 적은 거.<br>맥을 짚어 보니<br>알겠더구나.`, x: 46, y: 58, w: 52 }] }));
+    H.push(capt(`«${esc(wishQ)}»<br><em>길은 열려 있단다.</em> 다만 ${badK}에 새는 돈을 못 막으면… 발이 묶이고 말겠구나.`, `언제 움직이고 무엇부터 막을지는, 할미가 처방에 다 적어 두었단다. ${EX}`));
+  }
+  /* R12 남은 두 첩 */
+  H.push(pn({ img: "R12", h: 280, kind: "tilt", pos: "center", b: [{ t: "하나는 이렇게<br>풀어 줬다만.", x: 4, y: -22, w: 46 }, { t: "남은 두 첩이…<br><b>실은 더 아프단다.</b>", x: 52, y: 62, w: 46 }] }));
+  H.push(capt(`아픈 데 짚어만 놓고 약을 안 지어 주면,<br><em>그게 어디 할미겠니.</em>`));
+  H.push(`</div>`);
+  /* R13 덤 */
+  H.push(`<p class="cap" style="padding-bottom:16px">약첩에 같이 넣어 주마</p><div class="keys">${[["R13a", "첫째 첩", "조심 달력", "이날은 몸 사려라, 날짜마다 붉은 동그라미"], ["R13b", "둘째 첩", "막을 것 목록", "내년에 막을 것을 하나씩 지워 가는 목록"], ["R13c", "셋째 첩", "기운 채우는 첫 곡", `${WXN[v.useful[0]]} 기운이 필요한 너를 위해`], ["R13d", "넷째 첩", "액막이 나무패", "피할 방향·채울 색·버릴 습관 여섯 가지"]].map(([im, n, t, d]) => `<div><img src="${IMG(im)}" alt=""><p><b>${t}</b>${d}</p></div>`).join("")}</div>`);
+  /* R14 처방 목차 */
+  const TOC = [["2027 앞날 맥과 다칠 곳", ["내년, 길이냐 흉이냐", "제일 먼저 막을 곳", "그냥 두면 어디까지 가나"]], ["시험·당첨의 때", ["붙는 달", "떨어지는 달과 피하는 법"]], ["일", ["옮길까 버틸까", "일에서 다칠 곳", "도와줄 윗사람·피할 윗사람"]], ["돈", ["돈이 새는 달", "모이는 때", "27~29년 돈 시간표"]], ["마음", ["부딪히는 날", "멀어질 인연과 붙잡을 인연"]], ["몸", ["약한 곳", "미리 받을 검사", "다치기 쉬운 때"]], ["사람", ["피할 사람", "붙잡을 귀인"]], ["철마다", ["봄", "여름", "가을", "겨울"]], ["길한 날·몸 사릴 날", ["조심할 날 모음", "피할 방향·채울 색", "매일 막는 법"]]];
+  H.push(`<section class="toc"><h3>할미 처방 · 아홉 첩</h3>${TOC.map(([t, it], i) => `<div class="ch"><span class="no">제${i + 1}첩</span><h4>${t}</h4><ul>${it.map((x) => `<li>· ${x}</li>`).join("")}</ul></div>`).join("")}</section>`);
+  /* R15 왜 지금 */
+  H.push(`<div class="wt">`);
+  H.push(pn({ img: "R15a", h: 260, kind: "box", pos: "center", b: [{ t: "해마다 들어오는<br>기운이 다르단다.", x: 48, y: -24, w: 48 }] }));
+  H.push(pn({ img: "R15b", h: 420, kind: "boxR", pos: "center 30%", sfx: [{ t: "팔락", x: -16, y: 20, r: -10 }], b: [{ t: "올해 넘어졌던 그 달도…<br>미리 알았으면<br><b>피해 갔을 것을.</b>", x: -24, y: 56, w: 52 }] }));
+  H.push(pn({ img: "R15c", h: 320, kind: "full", pos: "center 30%", b: [{ t: "또 지나고 나서야<br>알 셈이니?<br><b>할미는 그 꼴 못 본단다.</b>", x: 46, y: 54, w: 52 }] }));
+  H.push(`</div>`);
+  /* R16 가격 */
+  H.push(pn({ img: "R16", h: 280, kind: "box", pos: "center", b: [{ t: "듣기 좋은 말이야<br>어디서든 듣지.<br><b>할미는 미리 막아 주는 거란다.</b>", x: 40, y: -26, w: 58 }] }));
+  H.push(`<section class="price"><p class="ey" style="text-align:center;font-family:var(--serif);color:#6b5a49">아프기 전에 짓는 약</p><h3>할미약방</h3><p style="text-align:center;font-size:14px;color:#6b5a49;margin:6px 0 16px">2027 약첩 아홉 첩 + 따로 물은 것 처방</p><div class="r"><span>복채</span><s>62,400원</s></div><div class="r"><span>얼리버드 40%</span><span style="color:var(--red)">-25,000원</span></div><div class="fin"><span>최종</span><b>37,400원</b></div><p style="font-size:12px;color:#aaa;margin-top:8px">가격은 시험용 자리예요 ${EX}</p></section>`);
+  /* R17 편지 */
+  H.push(`<section class="letter">우리 ${esc(NAME)}${voc(NAME)}. 할미는 좋은 말부터 꺼내는 사람이 못 된다. 다칠 데가 먼저 보이면 그것부터 말해 주는 사람이지. 듣기 싫었을 거다, 미안하구나. 그래도 미리 알면 막을 수 있으니… 여기까지 왔으면 약은 꼭 받아 가거라. 밥 잘 챙겨 먹고.<p class="sig">— 끝까지 네 편인 할미가</p></section>`);
+  $("#res").innerHTML = `<div class="res">${H.join("")}</div>`;
+  /* 말풍선 등장 */
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -18% 0px" });
+  document.querySelectorAll(".bb,.sfx,.wish").forEach((el) => io.observe(el));
+  bindScale(v); bindGrind(); bindDrawers(v, months);
+}
+
+/* 저울 */
+function bindScale(v) {
+  const done = new Set(), res = $("#wres");
+  document.querySelectorAll("#scale [data-e]").forEach((b) => (b.onclick = () => {
+    const e = b.dataset.e; if (done.has(e)) return; done.add(e); b.classList.add("on");
+    const p = Math.round(v.pct[e]);
+    $("#beam").style.transform = `rotate(${Math.max(-22, Math.min(22, (p - 20) * 0.7))}deg)`;
+    $("#pl").textContent = `${WXN[e]} ${p}`;
+    navigator.vibrate?.(20);
+    res.insertAdjacentHTML("beforeend", `<div><span>${WXN[e]}</span><span class="bar"><i style="width:${Math.min(100, p * 2)}%;background:${WXC[e]}"></i></span><b>${p}</b></div>`);
+    if (done.size === 5) {
+      const heavy = Object.entries(v.pct).sort((a, b) => b[1] - a[1])[0][0], weak = Object.entries(v.pct).sort((a, b) => a[1] - b[1])[0][0];
+      $("#wsay").textContent = `${WXN[heavy]}은 이렇게 무겁고, ${WXN[weak]}은… 거의 없구나.`;
+    }
+  }));
+}
+/* 약연 긁기 */
+function bindGrind() {
+  const wrap = $("#grind"), c = $("#gc"), r = wrap.getBoundingClientRect();
+  c.width = r.width * 2; c.height = r.height * 2; const x = c.getContext("2d"); x.scale(2, 2);
+  const g = x.createLinearGradient(0, 0, r.width, r.height); g.addColorStop(0, "#9B7A4E"); g.addColorStop(1, "#6F5233"); x.fillStyle = g; x.fillRect(0, 0, r.width, r.height);
+  for (let i = 0; i < 900; i++) { x.fillStyle = ["#C9A25B", "#5E7A45", "#8E3B2E", "#E8D3A4", "#4A3420"][i % 5]; x.globalAlpha = 0.55; x.beginPath(); x.ellipse(Math.random() * r.width, Math.random() * r.height, 1 + Math.random() * 4, 0.6 + Math.random() * 1.5, Math.random() * 3, 0, 7); x.fill(); }
+  x.globalAlpha = 1; x.fillStyle = "#FFF4E2"; x.font = "600 17px Pretendard Variable, sans-serif"; x.textAlign = "center"; x.fillText("손가락으로 문질러 갈아 보거라", r.width / 2, r.height / 2);
+  x.globalCompositeOperation = "destination-out";
+  let down = false, n = 0, done = false;
+  const scratch = (ev) => { if (!down || done) return; const b = c.getBoundingClientRect(); x.beginPath(); x.arc(ev.clientX - b.left, ev.clientY - b.top, 22, 0, 7); x.fill(); if (++n % 12 === 0) { navigator.vibrate?.(8); check(); } };
+  const check = () => { const d = x.getImageData(0, 0, c.width, c.height).data; let clear = 0; for (let i = 3; i < d.length; i += 64) if (d[i] === 0) clear++; if (clear / (d.length / 64) > 0.45) { done = true; c.style.opacity = 0; setTimeout(() => c.remove(), 650); $("#after").style.display = ""; } };
+  c.addEventListener("pointerdown", (e) => { down = true; c.setPointerCapture(e.pointerId); scratch(e); });
+  c.addEventListener("pointermove", scratch); c.addEventListener("pointerup", () => (down = false));
+}
+/* 서랍 세 칸 */
+function bindDrawers(v, months) {
+  const picked = [];
+  document.querySelectorAll("#dr button").forEach((b) => (b.onclick = () => {
+    if (picked.length >= 3 || b.classList.contains("open")) return;
+    const i = +b.dataset.i; picked.push(i); navigator.vibrate?.(15);
+    const isC = v.caution.some((c) => c.idx === i), isO = v.chance.includes(i);
+    b.classList.add("open", isC ? "bad" : isO ? "good" : "mid");
+    b.innerHTML = `<span>${MK(months[i])}</span><small>${isC ? "윗사람과 부딪힘" : isO ? "일이 풀림" : "고르게 감"}</small>`;
+    $("#drsay").textContent = isC ? `아이고, 하필 ${MK(months[i])}을 열었구나. 그 달엔 윗사람이랑 한 번 크게 부딪히겠어.` : isO ? `${MK(months[i])}이라… 그 달엔 일이 술술 풀린단다. 그때 움직이거라.` : `${MK(months[i])}은 고르게 가는 달이구나.`;
+    if (picked.length === 3) $("#drlock").innerHTML = lockList("나머지 약첩에 든 것", ["세 서랍이 말하는 내년 일 흐름", "옮길 때와 버틸 때", "윗사람과 부딪히는 날", "일에서 크게 다칠 곳과 막는 법"]);
+  }));
+}
+
+/* 끈 묶기 → 결제 → 부채질 */
+$("#buy").onclick = () => {
+  document.body.insertAdjacentHTML("beforeend", `<div class="tie" id="tie"><div class="box"><img src="${IMG("R16")}" alt=""><svg viewBox="0 0 300 200" preserveAspectRatio="none"><path pathLength="1" d="M60 70 C 120 60, 200 60, 250 80 M150 30 C 140 80, 160 130, 150 180 M150 100 C 120 80, 110 130, 150 105 C 185 80, 190 130, 150 105"/></svg><p>할미가 약첩을 묶는 중…</p></div></div>`);
+  navigator.vibrate?.([30, 60, 30]);
+  setTimeout(() => { $("#tie").remove(); P1(); }, 1600);
+};
+function P1() {
+  $("#cta").classList.remove("on");
+  show(`<section class="pay"><h2>약첩 고르기</h2>${[["2027 약첩", 62400, 37400, 40], ["2027 약첩 + 평생 체질 약첩", 124800, 78000, 38], ["풀세트 (마음 약첩 포함)", 171800, 89400, 48]].map(([t, o, p, d], i) => `<div class="opt ${i ? "" : "on"}"><span>${t}</span><span><em>${d}%</em><s>${o.toLocaleString()}원</s><b>${p.toLocaleString()}원</b></span></div>`).join("")}<h2 style="margin-top:24px">휴대폰 번호</h2><p style="font-size:13px;color:#8a7a68;margin-bottom:8px">처방을 다시 볼 때와 안내에 써요.</p><input style="width:100%;height:50px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font-size:17px" inputmode="numeric" placeholder="010-0000-0000"><h2 style="margin-top:24px">결제 수단</h2><div class="opt on">카카오페이</div><div class="opt">네이버페이</div><div class="opt">카드</div><p style="font-size:12px;color:#aaa;margin-top:12px">시험 중이라 실제로 돈이 나가지 않아요.</p></section>`, `<button class="btn" id="go">40% 할인받고 약첩 받기</button>`);
+  document.querySelectorAll(".opt").forEach((o) => (o.onclick = () => { o.parentNode.querySelectorAll(".opt").forEach((x) => x.classList.toggle("on", x === o)); }));
+  $("#go").onclick = P2;
+}
+async function P2() {
+  show(`<section class="sc"><div class="pic" style="height:66vh"><img src="${IMG("P2")}" alt="" style="animation:none"><i class="fire" id="fire"></i><button class="fan-zone" id="fan">톡톡 부채질</button></div><div class="low"><div id="say"></div><div class="prog"><i id="pg"></i></div><p class="steam" id="st">부채를 톡톡 눌러 불을 지펴요</p></div></section>`, `<button class="btn" id="go" disabled>처방 펼치기</button>`);
+  await says(["약은 불이 좋아야 잘 달여진단다. 부채질 좀 해 주련?"], $("#say"));
+  let heat = 0;
+  $("#fan").onclick = () => {
+    if (heat >= 14) return; heat++; navigator.vibrate?.(12);
+    $("#pg").style.width = (heat / 14) * 100 + "%"; const f = $("#fire"); f.style.opacity = 0.3 + heat * 0.05; f.style.transform = `scale(${1 + heat * 0.06})`;
+    if (heat === 7) $("#say").innerHTML = `<p class="say">그래그래, 잘한다. 거의 다 됐다.</p>`;
+    if (heat === 14) { $("#say").innerHTML = `<p class="say">다 됐다. 할미가 처방 다 지었단다.</p>`; $("#st").textContent = "약이 다 달여졌어요"; $("#go").disabled = false; $("#go").onclick = () => alert("결제 뒤 처방(편지 아홉 첩) 연결은 다음 단계예요."); }
+  };
+}
+
+/* 할인 타이머 */
+let end = +localStorage.getItem("yak_deal") || 0;
+(function tick() { const now = Date.now(); if (!end || end <= now) { end = now + (15 * 3600 + 45 * 60 + 32) * 1000; localStorage.setItem("yak_deal", end); } const ms = end - now, p = (n) => String(n).padStart(2, "0"); const t = $("#timer"); if (t) t.textContent = `${p(Math.floor(ms / 3600000))}:${p(Math.floor(ms / 60000) % 60)}:${p(Math.floor(ms / 1000) % 60)}:${p(Math.floor(ms / 10) % 100)}`; requestAnimationFrame(tick); })();
+
+/* 시작 */
+if (!KEY) $("#app").innerHTML = `<p style="padding:40px 20px;text-align:center;color:#B8402F">링크의 #k= 키를 확인해 주세요.</p>`;
+else if (Q.get("demo")) fetchChart().then(() => S8()).catch((e) => ($("#app").innerHTML = `<p style="padding:40px;text-align:center">계산을 못 했어요 (${esc(e.message)})</p>`));
+else S1();
+</script>
+</body>
+</html>
