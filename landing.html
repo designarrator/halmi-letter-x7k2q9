@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>막아 주는 할미 · 2027 신년운세 (랜딩 뼈대)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* 랜딩 뼈대 v0 (11/22) — 형식은 청월당 월하소녀 결과 페이지(15 문서 L0~L22)와 같은 순서·길이. 컷은 «장면+대사» 자리, 블록은 chart 계산값.
+   색·서체는 임시(원본 결: 흰 바탕·남회 제목·하늘 강조·하단 검정 띠). 다혜 색은 형식 확정 뒤. */
+@font-face{font-family:"GyeonggiBatang";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiBatang.woff") format("woff");font-display:swap}
+:root{--bg:#F7F6F3;--card:#FFFFFF;--ink:#111;--ink2:#555;--ink3:#A1A1A1;--navy:#2F596E;--navy2:#3B5160;--deep:#0E324C;--sky:#3E9BE2;--skyS:#D6E4F0;--warn:#C8553D;--warnS:#F8E6DF;--line:#E6E3DD;--serif:"GyeonggiBatang",serif;--sans:"Pretendard Variable",Pretendard,-apple-system,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#fff;color:var(--ink);font-family:var(--sans);word-break:keep-all}
+.wrap{position:relative;max-width:448px;margin:0 auto;background:var(--bg);padding-bottom:132px;overflow:hidden}
+.crisis,.key,.point,.price,.rec,.letter,.toc,.vs{position:relative}
+p{margin:0}
+.tag{position:absolute;top:8px;left:8px;font-size:11px;line-height:14px;background:rgba(0,0,0,.55);color:#fff;padding:2px 6px;border-radius:6px;z-index:2}
+/* 컷 자리 */
+.cut{position:relative;margin:0;background:linear-gradient(180deg,#EDE6DA,#F7F2EA);border-top:1px dashed #CBBFAE;border-bottom:1px dashed #CBBFAE;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:40px 20px}
+.cut .scene{font-size:13px;line-height:19px;color:#8A7B66;text-align:center}
+.cut .vid{font-size:11px;color:#fff;background:#3E9BE2;border-radius:6px;padding:1px 6px;margin-left:4px}
+.bub{align-self:flex-start;max-width:78%;background:#fff;border:2px solid #222;border-radius:24px;padding:12px 16px;font-size:17px;line-height:25px;text-align:center;box-shadow:0 2px 0 #222}
+.bub.r{align-self:flex-end}
+.bub.c{align-self:center}
+/* 블록 공통 */
+.blk{position:relative;margin:24px 12px;background:var(--card);border-radius:20px;padding:28px 20px;box-shadow:0 1px 0 var(--line)}
+.ey{font-family:var(--serif);font-size:15px;line-height:22px;color:var(--navy2);text-align:center}
+.tt{font-family:var(--serif);font-size:24px;line-height:34px;color:var(--navy);text-align:center;font-weight:700;margin:4px 0 16px}
+.dv{width:120px;height:1px;background:var(--line);margin:0 auto 20px}
+.ex{display:inline-block;font-size:11px;line-height:14px;color:var(--warn);border:1px solid var(--warn);border-radius:6px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+.lock{position:relative;margin-top:16px;border-radius:16px;background:#F2F4F6;padding:20px}
+.lock h4{margin:0 0 12px;font-size:16px;line-height:22px;text-align:center;color:#2B3D47}
+.lock li{list-style:none;font-size:16px;line-height:24px;color:#2B3D47;padding:4px 0}
+.lock li::before{content:"✓";color:#fff;background:#8FB3CC;border-radius:50%;width:17px;height:17px;font-size:11px;line-height:17px;text-align:center;display:inline-block;margin-right:8px}
+.lock ul{margin:0;padding:0}
+.lk{width:24px;height:24px;margin:0 auto 8px;display:block;opacity:.5}
+.blur{filter:blur(5px);user-select:none}
+/* L0 표지 */
+.cover{position:relative;height:780px;background:linear-gradient(#2A3A63,#5F7BA8 55%,#D7E3F0);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
+.cover .nm{font-family:var(--serif);font-size:72px;line-height:90px;font-weight:700;text-shadow:0 2px 16px rgba(0,0,0,.25)}
+.cover .bd{font-family:var(--serif);font-size:26px;line-height:36px;margin-top:8px}
+.cover .moon{position:absolute;top:80px;right:56px;width:72px;height:72px;border-radius:50%;background:#FFF6D8;box-shadow:0 0 40px #FFF6D8}
+/* L2 위기 */
+.crisis{margin:0;background:linear-gradient(#7A1F1F,#B33A2E);padding:48px 20px;color:#fff;text-align:center}
+.crisis h3{font-family:var(--serif);font-size:24px;line-height:34px;margin:0}
+.crisis .big{font-family:var(--serif);font-size:44px;line-height:56px;font-weight:700;margin:4px 0 24px}
+.crisis ul{background:#fff;color:#222;border-radius:12px;padding:16px;margin:0;text-align:left}
+.crisis li{list-style:none;font-size:16px;line-height:24px;padding:8px 0;border-bottom:1px dashed #eee}.crisis li:last-child{border:0}
+.crisis b{color:#B33A2E;margin-right:8px}
+/* L4 총운 */
+.grade{display:flex;gap:4px;justify-content:center;margin:16px 0}
+.grade span{font-size:12px;line-height:16px;padding:4px 8px;border-radius:12px;background:#EEF1F4;color:#7A8997}
+.grade span.on{background:var(--navy);color:#fff}
+.win{width:200px;height:200px;margin:0 auto;border-radius:40px;background:linear-gradient(#1F3A63,#7FA3C9);display:flex;align-items:flex-end;justify-content:center;padding-bottom:16px}
+.win b{background:var(--navy);color:#fff;font-family:var(--serif);font-size:18px;padding:6px 20px;border-radius:20px}
+.oneline{font-family:var(--serif);font-size:22px;line-height:32px;text-align:center;color:var(--navy);margin-top:16px}
+.area{display:grid;grid-template-columns:84px 1fr;gap:8px 12px;margin-top:20px;font-size:15px;line-height:20px;color:#757575}
+.moons i{display:inline-block;width:16px;height:16px;border-radius:50%;background:#E3C770;margin-right:4px}.moons i.e{background:#E6E3DD}
+.area .low{color:var(--warn);font-weight:600}
+.sj{text-align:center;margin-top:20px;font-size:16px}
+/* L6 재물 */
+.gauge{display:block;margin:0 auto}
+.score{text-align:center;font-family:var(--serif);font-size:40px;line-height:48px;color:var(--navy);font-weight:700}
+.pct{text-align:center;font-size:16px;color:#757575}
+.pouch{display:flex;justify-content:space-around;margin:24px 0 8px}
+.pouch div{text-align:center;font-family:var(--serif);font-size:15px;color:#D1D1D1}
+.pouch div i{display:block;width:64px;height:72px;border-radius:28px 28px 32px 32px;background:#EEE;margin:0 auto 8px}
+.pouch div.on{color:#1D74A4;font-weight:700}.pouch div.on i{background:#BFD9EA}
+.ctitle{font-family:var(--serif);font-size:20px;line-height:30px;color:var(--navy);margin:24px 0 12px;text-align:center}
+.ccard{border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;position:relative}
+.ccard h4{margin:0 0 6px;font-size:19px;line-height:27px}.ccard h4::before{content:"●";color:var(--warn);font-size:10px;margin-right:6px;vertical-align:middle}
+.ccard p{font-size:15px;line-height:23px;color:#555}
+.ccard .row{display:flex;gap:8px;margin-top:10px;align-items:flex-start}
+.ccard .row b{flex:none;font-size:12px;line-height:18px;background:#2B3D47;color:#fff;border-radius:6px;padding:2px 6px}
+.ccard .row b.w{background:var(--warn)}
+.ccard .row span{font-size:15px;line-height:22px;color:#333}
+.stamp{position:absolute;right:12px;top:12px;font-family:var(--serif);color:var(--warn);border:2px solid var(--warn);border-radius:8px;padding:2px 8px;transform:rotate(-8deg);opacity:.7;font-size:15px}
+/* L8 패 */
+.fan{position:relative;height:200px;margin:12px -8px 0;overflow-x:auto;white-space:nowrap;padding:12px 8px}
+.fan button{display:inline-block;width:72px;height:120px;margin-right:-28px;border-radius:10px;border:2px solid #B9925A;background:repeating-linear-gradient(45deg,#2F4A6E,#2F4A6E 6px,#3B5B84 6px,#3B5B84 12px);color:#F3D9A4;font-family:var(--serif);font-size:20px;vertical-align:top;transition:transform .25s}
+.fan button.up{transform:translateY(-12px);border-color:#F3D9A4}
+.slots{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.slots div{width:96px;height:140px;border-radius:12px;border:2px dashed #C8D3DC;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--serif);color:var(--navy);text-align:center;padding:8px;font-size:15px;line-height:21px;background:#fff}
+.slots div.f{border:2px solid #B9925A;background:#FFF8EC}
+.slots div small{font-family:var(--sans);font-size:12px;color:#777}
+/* L10 연애 */
+.flowsvg{width:100%;height:auto}
+.day{border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px}
+.day h4{margin:0 0 6px;font-family:var(--serif);font-size:19px;color:#496574}
+.day.bad h4{color:var(--warn)}
+.day p{font-size:15px;line-height:23px;color:#444}
+/* L12 건강 */
+.body{width:120px;height:200px;margin:0 auto;border-radius:60px 60px 20px 20px;background:#E9EEF2;position:relative}
+.body i{position:absolute;width:22px;height:22px;border-radius:50%;background:var(--warn);opacity:.8}
+.clip{margin-top:20px;border-radius:16px;background:#FAF7F0;border:1px solid #E7DECB;padding:20px}
+.clip h4{margin:0;font-family:var(--serif);font-size:19px;text-align:center}
+.clip small{display:block;text-align:center;font-size:12px;color:#757575;margin:4px 0 12px}
+.clip li{list-style:none;font-family:var(--serif);font-size:17px;line-height:30px;color:#496574;border-bottom:1px dashed #E7DECB}
+.clip ul{margin:0;padding:0}
+/* L14 귀인 */
+.frame{width:220px;height:260px;margin:0 auto;border-radius:110px 110px 16px 16px;border:6px solid #D8B86A;background:#EEE8DC;display:flex;align-items:center;justify-content:center;color:#9A8F83;font-size:13px;text-align:center;padding:16px}
+.avoidp{margin-top:20px;border:1px solid var(--warn);background:var(--warnS);border-radius:16px;padding:16px}
+.avoidp b{color:var(--warn)}
+.prof{margin-top:16px;border-top:1px solid var(--line)}
+.prof div{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px;color:#757575}
+.prof div b{font-family:var(--serif);color:#496574;font-size:16px}
+.q4{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.q4 div{border:1px solid var(--line);border-radius:12px;padding:12px;font-size:12px;color:#757575}
+.q4 div b{display:block;font-family:var(--serif);font-size:16px;color:#496574;margin-top:6px}
+/* L16·L18·L20·L21 */
+.key{margin:24px 12px;background:#fff;border-radius:20px;padding:28px 20px;text-align:center}
+.key .k{display:inline-block;background:#8FB3CC;color:#fff;font-size:12px;border-radius:12px;padding:2px 10px}
+.key h3{font-family:var(--serif);font-size:22px;line-height:32px;color:var(--navy);margin:12px 0}
+.key .ph{height:220px;border-radius:12px;background:#EEF2F5;display:flex;align-items:center;justify-content:center;color:#8FA2B1;font-size:13px;padding:16px}
+.tabs6{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tabs6 div{background:#F6EEDD;border:1px solid #E2CFA6;border-radius:8px;padding:14px 6px;font-family:var(--serif);font-size:14px;line-height:20px}
+.point{margin:0;background:#111;color:#fff;padding:48px 20px;text-align:center}
+.point .p{display:inline-block;border:1px solid #6AA9D8;color:#6AA9D8;border-radius:12px;padding:2px 10px;font-size:12px}
+.point h3{font-family:var(--serif);font-size:24px;line-height:34px;margin:12px 0}
+.point .nums{display:grid;gap:8px;margin-top:16px}
+.point .nums div{background:#1E2B3A;border-radius:10px;padding:14px;display:flex;justify-content:space-between;font-size:16px}
+.point .nums b{font-size:22px}
+.toc{margin:24px 12px}
+.ch{background:#fff;border-radius:16px;margin-bottom:16px;overflow:hidden}
+.ch .pic{height:200px;background:linear-gradient(#DCE6EF,#F3F6F9);display:flex;align-items:center;justify-content:center;color:#8FA2B1;font-size:13px}
+.ch .bd{padding:16px 20px}
+.ch .no{display:inline-block;background:#6E94B5;color:#fff;font-size:12px;border-radius:6px;padding:2px 8px}
+.ch h3{font-family:var(--serif);font-size:20px;margin:8px 0}
+.ch li{list-style:none;font-size:14px;line-height:28px;border-bottom:1px solid #F0F0F0;color:#333}
+.ch li b{color:var(--navy);margin-right:8px}
+.ch ul{margin:0;padding:0}
+.ch .say{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:13px;color:#555}
+.ch .say i{width:36px;height:36px;border-radius:50%;background:#E9DFCF;flex:none}
+.price{margin:24px 12px;background:linear-gradient(#EAF3FB,#fff);border-radius:20px;padding:28px 20px}
+.price h3{font-family:var(--serif);text-align:center;font-size:28px;margin:4px 0;color:var(--navy)}
+.price .row{display:flex;justify-content:space-between;font-size:15px;padding:8px 0;color:#555}
+.price .row s{color:#999}
+.price .fin{border-top:1px solid var(--line);margin-top:8px;padding-top:12px;display:flex;justify-content:space-between;align-items:baseline}
+.price .fin b{font-size:28px}
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin:24px 12px;text-align:center}
+.vs div{background:#fff;border-radius:16px;padding:20px 8px;font-family:var(--serif)}
+.vs b{display:block;font-size:22px;margin-top:4px}
+.vs em{font-style:normal;font-family:var(--serif);font-size:28px;color:#8FB3CC}
+.rec{margin:24px 12px;background:#fff;border-radius:20px;padding:24px 20px}
+.rec h3{font-family:var(--serif);text-align:center;font-size:22px;margin:0 0 12px}
+.rec li{list-style:none;font-size:15px;line-height:24px;padding:8px 0;border-bottom:1px solid #F0F0F0}
+.rec li::before{content:"✓ ";color:var(--sky)}
+.rec ul{margin:0;padding:0}
+.letter{margin:24px 12px;background:#FAF7F0;border-radius:20px;padding:28px 22px;font-size:16px;line-height:28px;color:#333}
+.letter h3{font-family:var(--serif);font-size:22px;line-height:32px;color:var(--navy);margin:0 0 16px}
+.letter .sig{text-align:right;font-family:var(--serif);margin-top:16px}
+/* 하단 고정 */
+.cta{position:fixed;left:0;right:0;bottom:0;z-index:9;background:rgba(17,17,17,.92);padding:8px 16px calc(12px + env(safe-area-inset-bottom))}
+.cta>div{max-width:448px;margin:0 auto}
+.cta p{text-align:center;color:#fff;font-size:14px;line-height:20px;margin-bottom:6px}.cta p b{color:#FDE047;font-variant-numeric:tabular-nums}
+.cta button{width:100%;height:52px;border:0;border-radius:12px;background:linear-gradient(90deg,#5E9FD6,#7DB4E0);color:#fff;font-size:18px;font-weight:600;font-family:var(--sans)}
+.err{padding:40px 20px;text-align:center;color:#C8553D}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><p class="err">계산 중이에요…</p></div>
+<div class="cta"><div><p>할인혜택 종료까지 <b id="timer">--:--:--:--</b></p><button id="buy">할미 편지 전부 받기</button></div></div>
+<script>
+const Q = new URLSearchParams(location.search);
+const KEY = (location.hash.match(/k=([^&]+)/) || [])[1] || "";
+const API = Q.get("api") || "https://ddtmqpcrfrvdwxtpcsfb.supabase.co/functions/v1/halmi";
+const IN = { y: +(Q.get("y") || 1999), m: +(Q.get("m") || 1), d: +(Q.get("d") || 22), hour: Q.get("h") ?? "17", minute: Q.get("mi") ?? "30", calendar: Q.get("cal") || "solar", gender: Q.get("g") || "f" };
+if (IN.hour === "x") { IN.hour = null; IN.minute = null; }
+const NAME = Q.get("n") || "다혜";
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const WXK = { 木: "목", 火: "화", 土: "토", 金: "금", 水: "수" };
+const CTL = { 木: "土", 火: "金", 土: "水", 金: "木", 水: "火" }, GEN = { 木: "火", 火: "土", 土: "金", 金: "水", 水: "木" };
+const ELOF = (c) => ("甲乙寅卯".includes(c) ? "木" : "丙丁巳午".includes(c) ? "火" : "戊己辰戌丑未".includes(c) ? "土" : "庚辛申酉".includes(c) ? "金" : "水");
+const EX = '<span class="ex">예시 값</span>';
+const jos = (w) => { const c = w.charCodeAt(w.length - 1) - 0xac00; return c >= 0 && c % 28 ? "이" : ""; };
+
+/* 컷 자리: id, 높이(px, 원본 비율), 장면, 대사들, 영상 여부 */
+function cut(id, h, scene, lines = [], video = false) {
+  const side = ["", "r", "c"];
+  return `<div class="cut" style="min-height:${h}px"><span class="tag">${id} 컷</span><p class="scene">${esc(scene)}${video ? '<span class="vid">영상</span>' : ""}</p>${lines.map((l, i) => `<p class="bub ${side[i % 3]}">${esc(l)}</p>`).join("")}</div>`;
+}
+const blk = (id, inner) => `<section class="blk"><span class="tag">${id}</span>${inner}</section>`;
+const lockList = (items) => `<div class="lock"><svg class="lk" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2" fill="#2B3D47"/><path d="M8 10V7a4 4 0 018 0v3" stroke="#2B3D47" stroke-width="2" fill="none"/></svg><h4>+ 할미가 더 짚어 줄 것</h4><ul>${items.map((t) => `<li>${esc(t)}</li>`).join("")}</ul></div>`;
+
+/* 시험용 표시값: 7단 등급·영역 달 5개(엔진 근거로 교체 예정) */
+const GRADES = ["대길", "길", "중길", "소길", "말길", "흉", "대흉"];
+function gradeOf(v) { return /힘이 붙/.test(v.yearVerdict) ? "길" : /섞인/.test(v.yearVerdict) ? "소길" : /정리/.test(v.yearVerdict) ? "소길" : "말길"; }
+function areas(v) {
+  const dm = ELOF(v.dm), use = new Set(v.useful), avoid = new Set(v.avoid);
+  const wealth = CTL[dm], officer = Object.keys(CTL).find((e) => CTL[e] === dm), parent = Object.keys(GEN).find((e) => GEN[e] === dm), child = GEN[dm];
+  const sc = (e) => 3 + (use.has(e) ? 1 : 0) - (avoid.has(e) ? 1 : 0) + (e === "火" || e === "土" ? (use.has(e) ? 1 : avoid.has(e) ? -1 : 0) : 0);
+  const clamp = (n) => Math.max(1, Math.min(5, n));
+  return [["재물운", clamp(sc(wealth))], ["연애운", clamp(sc(v.gender === "m" ? wealth : officer))], ["직장/명예운", clamp(sc(officer))], ["학업/계약운", clamp(sc(parent))], ["건강운", clamp(sc(child) - (v.climate?.tempLabel === "차가운 사주" ? 1 : 0))]];
+}
+const ORG = { 木: ["간·담", ["간 초음파", "간기능 혈액검사", "담낭 초음파", "눈 검사", "근육·힘줄 검사"]], 火: ["심장·소장", ["심전도", "심장 초음파", "혈압 24시간 측정", "소장 검사", "혈관 검사"]], 土: ["위·비장", ["위내시경", "복부 초음파", "혈당 검사", "췌장 검사", "소화기 검사"]], 金: ["폐·대장", ["흉부 X-ray", "폐기능 검사", "대장내시경", "피부 검사", "비염 검사"]], 水: ["신장·방광", ["신장기능 혈액검사", "소변 검사", "방광 초음파", "호르몬 검사", "골밀도 검사"]] };
+const REL = (dmE, e) => (e === dmE ? ["친구·동료", "같은 편"] : GEN[dmE] === e ? ["후배·아랫사람", "내가 챙기는 사람"] : CTL[dmE] === e ? ["돈이 얽힌 사람", "거래 상대"] : CTL[e] === dmE ? ["윗사람·상사", "나를 재는 사람"] : ["어른·스승", "나를 받쳐 주는 사람"]);
+
+function flowSvg(v) {
+  const vals = v.flow.map((m) => m.up - m.down), mx = Math.max(1, ...vals.map(Math.abs));
+  const W = 340, H = 150, x = (i) => 16 + i * ((W - 32) / 11), y = (n) => H / 2 - (n / mx) * (H / 2 - 14);
+  const cI = v.caution.map((c) => c.idx), oI = v.chance;
+  return `<svg class="flowsvg" viewBox="0 0 ${W} ${H + 22}"><line x1="8" y1="${H / 2}" x2="${W - 8}" y2="${H / 2}" stroke="#E6E3DD"/><polyline points="${vals.map((n, i) => `${x(i)},${y(n)}`).join(" ")}" fill="none" stroke="#6E94B5" stroke-width="2"/>${vals.map((n, i) => `<circle cx="${x(i)}" cy="${y(n)}" r="${cI.includes(i) || oI.includes(i) ? 6 : 3.5}" fill="${cI.includes(i) ? "#C8553D" : oI.includes(i) ? "#E58FA6" : "#9DB3C4"}"/>`).join("")}${v.flow.map((m, i) => `<text x="${x(i)}" y="${H + 16}" text-anchor="middle" font-size="12" fill="#777">${parseInt(m.label)}</text>`).join("")}</svg>`;
+}
+
+function render(v) {
+  const months = v.flow.map((m) => m.label);
+  const cm = v.caution.map((c) => ({ m: months[c.idx], days: c.days }));
+  const om = v.chance.map((i) => months[i]);
+  const grade = gradeOf(v), A = areas(v).sort((a, b) => a[1] - b[1]);
+  const dmE = ELOF(v.dm);
+  const weak = Object.entries(v.pct).sort((a, b) => a[1] - b[1])[0][0];
+  const [org, checks] = ORG[weak];
+  const avoidE = v.avoid[0], useE = v.useful[0];
+  const [avP] = REL(dmE, avoidE), [gP, gDesc] = REL(dmE, useE);
+  const H = [];
+  /* L0 표지 */
+  H.push(`<section class="cover"><span class="tag">L0 표지 · 3초 반복 영상 자리</span><i class="moon"></i><p class="nm">${esc(NAME)}</p><p class="bd">${IN.y}년 ${String(IN.m).padStart(2, "0")}월 ${String(IN.d).padStart(2, "0")}일</p></section>`);
+  /* L1 */
+  H.push(cut("L1", 900, "할미가 찻잔을 내려놓고 만세력을 펼친다 → 손가락으로 2026년 칸을 톡톡", ["어디 보자.", "2026년부터 짚자. 네가 어디서 넘어졌는지."], true));
+  /* L2 위기 */
+  H.push(`<section class="crisis"><span class="tag">L2 2026 위기 카드</span><h3>2026년, ${esc(NAME)}${jos(NAME)}가 넘어진 곳</h3><p class="big">⚠ 위기 ⚠</p><ul><li><b>5월</b>일한 만큼 남지 않던 통장 ${EX}</li><li class="blur"><b>●월</b>이 길이 맞나 흔들리던 마음</li><li class="blur"><b>●월</b>쉬어도 안 풀리던 몸</li></ul><p style="margin-top:12px;font-size:13px;opacity:.8">2026년 달 계산은 엔진 보강 뒤 실제 값으로 바뀌어요</p></section>`);
+  /* L3 */
+  H.push(cut("L3", 1600, "할미가 안경 너머로 손주를 본다 → 제비 쪽지를 천천히 편다 → 눈썹이 살짝 올라간다", ["일찍 왔으면 덜 다쳤을 거다.", "2027년은 미리 막자.", "아까 뽑은 제비부터 펴 보마."], true));
+  /* L4 총운 */
+  H.push(blk("L4 총운", `<p class="ey">2027년</p><p class="tt" style="font-size:30px;line-height:40px">${esc(NAME)} 님의 총운은 <span style="color:var(--sky)">${grade}</span>이다</p><div class="win"><b>${grade}</b></div><p class="oneline">${esc(v.yearVerdict)}</p><div class="grade">${GRADES.map((g) => `<span class="${g === grade ? "on" : ""}">${g}</span>`).join("")}</div><div class="dv"></div><p style="font-size:13px;color:#999;text-align:center">약한 곳부터 보여 줘요 ${EX}</p><div class="area">${A.map(([n, s], i) => `<span class="${i === 0 ? "low" : ""}">${n}</span><span class="moons">${[1, 2, 3, 4, 5].map((k) => `<i class="${k <= s ? "" : "e"}"></i>`).join("")}</span>`).join("")}</div><p class="sj">2027년 삼재 여부 : <b>${v.samjae.is ? esc(v.samjae.name) : "무삼재"}</b></p>`));
+  /* L5 */
+  H.push(cut("L5", 2000, "할미가 붓으로 만세력 위 동전 그림을 짚는다 → 돈이 새는 장면", ["좋다고 풀어지면 거기서 샌다.", "정미년은 미리 아는 사람만 덜 다치는 해다.", "돈부터 보자. 여기가 제일 먼저 샌다.", `${cm[0]?.m || "●월"}에 ●●로 크게 나간다.`], true));
+  /* L6 재물 */
+  const wScore = 40 + A.find((a) => a[0] === "재물운")[1] * 10;
+  const pType = wScore >= 80 ? 0 : wScore >= 60 ? 1 : 2;
+  H.push(blk("L6 재물", `<p class="ey">2027년 내 재물운은?</p><p class="tt">정미년 재물 리포트</p><div class="dv"></div><svg class="gauge" width="240" height="130" viewBox="0 0 240 130"><path d="M20 120 A100 100 0 0 1 220 120" fill="none" stroke="#E6E3DD" stroke-width="16" stroke-linecap="round"/><path d="M20 120 A100 100 0 0 1 220 120" fill="none" stroke="#6E94B5" stroke-width="16" stroke-linecap="round" stroke-dasharray="${(Math.PI * 100 * wScore) / 100} 999"/></svg><p class="score">${wScore}점</p><p class="pct">상위 ${Math.max(5, 100 - wScore)}% ${EX}</p><div class="pouch">${["버는 해", "지키는 해", "새는 해"].map((t, i) => `<div class="${i === pType ? "on" : ""}"><i></i>${t}</div>`).join("")}</div><p class="ctitle">정미년 돈, 여기서 먼저 샌다</p><div class="ccard"><span class="stamp">조심</span><h4>${esc(cm[0]?.m || "한 해")} 큰 지출</h4><p>들어오는 것보다 나가는 게 먼저 보이는 달이다. ${EX}</p><div class="row"><b class="w">바닥까지 가면</b><span>석 달 모은 걸 한 번에 날린다. ${EX}</span></div><div class="row"><b>할미의 역제안</b><span>큰 결제는 그달을 넘겨서 해라. 할미라면 미리 묶어 둔다. ${EX}</span></div></div><div class="ccard blur"><h4>카드 할부</h4><p>할부가 쌓여 월급이 미리 빠져나간다.</p></div>${lockList(["돈이 새는 달과 막는 날", "돈 때문에 멀어질 사람", "집·부동산, 움직일 때와 멈출 때", "큰돈 들어오기 전 꼭 막을 것"])}`));
+  /* L7 */
+  H.push(cut("L7", 2600, "아기 양이 붓을 들고 앉아 있다 → 할미가 패 묶음을 꺼낸다 → 손으로 부채처럼 편다", ["이번엔 일이다.", "일은 때가 전부다.", "패를 세 장 골라 봐라."], true));
+  /* L8 열두 달 패 */
+  H.push(blk("L8 할미 패", `<p class="ey">2027 내 일운은?</p><p class="tt">할미 패 세 장</p><p style="text-align:center;font-size:15px;color:#555">마음 가는 대로 패를 세 장 골라 봐라.</p><div class="fan" id="fan">${months.map((m, i) => `<button data-i="${i}" aria-label="패">✦</button>`).join("")}</div><div class="slots" id="slots"><div>?</div><div>?</div><div>?</div></div><div id="fanLock"></div>`));
+  /* L9 */
+  H.push(cut("L9", 1100, "할미 눈 클로즈업 → 연애 쪽 만세력을 넘긴다", ["마음 쪽도 봤다.", "좋은 날보다 부딪히는 날부터 알려 주마."], true));
+  /* L10 연애 */
+  const bad = cm[0], good = om.slice(0, 2);
+  H.push(blk("L10 연애", `<p class="ey">2027년 내 연애운은?</p><p class="tt">달마다 마음 흐름</p>${flowSvg(v)}<p style="font-size:12px;color:#999;text-align:center">빨간 점 부딪히는 달 · 분홍 점 좋은 달</p><p class="ctitle">먼저 조심할 날</p><div class="day bad"><h4>${esc(bad?.days?.[0] ? bad.days[0].replace("/", "월 ") + "일" : bad?.m || "")}</h4><p>말 한마디가 크게 번지는 날이다. 이날은 결론을 미뤄라. ${EX}</p></div><p class="ctitle">그래도 좋은 날</p>${good.map((m, i) => `<div class="day ${i ? "blur" : ""}"><h4>${esc(m)}</h4><p>마음이 잘 닿는 달이다. 하고 싶던 말은 이때 해라. ${EX}</p></div>`).join("")}${lockList(["다투고 나서 되돌리는 법", "인연이 시작되는 장소와 계기", "헤어진 인연, 다시 올까", "결혼 얘기가 오가는 때"])}`));
+  /* L11 */
+  H.push(cut("L11", 1600, "할미가 촛불을 켠다 → 몸 그림을 펼친다", ["그런데 몸이 먼저다.", `네 사주는 ${WXK[weak]} 기운이 가장 적다. ${org}부터 봐라.`], true));
+  /* L12 건강 */
+  H.push(blk("L12 건강", `<p class="ey">2027년 조심할 몸</p><p class="tt">늦기 전에 볼 것</p><div class="body"><i style="top:70px;left:49px"></i></div><p style="text-align:center;margin-top:8px;font-size:15px">${WXK[weak]} 기운이 적은 사주 · ${org}</p><div class="clip"><h4>늦기 전 검사받으면 좋을 5가지</h4><small>*의학적 진단이 아닌 사주 기반 참고 정보예요.</small><ul>${checks.map((c, i) => `<li class="${i ? "blur" : ""}">${c}</li>`).join("")}</ul></div>${lockList(["내 사주 체질에 맞는 식습관", "태어날 때부터 약한 곳", "스트레스가 몸으로 가는 길", "2027년 크게 다칠 수 있는 때"])}`));
+  /* L13 */
+  H.push(cut("L13", 1500, "할미가 등불을 들어 문밖을 비춘다", ["사람 복도 있다.", "그런데 먼저 피할 사람부터.", `${v.guiren.in2027 ? "내년엔 도와줄 사람이 붙는다." : "귀인은 찾아가야 만난다."} ●●에서 만난 사람은 붙잡아라.`], true));
+  /* L14 귀인 */
+  H.push(blk("L14 사람", `<p class="ey">2027 정미년 사람 복</p><p class="tt">피할 사람과 붙잡을 사람</p><div class="avoidp"><b>먼저 피할 사람</b><p style="margin-top:6px;font-size:15px;line-height:23px">${esc(avP)} 쪽에서 오는 부탁. ${WXK[avoidE]} 기운이 센 사람이 너를 지치게 한다. ${EX}</p></div><div class="frame" style="margin-top:20px">귀인 그림 자리<br>(실사 대신 그림 인물)</div><div class="prof"><div><span>어디서</span><b>${esc(gP)}</b></div><div><span>어떤 사람</span><b>${esc(gDesc)}</b></div><div><span>기운</span><b>${WXK[useE]} 기운</b></div><div><span>키</span><b>162cm ${EX}</b></div><div><span>MBTI</span><b>ISTJ ${EX}</b></div></div><p class="ctitle" style="font-size:17px">Q. 이 사람에게 어떤 도움을 받나?</p><div class="q4"><div>도움 받는 상황<b>새 일을 시작할 때 ${EX}</b></div><div>도움 받는 때<b>${esc(om[0] || "")}</b></div><div class="blur">관계<b>오래 본 동료</b></div><div class="blur">해 주는 일<b>사람 소개</b></div></div>${lockList(["밖에서 듣게 될 평판", "가까워질 사람과 멀어질 사람", "가족과 부딪히는 진짜 이유", "가족에게 올 건강 신호"])}`));
+  /* L15 */
+  H.push(cut("L15", 1300, "창밖 달이 기운다 → 할미가 남은 장을 손으로 누른다(긴 영상)", ["벌써 밤이 깊었구나.", "남은 얘기가 더 아프다."], true));
+  /* L16 덤 */
+  const keys = [["KEY1", "다칠 달을 미리 적어 두는", "2027 조심 달력", "조심 날에 빨간 동그라미가 쳐진 열두 달 달력"], ["KEY2", "내 사주로 뽑은", "막을 것 목록", "체크리스트 그림: 내년에 막을 것 10가지"], ["KEY3", `${WXK[useE]} 기운을 채우는`, "새해 첫 곡", "음악 앱 화면: 「" + WXK[useE] + "기운이 필요한 너를 위해」"], ["KEY4", "액운은 막고 기운은 채우는", "할미 액막이 비책"]];
+  for (const [k, e, t, ph] of keys) H.push(`<section class="key"><span class="tag">L16 ${k}</span><span class="k">${k}</span><p class="ey" style="margin-top:12px">${esc(e)}</p><h3>${esc(t)}</h3>${ph ? `<div class="ph">${esc(ph)}</div>` : `<div class="tabs6">${["조심할 날", "피할 방향", "채울 색", "몸 챙길 곳", "버릴 습관", "넘치는 기운 돌리기"].map((x) => `<div>${x}</div>`).join("")}</div>`}</section>`);
+  /* L17 */
+  H.push(cut("L17", 2800, "할미가 손주 손을 잡는다 → 등불 든 할미가 문 앞에서 손짓", ["시간 되면 끝까지 들어라.", "할미가 하나도 안 빼고 짚어 주마.", "더 들어 볼 테냐?"], true));
+  /* L18 신뢰 */
+  H.push(`<section class="point"><span class="tag">L18 신뢰 · 전부 예시 값</span><span class="p">POINT 1</span><h3>얼마나 잘 맞으면</h3><p>${EX} 특허·인증 자리</p><span class="p" style="margin-top:28px">POINT 2</span><h3>지금 이 순간에도</h3><div class="nums"><div><span>한 해</span><b>000,000명</b></div><div><span>한 달</span><b>00,000명</b></div><div><span>하루</span><b>0,000명</b></div></div><span class="p" style="margin-top:28px">POINT 3~6</span><h3>후기 · 입소문 · 근거 · 데이터</h3><p style="opacity:.7">우리 사실이 생기면 채워요 ${EX}</p></section>`);
+  /* L19 왜 지금 */
+  H.push(cut("L19", 2400, "인생 그래프(2022~2026) → 할미가 지난 달력을 넘긴다", ["알고 맞는 해와 모르고 맞는 해는 다르다.", "2026년에도 조심할 달은 다 정해져 있었다.", "또 지나고 나서 알 거냐?"], true));
+  /* L20 목차 9장 */
+  const CH = [["2027 총운과 다칠 곳", ["내년, 대길이냐 흉이냐", "제일 먼저 막을 곳", "그대로 두면 어디까지 가나", "할미의 역제안"]], ["합격·당첨의 때", ["시험·승진, 붙는 달", "떨어지는 달과 피하는 법", "계약서에 도장 찍을 때"]], ["일", ["옮길까 버틸까", "일에서 다칠 곳", "도와줄 윗사람·피할 윗사람", "일이 풀리는 달"]], ["돈", ["돈이 새는 달", "큰돈 나가기 전 막을 것", "모이는 때", "27~29년 돈 시간표"]], ["마음", ["부딪히는 날", "멀어질 인연과 붙잡을 인연", "좋은 날"]], ["몸", ["약한 곳", "미리 받을 검사", "다치기 쉬운 때"]], ["사람", ["피할 사람", "붙잡을 귀인", "가족과 부딪히는 이유"]], ["분기별", ["1~3월", "4~6월", "7~9월", "10~12월"]], ["길흉과 막는 날", ["조심할 날 모음", "피할 방향·채울 색", "매일 막는 법"]]];
+  H.push(`<section class="toc"><span class="tag" style="position:static;display:inline-block;margin-bottom:8px">L20 목차 9장</span>${CH.map(([t, items], i) => `<div class="ch"><div class="pic">제 ${i + 1}장 할미 그림 자리</div><div class="bd"><span class="no">제 ${i + 1}장</span><h3>${t}</h3><ul>${items.map((x, j) => `<li><b>풀이 ${j + 1}.</b>${x}</li>`).join("")}</ul><div class="say"><i></i>${i === 0 ? "좋은 말은 남들이 해 준다. 할미는 다칠 곳부터 말한다." : "막는 법까지 같이 적어 두마."}</div></div></div>`).join("")}</section>`);
+  /* L21 가격·비교 */
+  H.push(`<section class="price"><span class="tag">L21 상품·가격</span><p class="ey">다칠 곳부터 짚어 주는</p><h3>막아 주는 할미 · 2027</h3><p style="text-align:center;font-size:14px;color:#555;margin:8px 0 16px">책 한 권 분량 + 따로 물은 것 1:1 풀이</p><div class="row"><span>할미 복채</span><s>62,400원</s></div><div class="row"><span>얼리버드 할인 40%</span><span style="color:var(--warn)">-25,000원</span></div><div class="fin"><span>최종 혜택가</span><b>37,400원</b></div><p style="font-size:12px;color:#999;margin-top:8px">가격은 원본 그대로 둔 자리예요 ${EX}</p></section>`);
+  H.push(`<div class="vs"><div>대면 신년운세<b>350,000원</b></div><em>VS</em><div>막아 주는 할미<b>37,400원</b></div></div>`);
+  /* L22 추천·편지 */
+  H.push(`<section class="rec"><span class="tag">L22 추천</span><h3>이런 사람한테 권한다</h3><ul><li>좋은 말만 듣다가 또 넘어진 사람</li><li>내년에 어디서 다칠지 미리 알고 싶은 사람</li><li>큰 결정(이직·이사·결혼) 앞에 선 사람</li><li>돈이 왜 새는지 모르겠는 사람</li><li>피해야 할 사람을 가려내고 싶은 사람</li><li>막는 법까지 손에 쥐고 싶은 사람</li></ul></section>`);
+  H.push(`<section class="letter"><span class="tag">L22 할미 편지</span><h3>“좋은 말은 남들이 해 준다.<br>할미는 막아 주마.”</h3><p>${esc(NAME)}아. 할미는 좋은 말로 시작하지 않는다. 다칠 곳이 먼저 보이면 그것부터 말한다. 듣기 싫어도 끝까지 들어라. 짚은 곳마다 막는 법을 같이 쥐여 줄 테니. ${EX}</p><p class="sig">2026년 겨울 밤,<br>끝까지 네 편인 할미가</p></section>`);
+  document.getElementById("app").innerHTML = H.join("");
+  /* 패 뽑기 */
+  const picked = [];
+  document.querySelectorAll("#fan button").forEach((b) => (b.onclick = () => {
+    if (picked.length >= 3 || b.classList.contains("up")) return;
+    b.classList.add("up"); const i = +b.dataset.i; picked.push(i);
+    const f = v.flow[i], isC = v.caution.some((c) => c.idx === i), isO = v.chance.includes(i);
+    const slot = document.querySelectorAll("#slots div")[picked.length - 1];
+    slot.className = "f"; slot.innerHTML = `${esc(f.label)}<small>${isC ? "일에서 부딪히는 달" : isO ? "일이 풀리는 달" : "고르게 가는 달"}</small>`;
+    if (picked.length === 3) document.getElementById("fanLock").innerHTML = lockList(["세 패가 말하는 내년 일의 흐름", "옮길 때와 버틸 때", "윗사람과 부딪히는 날", "일에서 크게 다칠 곳과 막는 법"]);
+  }));
+}
+
+/* 할인 타이머(원본처럼 시:분:초:1/100초, 끝나면 다시) */
+let end = +localStorage.getItem("halmi_deal2") || 0;
+function tick() { const now = Date.now(); if (!end || end <= now) { end = now + (15 * 3600 + 45 * 60 + 32) * 1000; localStorage.setItem("halmi_deal2", end); } const ms = end - now, p = (n) => String(n).padStart(2, "0"); document.getElementById("timer").textContent = `${p(Math.floor(ms / 3600000))}:${p(Math.floor(ms / 60000) % 60)}:${p(Math.floor(ms / 1000) % 60)}:${p(Math.floor(ms / 10) % 100)}`; requestAnimationFrame(tick); }
+tick();
+document.getElementById("buy").onclick = () => alert("뼈대 페이지예요. 결제는 다음 단계에서 붙여요.");
+
+(async () => {
+  try {
+    const r = await fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-halmi-key": KEY }, body: JSON.stringify({ action: "chart", ...IN }) });
+    const j = await r.json(); if (!j.ok) throw new Error(j.error || "fail");
+    j.viz.gender = IN.gender; render(j.viz);
+  } catch (e) { document.getElementById("app").innerHTML = `<p class="err">계산을 못 했어요 (${esc(e.message)}). 링크의 #k= 키를 확인해 주세요.</p>`; }
+})();
+</script>
+</body>
+</html>
