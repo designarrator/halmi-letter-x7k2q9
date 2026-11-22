@@ -206,9 +206,16 @@ button.link{display:block;width:100%;height:48px;background:none;border:0;font-f
 .sam .badge.on{background:var(--persim)}
 .flowsvg{display:block;width:100%}
 .bon{position:relative;overflow:hidden}
-.bon img{position:absolute;right:-8px;bottom:-8px;width:136px}
+.bon img{position:absolute;right:-8px;top:104px;width:136px}
 .bon li{list-style:none;display:flex;gap:8px;align-items:center;font-size:17px;line-height:27px;padding:4px 0}
 .bon ul{margin:12px 0 0;padding:0;max-width:64%}
+.deal{color:var(--persim)!important;font-weight:600}.deal b{font-variant-numeric:tabular-nums}
+.price s{font-size:13px;line-height:19px;color:var(--ink3);margin-right:4px}.price em{font-style:normal;font-size:17px;font-weight:700;color:var(--persim);margin-right:4px}
+.visit{font-family:var(--sans);font-size:13px;line-height:19px;color:var(--white);text-align:center;margin-top:16px;text-shadow:0 2px 8px rgba(20,20,50,.5)}.visit b{font-variant-numeric:tabular-nums}
+.score .tot{display:flex;align-items:baseline;gap:8px;margin:8px 0 16px}.score .tot b{font-size:24px;line-height:34px}.score .tot em{font-style:normal;font-size:17px;line-height:27px;font-weight:700;color:var(--indigo)}
+.score .row{display:grid;grid-template-columns:48px 1fr 40px;gap:8px;align-items:center;font-size:17px;line-height:27px;margin-top:4px}
+.score .bar{height:12px;border-radius:12px;background:var(--oat);overflow:hidden}.score .bar i{display:block;height:100%;background:var(--indigo);border-radius:12px}
+.score .row.low .bar i{background:var(--persim)}.score .row b{text-align:right;font-variant-numeric:tabular-nums}
 .bon li i{flex:none;width:20px;height:20px;border-radius:12px;background:var(--indigo);color:var(--white);font-style:normal;font-size:13px;line-height:20px;text-align:center}
 .paym label{display:flex;align-items:center;gap:12px;height:56px;border-bottom:1px solid var(--line);font-size:17px}
 .paym input{width:20px;height:20px;margin:0;padding:0;border:0;flex:none;appearance:auto;-webkit-appearance:radio;accent-color:var(--indigo)}
@@ -269,6 +276,26 @@ function offlineScreen(retry, what) { show("offline", `<div class="center"><h1>�
 /* 가격(시험): 사람마다 하나로 고정 */
 const PRICES = [29900, 39900, 49900];
 const won = (n) => n.toLocaleString("ko-KR") + "원";
+/* 11/22 다혜 검토용: 청월당식 할인 타이머·정가 대비 할인·누적 고객 수·점수/상위 %.
+   주의 — 정가·고객 수·점수는 근거 없는 값(표시광고법 위험). 출시 전 다혜 결정으로 빼거나 실제 값으로 바꿀 것. */
+const LIST = (p) => Math.round((p * 2) / 1000) * 1000 - 100;
+const OFF = (p) => Math.round((1 - p / LIST(p)) * 100);
+const priceHtml = (p, label = "최종 혜택가") => `<div class="price"><span>${label}</span><span><s>${won(LIST(p))}</s><em>${OFF(p)}%</em><b>${won(p)}</b></span></div>`;
+function dealEnd() { let t = +LS.get("halmi_deal"); const now = Date.now(); if (!t || t <= now) { t = now + (5 * 3600 + 20 * 60 + 27) * 1000; LS.set("halmi_deal", t); } return t; }
+const hms = (ms) => { const x = Math.max(0, Math.floor(ms / 1000)); return [x / 3600, (x % 3600) / 60, x % 60].map((n) => String(Math.floor(n)).padStart(2, "0")).join(":"); };
+function tickDeal() { const left = dealEnd() - Date.now(); document.querySelectorAll(".dealt").forEach((e) => (e.textContent = hms(left))); }
+setInterval(tickDeal, 1000);
+const dealCta = (label) => `<div class="cta"><div><p class="note deal">할인 혜택 종료까지 <b class="dealt">${hms(dealEnd() - Date.now())}</b></p><button class="btn" id="go">${label}</button></div></div>`;
+const visitors = () => (128430 + Math.floor((Date.now() - Date.UTC(2026, 10, 22)) / 60000) * 3).toLocaleString("ko-KR");
+const hashN = (t) => { let h = 7; for (const c of t) h = (h * 31 + c.charCodeAt(0)) % 100003; return h; };
+function scoreHtml() {
+  const base = { 열림: 78, 반반: 66, 조심: 54, 정리: 60 }[S.tags?.verdict || "반반"] || 66;
+  const seed = (S.id || "") + birthLine();
+  const rows = ["재물", "연애", "일", "건강", "사람"].map((a) => [a, Math.max(31, Math.min(96, base + (hashN(seed + a) % 25) - 12))]);
+  const tot = Math.round(rows.reduce((n, r) => n + r[1], 0) / rows.length), top = Math.max(3, Math.min(97, Math.round(100 - (tot - 40) * 1.6)));
+  const low = rows.reduce((m, r) => (r[1] < m[1] ? r : m));
+  return `<div class="card score" style="margin-top:16px"><h3>2027 영역별 점수</h3><div class="tot"><b>${tot}점</b><em>상위 ${top}%</em></div>${rows.map((r) => `<div class="row ${r === low ? "low" : ""}"><span>${r[0]}</span><span class="bar"><i style="width:${r[1]}%"></i></span><b>${r[1]}</b></div>`).join("")}<p class="cap" style="margin-top:12px">빨간 막대가 내년에 제일 약한 곳이에요. ${low[0]} 쪽을 할미가 먼저 짚어 줄게요.</p></div>`;
+}
 function myPrice() { let p = +LS.get("halmi_price"); if (!PRICES.includes(p)) { p = PRICES[Math.floor(Math.random() * PRICES.length)]; LS.set("halmi_price", p); } return p; }
 const FACE = { smile: "img/face1.jpg", firm: "img/face2.jpg", wow: "img/face3.jpg", worry: "img/face4.jpg", think: "img/face5.jpg", shh: "img/face6.jpg" };
 const cut = (src, text, face = "smile", side = "") => `<figure class="cut"><img src="${src}" alt="" loading="lazy">${text ? `<figcaption class="bubble ${side}"><img src="${FACE[face]}" alt="">${esc(text)}</figcaption>` : ""}</figure>`;
@@ -281,7 +308,7 @@ const full = (img, html, cls = "") => `<div class="full ${cls}" style="backgroun
 /* ① 첫 화면 */
 function startScreen() {
   const last = ids()[0];
-  show("start", full("img/A1.jpg", `<div class="snow">${Array.from({ length: 24 }, (_, i) => `<i style="left:${(i * 37) % 100}%;animation-duration:${6 + (i % 5)}s;animation-delay:-${(i * 0.7).toFixed(1)}s"></i>`).join("")}</div><p class="t1">2027 정미년</p><h1>막아 주는 할미</h1><p class="t2">내년에 다칠 곳, 할미가 먼저 짚어 주마</p><p class="t3">좋은 말은 안 한다. 바닥까지 짚고, 길을 내준다.</p>`, "land") + cta("내 사주 바로 보기", "go", last ? `<button class="link" id="prev">지난 편지 다시 보기</button>` : ""), () => {
+  show("start", full("img/A1.jpg", `<div class="snow">${Array.from({ length: 24 }, (_, i) => `<i style="left:${(i * 37) % 100}%;animation-duration:${6 + (i % 5)}s;animation-delay:-${(i * 0.7).toFixed(1)}s"></i>`).join("")}</div><p class="t1">2027 정미년</p><h1>막아 주는 할미</h1><p class="t2">내년에 다칠 곳, 할미가 먼저 짚어 주마</p><p class="t3">좋은 말은 안 한다. 바닥까지 짚고, 길을 내준다.</p><p class="visit">할미에게 다녀간 사람 <b>${visitors()}명</b></p>`, "land") + cta("내 사주 바로 보기", "go", last ? `<button class="link" id="prev">지난 편지 다시 보기</button>` : ""), () => {
     g("go").onclick = () => bowScreen();
     if (g("prev")) g("prev").onclick = () => restore(last);
   });
@@ -363,10 +390,10 @@ function payScreen() {
   show("pay", `<div class="top"><button class="back" id="back" aria-label="뒤로">${CHEV}</button><span class="cap">결제하기</span></div>
     <img class="art" src="img/A1.jpg" alt="" style="aspect-ratio:3/1;object-fit:cover;object-position:center 60%">
     <div class="card" style="margin-top:16px"><h3>막아 주는 할미 · 2027 편지 전부</h3><p class="cap" style="margin-top:4px">잠긴 장 모두 · 조심할 것 세 가지 · 열두 달과 조심할 날 · 매일 막는 법</p>
-      <div class="price"><span>최종 결제 금액</span><b>${won(price)}</b></div></div>
+      ${priceHtml(price, "최종 결제 금액")}</div>
     <div class="card paym" style="margin-top:16px"><h3>결제 수단</h3>${["토스페이", "카카오페이", "네이버페이", "신용·체크카드"].map((t, i) => `<label><input type="radio" name="pm" ${i === 0 ? "checked" : ""}> ${t}</label>`).join("")}</div>
     <p class="cap" style="margin-top:16px">시험 중인 서비스예요. 지금은 실제로 돈이 나가지 않아요.</p>
-    ${cta(`${won(price)} 결제하기`)}`, () => {
+    ${dealCta(`${won(price)} 결제하기`)}`, () => {
     g("back").onclick = () => history.back();
     g("go").onclick = async () => { await sheet({ title: "아직 결제는 준비 중이에요", body: "이번엔 할미가 전부 열어 줄게요.", ok: "편지 전부 보기" }); S.unlocked = true; LS.set("halmi_unlocked", [...new Set([...unlockedIds(), S.id])]); S.popping = true; resultScreen(); S.popping = false; };
   });
@@ -553,7 +580,7 @@ function guirenHtml() {
   return `${cut("img/A5.jpg", head, "smile")}`;
 }
 function bonCard(price) {
-  return `<div class="card bon"><p class="stamp">편지 전부</p><h2 style="margin-top:12px">막아 주는 할미 · 2027 총본</h2><ul>${["만세력 뜯어보기", "2027 글자와 맞물림", "조심할 것 세 가지 전부", "바닥까지 가면 · 역제안", "네 고민의 흐름", "열두 달과 조심할 날", "매일 막는 법"].map((t) => `<li><i>✓</i>${t}</li>`).join("")}</ul><div class="price" style="max-width:64%"><span>한 통</span><b>${won(price)}</b></div><img src="img/P1.jpg" alt=""></div>`;
+  return `<div class="card bon"><p class="stamp">편지 전부</p><h2 style="margin-top:12px">막아 주는 할미 · 2027 총본</h2><ul>${["만세력 뜯어보기", "2027 글자와 맞물림", "조심할 것 세 가지 전부", "바닥까지 가면 · 역제안", "네 고민의 흐름", "열두 달과 조심할 날", "매일 막는 법"].map((t) => `<li><i>✓</i>${t}</li>`).join("")}</ul><img src="img/P1.jpg" alt="">${priceHtml(price)}<p class="cap" style="margin-top:8px">할미에게 다녀간 사람 ${visitors()}명</p></div>`;
 }
 function freeResult(L) {
   const name = letterName(), price = myPrice(), S2 = L.secs;
@@ -565,7 +592,7 @@ function freeResult(L) {
     ${cut("img/S2.jpg", "어서 들어오너라. 네 만세력부터 펼쳐 보자.", "smile", "r")}
     ${ttl(`${esc(name)}의 만세력`, esc(birthLine()))}${myTable()}${daeunHtml()}
     ${bridge(`${name}${jos(name)}, 먼저 네 몸과 기운부터 보자.`, "think")}${ohaengHtml()}${tempHtml()}
-    ${ttl("2027 정미년, 너는 어떤 해")}${verdictCard(L)}${samjaeHtml()}${flowHtml(true)}
+    ${ttl("2027 정미년, 너는 어떤 해")}${verdictCard(L)}${scoreHtml()}${samjaeHtml()}${flowHtml(true)}
     ${S2[0] ? secHtml(S2[0], 0) : ""}
     ${bridge("이제 내년 글자를 네 글자에 하나씩 대 보마.", "firm")}
     ${S2[1] ? secHtml(S2[1], 1) : ""}
@@ -583,7 +610,7 @@ function freeResult(L) {
     ${cut("img/S3.jpg", "알고 맞는 해와 모르고 맞는 해는 다르다.", "firm", "r")}
     ${bonCard(price)}
     <p class="cap" style="margin-top:16px">시험 중인 서비스예요. 사주는 판단 재료이고, 결정은 내가 해요.</p></div>
-    ${cta(`할미 편지 전부 받기 · ${won(price)}`)}`;
+    ${dealCta(`할미 편지 전부 받기 · ${OFF(price)}% ${won(price)}`)}`;
 }
 function resultScreen() {
   const L = parse(S.text);
@@ -596,7 +623,7 @@ function resultScreen() {
   show("result", `${brand()}<div class="res">
     ${cut("img/C0.jpg", (L.opening[0] || "").split(/(?<=[.?!])\s+/)[0] || "", S.tags?.verdict === "조심" ? "firm" : "smile")}
     ${ttl(`${esc(letterName())}의 만세력`, esc(birthLine()))}${myTable()}${daeunHtml()}${ohaengHtml()}
-    ${ttl("2027 정미년, 너는 어떤 해")}${verdictCard(L)}${samjaeHtml()}${flowHtml(false)}
+    ${ttl("2027 정미년, 너는 어떤 해")}${verdictCard(L)}${scoreHtml()}${samjaeHtml()}${flowHtml(false)}
     ${toc}
     ${L.secs.map((x, i) => secHtml(x, i)).join("")}
     ${cut("img/C9.jpg", endLine || "다시 열어볼 날에 또 오너라.", "smile", "r")}
