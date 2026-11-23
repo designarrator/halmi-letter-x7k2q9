@@ -370,6 +370,7 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .cab button.bad small{color:var(--red)}.cab button.good small{color:#3e7a5e}.cab button.mid small{color:var(--ink2)}
 .react{font-size:17px!important;line-height:27px!important;margin-top:16px!important}
 .sc.talk-in:not(.scrolly) .low{padding-bottom:calc(132px + env(safe-area-inset-bottom))!important}
+.ansdots{color:var(--ink3);font-size:15px;line-height:24px;animation:fadein 1s ease-in-out infinite alternate}@keyframes fadein{from{opacity:.4}}
 </style>
 </head>
 <body>
@@ -505,7 +506,7 @@ async function S5() {
 }
 /* S6 맥 짚기 (꾹 누르기) */
 async function S6() {
-  fetchChart().catch(() => {});
+  fetchChart().catch(() => {}); askAnswer();
   show(`<section class="sc split"><div class="pic">${media("S6", 'style="object-position:center bottom"')}<div class="pulse-zone" id="pz"><b></b></div></div><div class="low"><div id="say"></div><div class="prog"><i id="pg"></i></div><p class="steam" id="st">손목을 꾹 누른 채 기다려 주세요</p></div></section>`, `<button class="btn" id="go" disabled>표지 보기</button>`);
   await says(["태어난 때는 타고난 바탕이고, 맥은 지금 네 기운이란다. 둘을 같이 봐야 앞날이 보이지.", "자, 손목 이리 내 보거라. 가만히, 빼지 말고."], $("#say"));
   const SUB = ["…어디 가만있어 보자", "아이고, 손목이 이게 뭐냐. 얼음장이네", "맥이 가라앉았구나. 요새 많이 지쳤지", "내년 이맘때까지 어디서 탈이 나는지, 할미가 보고 있단다"];
@@ -535,8 +536,23 @@ function S8() {
   show(`<section class="cover"><img src="${IMG("S8")}" alt=""><div class="ct"><p class="ey">${U.y}년 ${String(U.m).padStart(2, "0")}월 ${String(U.d).padStart(2, "0")}일생</p><p class="nm">${esc(U.name)}</p><p class="ln">${esc(U.name)}의 2027년,<br>다칠 곳부터 짚어 보마</p><p class="down">아래로 내려 읽어요 ↓</p></div></section><div id="res"></div>`, "", false);
   $("#cta").classList.add("on");
   renderResult(CH);
+  loadAnswer();
 }
 
+/* 고민에 대한 할미 답(Haiku, 서버 answer). 실패하면 계산값으로 만든 기본 문장 */
+let ANS = null;
+function askAnswer() {
+  if (ANS || !U.wish) return ANS;
+  ANS = fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-halmi-key": KEY }, body: JSON.stringify({ action: "answer", question: U.wish, love: U.love, y: +U.y, m: +U.m, d: +U.d, hour: U.known ? +U.hour : null, minute: U.known ? +U.minute : null, calendar: U.cal, gender: U.gender }) }).then((r) => r.json()).catch(() => ({}));
+  return ANS;
+}
+async function loadAnswer() {
+  const el = $("#ans"); if (!el) return;
+  const j = await askAnswer();
+  const bad = CH?.caution?.[0] ? MK(CH.flow[CH.caution[0].idx].label) : "그 달";
+  const t = j?.text || `길은 열려 있단다. 다만 ${bad}엔 크게 흔들리니 그때만큼은 몸을 사리거라. 자세한 건 처방에 적어 두마.`;
+  el.innerHTML = esc(t).replace(/^([^.!?…]+[.!?…])/, "<em>$1</em>");
+}
 /* ── 결과 ── */
 function pn(o) {
   const bs = (o.b || []).map((b) => `<div class="bb" style="left:${b.x}%;top:${b.y}%;width:${b.w || 52}%"><span>${b.t}</span></div>`).join("");
@@ -635,7 +651,7 @@ function renderResult(v) {
   if (U.wish) {
     H.push(pn({ img: "R11", h: 460, kind: "full", pos: "center 25%", b: [{ t: `자, 아까 네가 적은 거.<br>맥을 짚어 보니<br>알겠더구나.`, x: 46, y: 58, w: 52 }] }));
     H.push(`<p class="quote">«${esc(wishQ)}»</p>`);
-    H.push(capt(`<em>길은 열려 있단다.</em> 다만 ${badK}에 새는 돈을 못 막으면… 발이 묶이고 말겠구나.`, `언제 움직이고 무엇부터 막을지는, 할미가 처방에 다 적어 두었단다. ${EX}`));
+    H.push(`<p class="cap" id="ans"><span class="ansdots">할미가 맥을 다시 짚는 중…</span></p>`);
   }
   /* R12 남은 두 첩 */
   H.push(pn({ img: "R12", h: 280, kind: "tilt", pos: "center", b: [{ t: "하나는 이렇게<br>풀어 줬다만.", x: 4, y: -22, w: 46 }, { t: "남은 두 첩이…<br><b>실은 더 아프단다.</b>", x: 52, y: 62, w: 46 }] }));
