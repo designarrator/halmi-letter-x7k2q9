@@ -270,6 +270,15 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .sc.form-sc .pic::after{background:linear-gradient(rgba(247,239,226,0) 60%,var(--paper))!important}
 .sc.form-sc .low{top:38%}
 @media (max-height:740px){.sc.form-sc .pic{height:26%}.sc.form-sc .low{top:23%}.sc.form-sc .pic::after{background:linear-gradient(rgba(247,239,226,0) 55%,var(--paper))!important}}
+/* 입력 칸 하나인 화면(걱정 적기·연애 질문): 문 열기처럼 그림 크게, 말·칸은 그림 아래 */
+.sc.talk-in .pic{position:relative;inset:auto;flex:1 1 0;min-height:0}
+.sc.talk-in .pic::after{background:linear-gradient(rgba(247,239,226,0) 86%,var(--paper))!important}
+.sc.talk-in .pic img,.sc.talk-in .pic video.mv{width:100%;height:100%;object-fit:cover;object-position:center 18%}
+.sc.talk-in .low{position:relative;inset:auto;flex:0 0 auto;padding-top:4px}
+.sc.talk-in .slip{min-height:0;height:96px;max-height:96px;overflow-y:auto;margin-top:12px}
+.sc.talk-in .sent{margin-top:12px}
+.sc.talk-in .low{padding-bottom:calc(124px + env(safe-area-inset-bottom))}
+@media (max-height:740px){.sc.talk-in .slip{height:72px}.sc.talk-in .low{padding-bottom:calc(112px + env(safe-area-inset-bottom))}}
 </style>
 </head>
 <body>
@@ -355,7 +364,7 @@ async function S2() {
 }
 /* S3 마음에 걸리는 것 */
 async function S3() {
-  show(scr("S3", `<div id="say"></div><textarea class="slip" id="wish" maxlength="200" placeholder="예) 내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요?">${esc(U.wish)}</textarea>`, "form-sc"), `<button class="btn" id="go">다 적었어요</button><button class="lnk" id="skip">딱히 없어요</button>`);
+  show(scr("S3", `<div id="say"></div><textarea class="slip" id="wish" maxlength="200" placeholder="예) 내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요?">${esc(U.wish)}</textarea>`, "talk-in"), `<button class="btn" id="go">다 적었어요</button><button class="lnk" id="skip">딱히 없어요</button>`);
   $("#go").onclick = () => { U.wish = $("#wish").value.trim(); save(); S4(); };
   $("#skip").onclick = () => { U.wish = ""; save(); S4(); };
   await says(["급할 거 하나 없다. 따뜻할 때 차부터 한 모금 마시거라.", "내년 생각하면 자꾸 마음에 걸리는 거 있지? 그거 하나만 여기 적어 보련?"], $("#say"));
@@ -389,7 +398,7 @@ async function S4() {
 async function S5() {
   const LV = ["선택 안함", "솔로", "연애중", "짝사랑중", "썸타는중", "기혼"], LL = ["선택 안함", "3개월 미만", "3개월 ~ 1년", "1년 ~ 3년", "3년 ~ 5년", "5년 이상"];
   const opt = (a, v) => a.map((x) => `<option ${x === v ? "selected" : ""}>${x}</option>`).join("");
-  show(scr("S5", `<div id="say"></div><p class="sent">지금은 <select id="lv">${opt(LV, U.love || "선택 안함")}</select> 상태예요.</p><p class="sent">기간은 <select id="ll">${opt(LL, U.loveLen || "선택 안함")}</select> 이에요.</p><p class="hint">답하지 않아도 넘어갈 수 있어요.</p>`, "form-sc"), `<button class="btn" id="go">다음으로</button>`);
+  show(scr("S5", `<div id="say"></div><p class="sent">지금은 <select id="lv">${opt(LV, U.love || "선택 안함")}</select> 상태예요.</p><p class="sent">기간은 <select id="ll">${opt(LL, U.loveLen || "선택 안함")}</select> 이에요.</p><p class="hint">답하지 않아도 넘어갈 수 있어요.</p>`, "talk-in"), `<button class="btn" id="go">다음으로</button>`);
   $("#go").onclick = () => { const a = $("#lv").value, b = $("#ll").value; U.love = a === "선택 안함" ? "" : a; U.loveLen = b === "선택 안함" ? "" : b; save(); S6(); };
   await says([`${U.name}${hasJ(U.name) ? "이" : ""}라… 고것 참, 이름도 곱구나.`, "하나만 더 묻자꾸나. 요새 마음 주는 사람은 있니?"], $("#say"));
 }
