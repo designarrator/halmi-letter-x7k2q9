@@ -321,6 +321,15 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .sc.split .low{padding-top:16px!important;padding-bottom:calc(116px + env(safe-area-inset-bottom))!important}
 .sc.split .prog{height:4px!important;margin:24px 0 8px!important}
 .sc.split .steam{font-size:13px;line-height:19px}
+/* 11/23 그림 비율 줄임: 글이 잘 읽히게 그림은 화면 높이의 약 절반까지(얼굴 중심으로 잘라 보여 줌) */
+.sc:not(.s1):not(.split):not(.form-sc):not(.talk-in) .pic{max-height:50vh!important;aspect-ratio:auto!important;height:50vh}
+.sc:not(.s1):not(.split):not(.form-sc):not(.talk-in) .pic .bv{height:100%;object-fit:cover;object-position:center 30%}
+.sc.talk-in:not(.scrolly) .pic{flex:none!important;height:50vh}
+.sc.talk-in .pic img,.sc.talk-in .pic video.mv{object-position:center 30%!important}
+.sc.split .pic{flex:0 0 50vh!important}
+.sc.split .pic video.mv,.sc.split .pic img{object-fit:cover;object-position:center 80%!important}
+.sc.scrolly .pic video.mv,.sc.scrolly .pic img{height:40vh!important}
+@media (max-height:740px){.sc:not(.s1):not(.split):not(.form-sc):not(.talk-in) .pic,.sc.talk-in:not(.scrolly) .pic{height:44vh;max-height:44vh!important}.sc.split .pic{flex-basis:44vh!important}}
 </style>
 </head>
 <body>
