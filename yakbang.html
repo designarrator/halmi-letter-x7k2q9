@@ -6,14 +6,17 @@
 <meta name="robots" content="noindex, nofollow">
 <title>할미약방 · 2027 정미년</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Hahmlet:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@1.0/nanumbarungothicsubset.css" rel="stylesheet">
 <style>
 /* 할미약방 v1 (11/23) — 정본: personal-vault/projects/사주 할미/17 할미약방 전체 흐름.md
    입력(S1~S8, 한 화면씩) → 결과(R1~R17, 내려 읽기, 하단 고정 버튼) → 결제(P1) → 약 달이기(P2).
    손으로 하는 것 6가지: 맥 짚기(S6) · 약재 저울(R3) · 약연 긁기(R5) · 서랍 세 칸(R7) · 약첩 끈 묶기(R16) · 부채질(P2). */
-@font-face{font-family:"GB";src:url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiBatang.woff") format("woff");font-display:swap}
+/* 글꼴 체계(청월당 월하소녀와 같은 역할로): 대사·제목 KoPubWorld 바탕(청월당과 같은 글꼴), 큰 제목·이름 Hahmlet(청월당 글자 그림·산돌 상록수 대신 무료 굵은 명조), 쪽지 손글씨 Nanum Pen(산돌 공병각필 대신), 웹툰 말풍선 나눔바른고딕(같은 글꼴), 버튼·본문 Pretendard(같은 글꼴) */
+@font-face{font-family:"KoPub";src:url("fonts/KoPubWorldBatang-Medium.woff2") format("woff2");font-weight:400 500;font-display:swap}
+@font-face{font-family:"KoPub";src:url("fonts/KoPubWorldBatang-Bold.woff2") format("woff2");font-weight:600 800;font-display:swap}
 @font-face{font-family:"HSB";src:url("fonts/GapyeongHanseokbong.woff2") format("woff2");font-display:swap}
-:root{--ink:#2B2219;--ink2:#6B5A49;--ink3:#A0907D;--paper:#F7EFE2;--card:#FFFBF4;--wood:#5A3A24;--amber:#E9A94B;--red:#B8402F;--redS:#F6E1DA;--navy:#2E4A62;--line:#E8DCC8;--serif:"GB",serif;--sans:"Pretendard Variable",Pretendard,-apple-system,sans-serif;--brush:"HSB","GB",serif}
+:root{--ink:#2B2219;--ink2:#6B5A49;--ink3:#A0907D;--paper:#F7EFE2;--card:#FFFBF4;--wood:#5A3A24;--amber:#E9A94B;--red:#B8402F;--redS:#F6E1DA;--navy:#2E4A62;--line:#E8DCC8;--serif:"KoPub","Noto Serif KR",serif;--title:"Hahmlet","KoPub",serif;--bubble:"NanumBarunGothic","Pretendard Variable",sans-serif;--sans:"Pretendard Variable",Pretendard,-apple-system,sans-serif;--brush:"HSB","GB",serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:#120D09;color:var(--ink);font-family:var(--sans);word-break:keep-all}
 p{margin:0}
@@ -22,30 +25,35 @@ button{font:inherit;cursor:pointer}
 .ex{display:inline-block;font-family:var(--sans);font-size:11px;line-height:14px;color:var(--red);border:1px solid var(--red);border-radius:6px;padding:0 5px;margin-left:4px;vertical-align:middle;font-weight:400}
 
 /* ── 입력 화면(한 화면씩) ── */
-.sc{position:relative;min-height:100vh;display:flex;flex-direction:column;background:#1b130d;animation:fade .45s ease-out}
+body.lock{overflow:hidden;position:fixed;inset:0;width:100%}
+.sc{position:relative;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--paper);animation:fade .45s ease-out;overflow:hidden}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-.sc .pic{position:relative;height:60vh;min-height:420px;overflow:hidden}
-.sc.form-sc .pic{height:40vh;min-height:300px}
+.sc .pic{position:relative;flex:1 1 auto;min-height:0;overflow:hidden}
+.sc.form-sc .pic{flex:0 0 30%}
+.sc.form-sc .low{flex:1 1 auto}
+@media (max-height:740px){.sc.form-sc .pic{flex-basis:18%}.form{gap:6px;margin-top:10px}.form input{height:44px}.seg button{height:40px}.say{font-size:16px;line-height:25px;min-height:0}.slip{min-height:96px}.sc .low{padding-bottom:calc(96px + env(safe-area-inset-bottom))}}
 .sc .pic img{width:100%;height:100%;object-fit:cover;object-position:center 30%;animation:drift 14s ease-in-out infinite alternate}
 @keyframes drift{from{transform:scale(1.02)}to{transform:scale(1.08) translateY(-1.5%)}}
 .sc .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,0) 55%,var(--paper))}
-.sc .low{position:relative;flex:1;background:var(--paper);padding:0 22px 132px;margin-top:-1px}
-.say{font-family:var(--serif);font-size:19px;line-height:31px;color:var(--ink);text-align:center;min-height:62px}
+.sc .low{position:relative;flex:0 0 auto;background:var(--paper);padding:0 22px calc(112px + env(safe-area-inset-bottom));margin-top:-1px}
+.say{font-family:var(--serif);font-weight:500;font-size:18px;line-height:28px;color:var(--ink);text-align:center;min-height:62px}
 .say+.say{margin-top:10px}
 .hint{font-size:13px;line-height:20px;color:var(--ink3);text-align:center;margin-top:8px}
 .bot{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:12px 20px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(rgba(247,239,226,0),var(--paper) 30%)}
 .bot>div{max-width:448px;margin:0 auto}
-.btn{width:100%;height:56px;border:0;border-radius:16px;background:var(--wood);color:#FFF4E2;font-size:17px;font-weight:600;box-shadow:0 2px 0 #3a2416}
+.btn{position:relative;width:100%;height:56px;border:0;border-radius:28px;background:linear-gradient(#7A4A2C,#5A3420);color:#FFF4E2;font-size:17px;font-weight:600;box-shadow:inset 0 0 0 2px #C9A25B,inset 0 0 0 4px #5A3420,inset 0 0 0 5px rgba(201,162,91,.6),0 3px 8px rgba(60,30,10,.35)}
+.btn::before,.btn::after{content:"";position:absolute;top:50%;width:14px;height:14px;margin-top:-7px;border:2px solid #E0BD72;border-radius:50% 50% 50% 0;transform:rotate(45deg)}
+.btn::before{left:18px}.btn::after{right:18px;transform:rotate(-135deg)}
 .btn:disabled{opacity:.35}
 .lnk{display:block;width:100%;background:none;border:0;color:var(--ink2);text-decoration:underline;font-size:14px;margin-top:8px;height:28px}
 /* 첫 화면 */
-.s1 .pic{height:100vh}
-.s1 .pic::after{background:linear-gradient(rgba(8,14,34,.55),rgba(8,14,34,0) 45%,rgba(8,14,34,.5))}
-.s1 .tt{position:absolute;z-index:2;left:0;right:0;top:11vh;text-align:center;color:#FFF7E6;text-shadow:0 2px 14px rgba(0,0,0,.6)}
-.s1 .tt .y{font-family:var(--serif);font-size:17px;letter-spacing:2px}
-.s1 .tt h1{font-family:var(--serif);font-size:56px;line-height:70px;margin:8px 0 6px;font-weight:700;letter-spacing:4px}
-.s1 .tt .a{font-family:var(--serif);font-size:22px;line-height:32px}
-.s1 .tt .b{font-family:var(--serif);font-size:15px;line-height:24px;opacity:.85;margin-top:6px}
+.s1 .pic{flex:1 1 auto}
+.s1 .pic::after{background:linear-gradient(rgba(8,14,34,.25),rgba(8,14,34,0) 35%,rgba(255,248,236,0) 55%,rgba(255,248,236,.92) 82%,#FFF8EC)}
+.s1 .tt{position:absolute;z-index:2;left:0;right:0;bottom:104px;text-align:center;color:#3A2416}
+.s1 .tt .y{font-family:var(--title);font-weight:700;font-size:22px;letter-spacing:1px;-webkit-text-stroke:5px #fff;paint-order:stroke}
+.s1 .tt h1{font-family:var(--title);font-weight:900;font-size:72px;line-height:84px;margin:0;letter-spacing:2px;color:#4A2A18;-webkit-text-stroke:8px #fff;paint-order:stroke;text-shadow:0 4px 16px rgba(120,70,30,.35)}
+.s1 .tt .a{font-family:var(--serif);font-weight:500;font-size:17px;line-height:26px;margin-top:10px;color:#4a3a2c}
+.s1 .tt .b{display:none}
 .snow{position:absolute;inset:0;z-index:1;pointer-events:none}
 .snow i{position:absolute;top:-10px;width:5px;height:5px;border-radius:50%;background:#fff;opacity:.75;animation:fall linear infinite}
 @keyframes fall{to{transform:translate(18px,105vh)}}
@@ -79,7 +87,7 @@ button{font:inherit;cursor:pointer}
 .cover::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(10,15,35,.45),rgba(10,15,35,.1) 45%,rgba(10,15,35,.55))}
 .cover .ct{position:absolute;z-index:2;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#FFF7E6;text-shadow:0 2px 16px rgba(0,0,0,.6);text-align:center}
 .cover .ey{font-family:var(--serif);font-size:16px;letter-spacing:1px}
-.cover .nm{font-family:var(--serif);font-weight:700;font-size:72px;line-height:92px;margin:6px 0;letter-spacing:4px}
+.cover .nm{font-family:var(--title);font-weight:900;font-size:76px;line-height:92px;margin:6px 0;letter-spacing:2px}
 .cover .ln{font-family:var(--serif);font-size:20px;line-height:32px}
 .cover .down{margin-top:28px;font-size:13px;opacity:.8;animation:bob 1.6s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(6px)}}
@@ -94,7 +102,7 @@ button{font:inherit;cursor:pointer}
 .pn.boxR{margin-left:84px;margin-right:16px}.pn.boxR .im{border:2px solid #1d1d1d}
 .pn.tilt .im{clip-path:polygon(0 6%,100% 0,100% 94%,0 100%)}
 .pn.full .im{-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent)}
-.bb{position:absolute;z-index:3;background:#fff;border:1.5px solid #3a3a3a;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:16px;line-height:24px;color:#1d1d1d;padding:22px 18px;aspect-ratio:1.15/1;opacity:0;transform:scale(.6);transition:opacity .25s,transform .35s cubic-bezier(.3,1.6,.5,1)}
+.bb{position:absolute;z-index:3;background:#fff;border:1.5px solid #3a3a3a;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--bubble);font-size:16px;line-height:24px;color:#1d1d1d;padding:22px 18px;aspect-ratio:1.15/1;opacity:0;transform:scale(.6);transition:opacity .25s,transform .35s cubic-bezier(.3,1.6,.5,1)}
 .bb.in{opacity:1;transform:scale(1)}
 .bb b{color:var(--red)}
 .sfx{position:absolute;z-index:3;font-family:var(--serif);font-weight:700;font-size:28px;color:#1d1d1d;-webkit-text-stroke:5px #fff;paint-order:stroke;opacity:0;transition:opacity .2s .3s}
@@ -139,7 +147,7 @@ button{font:inherit;cursor:pointer}
 .grind{position:relative;border-radius:16px;overflow:hidden;margin-top:6px}
 .grind canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;touch-action:none;transition:opacity .6s}
 .gradeCard{padding:24px 16px;text-align:center;background:#FBF3E3}
-.gradeCard .g{font-family:var(--serif);font-weight:700;font-size:56px;line-height:66px;color:var(--red)}
+.gradeCard .g{font-family:var(--title);font-weight:900;font-size:56px;line-height:66px;color:var(--red)}
 .gradeCard .l{font-family:var(--serif);font-size:18px;line-height:28px;color:var(--ink);margin-top:4px}
 .grades{display:flex;gap:4px;justify-content:center;margin:14px 0 4px;flex-wrap:wrap}
 .grades span{font-size:12px;padding:3px 8px;border-radius:12px;background:#EFE6D7;color:#8a7a68}
@@ -201,7 +209,7 @@ button{font:inherit;cursor:pointer}
 .ch li{list-style:none;font-size:14px;line-height:26px;color:#4a3f35}
 .ch ul{margin:0;padding:0}
 .price{margin:0 14px 24px;background:linear-gradient(#F6E9D2,#FFFBF4);border:1px solid var(--line);border-radius:20px;padding:24px 20px}
-.price h3{font-family:var(--serif);font-weight:700;text-align:center;font-size:40px;line-height:50px;margin:0;color:var(--wood);font-weight:400}
+.price h3{font-family:var(--title);font-weight:900;text-align:center;font-size:40px;line-height:50px;margin:0;color:var(--wood);font-weight:400}
 .price .r{display:flex;justify-content:space-between;font-size:15px;padding:7px 0;color:#6b5a49}
 .price .fin{border-top:1px solid var(--line);margin-top:6px;padding-top:12px;display:flex;justify-content:space-between;align-items:baseline}
 .price .fin b{font-size:28px}
@@ -266,13 +274,13 @@ function fetchChart() {
 /* 말이 한 글자씩 */
 async function typeTo(el, text, speed = 38) { el.textContent = ""; for (const ch of text) { el.textContent += ch; await sleep(ch === "…" || ch === "." ? speed * 5 : speed); } }
 async function says(lines, box) { box.innerHTML = lines.map(() => `<p class="say"></p>`).join(""); const ps = box.querySelectorAll(".say"); for (let i = 0; i < lines.length; i++) { await typeTo(ps[i], lines[i]); await sleep(260); } }
-function show(html, bot = "") { $("#app").innerHTML = html; $("#cta").classList.remove("on"); window.scrollTo(0, 0); const b = document.querySelector(".bot"); if (b) b.remove(); if (bot) document.body.insertAdjacentHTML("beforeend", `<div class="bot"><div>${bot}</div></div>`); }
+function show(html, bot = "", lock = true) { document.body.classList.toggle("lock", lock); $("#app").innerHTML = html; $("#cta").classList.remove("on"); window.scrollTo(0, 0); const b = document.querySelector(".bot"); if (b) b.remove(); if (bot) document.body.insertAdjacentHTML("beforeend", `<div class="bot"><div>${bot}</div></div>`); }
 const scr = (img, inner, cls = "") => `<section class="sc ${cls}"><div class="pic"><img src="${IMG(img)}" alt=""></div><div class="low">${inner}</div></section>`;
 
 /* S1 첫 화면 */
 function S1() {
   const snow = Array.from({ length: 36 }, (_, i) => `<i style="left:${(i * 29) % 100}%;width:${3 + (i % 3)}px;height:${3 + (i % 3)}px;animation-duration:${7 + (i % 6)}s;animation-delay:-${(i * 0.6).toFixed(1)}s"></i>`).join("");
-  show(`<section class="sc s1"><div class="pic"><img src="${IMG("S1")}" alt=""><div class="snow">${snow}</div><div class="tt"><p class="y">2027 정미년</p><h1>할미약방</h1><p class="a">아프기 전에 짓는 약</p><p class="b">때와 맥을 짚어, 미리 막는 집</p></div></div></section>`, `<button class="btn" id="go">약방 문 열기</button>`);
+  show(`<section class="sc s1"><div class="pic"><img src="${IMG("S1")}" alt=""><div class="snow">${snow}</div><div class="tt"><p class="y">2027 정미년</p><h1>할미약방</h1><p class="a">“ 아프기 전에 짓는 약, 내년 맥부터 짚어 보거라 ”</p></div></div></section>`, `<button class="btn" id="go">약방 문 열기</button>`);
   $("#go").onclick = S2;
 }
 /* S2 문 열기 */
@@ -353,7 +361,7 @@ async function S6() {
 }
 /* S8 표지 → 결과 */
 function S8() {
-  show(`<section class="cover"><img src="${IMG("S8")}" alt=""><div class="ct"><p class="ey">${U.y}년 ${String(U.m).padStart(2, "0")}월 ${String(U.d).padStart(2, "0")}일생</p><p class="nm">${esc(U.name)}</p><p class="ln">${esc(U.name)}의 2027년,<br>다칠 곳부터 짚어 보마</p><p class="down">아래로 내려 읽어요 ↓</p></div></section><div id="res"></div>`);
+  show(`<section class="cover"><img src="${IMG("S8")}" alt=""><div class="ct"><p class="ey">${U.y}년 ${String(U.m).padStart(2, "0")}월 ${String(U.d).padStart(2, "0")}일생</p><p class="nm">${esc(U.name)}</p><p class="ln">${esc(U.name)}의 2027년,<br>다칠 곳부터 짚어 보마</p><p class="down">아래로 내려 읽어요 ↓</p></div></section><div id="res"></div>`, "", false);
   $("#cta").classList.add("on");
   renderResult(CH);
 }
@@ -536,7 +544,7 @@ $("#buy").onclick = () => {
 };
 function P1() {
   $("#cta").classList.remove("on");
-  show(`<section class="pay"><h2>약첩 고르기</h2>${[["2027 약첩", 62400, 37400, 40], ["2027 약첩 + 평생 체질 약첩", 124800, 78000, 38], ["풀세트 (마음 약첩 포함)", 171800, 89400, 48]].map(([t, o, p, d], i) => `<div class="opt ${i ? "" : "on"}"><span>${t}</span><span><em>${d}%</em><s>${o.toLocaleString()}원</s><b>${p.toLocaleString()}원</b></span></div>`).join("")}<h2 style="margin-top:24px">휴대폰 번호</h2><p style="font-size:13px;color:#8a7a68;margin-bottom:8px">처방을 다시 볼 때와 안내에 써요.</p><input style="width:100%;height:50px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font-size:17px" inputmode="numeric" placeholder="010-0000-0000"><h2 style="margin-top:24px">결제 수단</h2><div class="opt on">카카오페이</div><div class="opt">네이버페이</div><div class="opt">카드</div><p style="font-size:12px;color:#aaa;margin-top:12px">시험 중이라 실제로 돈이 나가지 않아요.</p></section>`, `<button class="btn" id="go">40% 할인받고 약첩 받기</button>`);
+  show(`<section class="pay"><h2>약첩 고르기</h2>${[["2027 약첩", 62400, 37400, 40], ["2027 약첩 + 평생 체질 약첩", 124800, 78000, 38], ["풀세트 (마음 약첩 포함)", 171800, 89400, 48]].map(([t, o, p, d], i) => `<div class="opt ${i ? "" : "on"}"><span>${t}</span><span><em>${d}%</em><s>${o.toLocaleString()}원</s><b>${p.toLocaleString()}원</b></span></div>`).join("")}<h2 style="margin-top:24px">휴대폰 번호</h2><p style="font-size:13px;color:#8a7a68;margin-bottom:8px">처방을 다시 볼 때와 안내에 써요.</p><input style="width:100%;height:50px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font-size:17px" inputmode="numeric" placeholder="010-0000-0000"><h2 style="margin-top:24px">결제 수단</h2><div class="opt on">카카오페이</div><div class="opt">네이버페이</div><div class="opt">카드</div><p style="font-size:12px;color:#aaa;margin-top:12px">시험 중이라 실제로 돈이 나가지 않아요.</p></section>`, `<button class="btn" id="go">40% 할인받고 약첩 받기</button>`, false);
   document.querySelectorAll(".opt").forEach((o) => (o.onclick = () => { o.parentNode.querySelectorAll(".opt").forEach((x) => x.classList.toggle("on", x === o)); }));
   $("#go").onclick = P2;
 }
