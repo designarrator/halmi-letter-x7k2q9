@@ -257,6 +257,9 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .sc:not(.s1):not(.split):not(.form-sc) .pic{position:relative;inset:auto;flex:0 1 auto;max-height:calc(100% - 230px)}
 .sc:not(.s1):not(.split):not(.form-sc) .pic::after{background:linear-gradient(rgba(247,239,226,0) 70%,var(--paper))}
 .sc:not(.s1):not(.split):not(.form-sc) .low{position:relative;inset:auto;flex:1 1 auto;padding-top:8px}
+.bv{position:absolute;left:0;top:0;width:100%;height:auto;display:block;opacity:0;transition:opacity .6s;-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent)}
+.bv.on{opacity:1}
+.sc:not(.s1):not(.split):not(.form-sc) .pic:has(.bv){aspect-ratio:2/3;width:100%}
 </style>
 </head>
 <body>
@@ -313,13 +316,22 @@ function S1() {
   show(`<section class="sc s1"><div class="pic"><img src="${IMG("S1")}" alt=""><div class="snow">${snow}</div><div class="tt"><p class="y">2027 정미년</p><h1>할미약방</h1><p class="a">아프기 전에 짓는 약</p><p class="b">때와 맥을 짚어, 미리 막는 집</p></div></div></section>`, `<button class="btn" id="go">약방 문 열기</button>`);
   $("#go").onclick = S2;
 }
-/* S2 문 열기 */
+/* S2 문 열기 — 세 장면, 장면마다 움직이는 그림(8초 반복 영상)으로 바뀜 */
 async function S2() {
-  show(scr("S2a", `<div id="say"></div>`), `<button class="btn" id="go" disabled>할미, 저 어디가 안 좋아요?</button>`);
-  await says(["아이고, 우리 아가 왔구나. 이 추운 밤에… 얼른 들어와서 몸부터 녹이거라.", "벌써 또 한 해가 저무는구나. 세월 참 빠르지… 곧 2027년이란다."], $("#say"));
-  await sleep(500);
-  const im2 = document.querySelector(".pic img"); im2.src = IMG("S2b"); im2.style.objectPosition = "center 20%";
-  await says(["그런데 얼굴이 왜 이리 핼쑥하누. 쯧쯧… 맥을 한번 짚어 봐야겠구나. 몇 군데 탈이 보이는구먼."], $("#say"));
+  const BEATS = [
+    ["S2w", ["아이고, 우리 아가 왔구나.", "이 추운 밤에… 얼른 들어와서 몸부터 녹이거라."]],
+    ["S2a", ["벌써 또 한 해가 저무는구나.", "세월 참 빠르지… 곧 2027년이란다."]],
+    ["S2b", ["그런데 얼굴이 왜 이리 핼쑥하누. 쯧쯧…", "맥을 한번 짚어 봐야겠구나. 몇 군데 탈이 보이는구먼."]],
+  ];
+  const vids = BEATS.map(([n], k) => `<video class="bv${k ? "" : " on"}" data-k="${k}" src="vid/${n}.mp4" poster="${IMG(n)}" muted loop playsinline preload="auto"></video>`).join("");
+  show(`<section class="sc"><div class="pic">${vids}</div><div class="low"><div id="say" class="says"></div></div></section>`, `<button class="btn" id="go" disabled>할미, 저 어디가 안 좋아요?</button>`);
+  const vs = [...document.querySelectorAll(".bv")]; vs[0].play().catch(() => {});
+  const box = $("#say");
+  for (let k = 0; k < BEATS.length; k++) {
+    if (k) { await sleep(900); box.classList.add("dim"); vs[k].play().catch(() => {}); vs[k].classList.add("on"); vs[k - 1].classList.remove("on"); await sleep(420); }
+    box.innerHTML = BEATS[k][1].map(() => `<p class="say"></p>`).join(""); box.classList.remove("dim");
+    const ps = box.querySelectorAll(".say"); for (let i = 0; i < ps.length; i++) { await typeTo(ps[i], BEATS[k][1][i]); await sleep(220); }
+  }
   $("#go").disabled = false; $("#go").onclick = S3;
 }
 /* S3 마음에 걸리는 것 */
