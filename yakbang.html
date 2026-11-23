@@ -279,6 +279,12 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .sc.talk-in .sent{margin-top:12px}
 .sc.talk-in .low{padding-bottom:calc(124px + env(safe-area-inset-bottom))}
 @media (max-height:740px){.sc.talk-in .slip{height:72px}.sc.talk-in .low{padding-bottom:calc(112px + env(safe-area-inset-bottom))}}
+/* 걱정 적기: 칸을 크게, 페이지 스크롤 허용, 글꼴은 웹툰 말풍선과 같게(나눔바른고딕 16/24) */
+.slip{font-family:var(--bubble)!important;font-size:16px!important;line-height:24px!important;color:#1d1d1d!important}
+.sc.scrolly{height:auto;min-height:100vh;min-height:100dvh;overflow:visible}
+.sc.scrolly .pic{flex:none;height:auto}
+.sc.scrolly .pic video.mv,.sc.scrolly .pic img{height:56vh;object-fit:cover;object-position:center 18%}
+.sc.scrolly .slip{height:auto;min-height:168px;max-height:none;overflow:hidden;resize:none}
 </style>
 </head>
 <body>
@@ -348,10 +354,12 @@ async function S2() {
   show(`<section class="sc"><div class="pic">${vids}<i id="veil"></i></div><div class="low"><div id="say" class="says"></div></div></section>`, `<button class="btn" id="go" disabled>할미, 저 어디가 안 좋아요?</button>`);
   const vs = [...document.querySelectorAll(".bv")]; vs[0].play().catch(() => {});
   const box = $("#say");
+  const CTAS = ["들어갈게요", "벌써 그렇네요", "할미, 저 어디가 안 좋아요?"], go = $("#go");
+  const tap = () => new Promise((r) => { go.disabled = false; go.onclick = () => { go.disabled = true; r(); }; });
   for (let k = 0; k < BEATS.length; k++) {
+    go.textContent = CTAS[k]; go.disabled = true;
     if (k) {
-      // 자연스러운 딤 아웃 → 딤 인: 앞 장면이 검게 어두워졌다가, 다음 장면이 밝아지며 나타남
-      await sleep(2600); box.classList.add("dim");
+      box.classList.add("dim");
       const nx = vs[k], pv = vs[k - 1], veil = $("#veil");
       veil.classList.add("on"); await sleep(350);
       pv.classList.remove("on"); nx.play().catch(() => {}); nx.classList.add("on");
@@ -359,15 +367,19 @@ async function S2() {
     }
     box.innerHTML = BEATS[k][1].map(() => `<p class="say"></p>`).join(""); box.classList.remove("dim");
     const ps = box.querySelectorAll(".say"); for (let i = 0; i < ps.length; i++) { await typeTo(ps[i], BEATS[k][1][i]); await sleep(220); }
+    await tap();
   }
-  $("#go").disabled = false; $("#go").onclick = S3;
+  S3();
 }
 /* S3 마음에 걸리는 것 */
 async function S3() {
-  show(scr("S3", `<div id="say"></div><textarea class="slip" id="wish" maxlength="200" placeholder="예) 내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요?">${esc(U.wish)}</textarea>`, "talk-in"), `<button class="btn" id="go">다 적었어요</button><button class="lnk" id="skip">딱히 없어요</button>`);
-  $("#go").onclick = () => { U.wish = $("#wish").value.trim(); save(); S4(); };
+  show(scr("S3", `<div id="say"></div><textarea class="slip" id="wish" maxlength="200" placeholder="예) 내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요?">${esc(U.wish)}</textarea>`, "talk-in scrolly"), `<button class="btn" id="go">다 적었어요</button><button class="lnk" id="skip">딱히 없어요</button>`, false);
+  const wb = $("#wish"), grow = () => { wb.style.height = "auto"; wb.style.height = Math.max(168, wb.scrollHeight + 2) + "px"; }; wb.addEventListener("input", grow); grow();
+  wb.addEventListener("focus", () => setTimeout(() => wb.scrollIntoView({ block: "center", behavior: "smooth" }), 300));
+  $("#go").disabled = true; $("#go").onclick = () => { U.wish = $("#wish").value.trim(); save(); S4(); };
   $("#skip").onclick = () => { U.wish = ""; save(); S4(); };
   await says(["급할 거 하나 없다. 따뜻할 때 차부터 한 모금 마시거라.", "내년 생각하면 자꾸 마음에 걸리는 거 있지? 그거 하나만 여기 적어 보련?"], $("#say"));
+  $("#go").disabled = false;
 }
 /* S4 접수표 */
 async function S4() {
@@ -392,15 +404,18 @@ async function S4() {
     if (!unk) { if (t.length < 3) return ($("#err").textContent = "시간은 13:20처럼 적거나 «모름»을 눌러라."); hh = +t.slice(0, t.length - 2); mi = +t.slice(-2); if (hh > 23 || mi > 59) return ($("#err").textContent = "시간이 맞는지 봐 주거라."); }
     Object.assign(U, { name: nm, y, m, d, known: !unk, hour: hh, minute: mi }); save(); chP = null; fetchChart().catch(() => {}); S5();
   };
+  $("#go").disabled = true;
   await says(["먼저 언제 태어났는지부터 적어 보거라. 타고난 바탕이 거기 다 적혀 있거든."], $("#say"));
+  $("#go").disabled = false;
 }
 /* S5 마음 주는 사람 */
 async function S5() {
   const LV = ["선택 안함", "솔로", "연애중", "짝사랑중", "썸타는중", "기혼"], LL = ["선택 안함", "3개월 미만", "3개월 ~ 1년", "1년 ~ 3년", "3년 ~ 5년", "5년 이상"];
   const opt = (a, v) => a.map((x) => `<option ${x === v ? "selected" : ""}>${x}</option>`).join("");
   show(scr("S5", `<div id="say"></div><p class="sent">지금은 <select id="lv">${opt(LV, U.love || "선택 안함")}</select> 상태예요.</p><p class="sent">기간은 <select id="ll">${opt(LL, U.loveLen || "선택 안함")}</select> 이에요.</p><p class="hint">답하지 않아도 넘어갈 수 있어요.</p>`, "talk-in"), `<button class="btn" id="go">다음으로</button>`);
-  $("#go").onclick = () => { const a = $("#lv").value, b = $("#ll").value; U.love = a === "선택 안함" ? "" : a; U.loveLen = b === "선택 안함" ? "" : b; save(); S6(); };
+  $("#go").disabled = true; $("#go").onclick = () => { const a = $("#lv").value, b = $("#ll").value; U.love = a === "선택 안함" ? "" : a; U.loveLen = b === "선택 안함" ? "" : b; save(); S6(); };
   await says([`${U.name}${hasJ(U.name) ? "이" : ""}라… 고것 참, 이름도 곱구나.`, "하나만 더 묻자꾸나. 요새 마음 주는 사람은 있니?"], $("#say"));
+  $("#go").disabled = false;
 }
 /* S6 맥 짚기 (꾹 누르기) */
 async function S6() {
