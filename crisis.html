@@ -375,60 +375,105 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .fact{margin:8px 16px 48px;background:#fff;border:2px solid #1d1d1d;border-radius:16px;padding:20px;box-shadow:4px 4px 0 #1d1d1d}
 .fact .ey{font-size:13px;line-height:19px;color:var(--red);font-weight:700;margin:0 0 4px}
 .fact .tt{font-family:var(--serif);font-size:20px;line-height:30px;font-weight:700;margin:0 0 16px;color:#1d1d1d}
-.fact .bar{margin:0 0 12px}.fact .bar p{display:flex;justify-content:space-between;font-size:15px;line-height:24px;margin:0 0 4px}.fact .bar p b{color:#1d1d1d}
-.fact .bar i{display:block;height:12px;border-radius:999px;background:#EFE6D8;overflow:hidden}.fact .bar i s{display:block;height:100%;border-radius:999px}
+.fact .bar{margin:0 0 12px}.fact .bar p{display:flex;justify-content:space-between;font-size:15px;line-height:24px;margin:0 0 4px}.fact .bar p b{color:#1d1d1d;transition:color .3s}
+.fact .bar i{position:relative;display:block;height:12px;border-radius:999px;background:#EFE6D8}.fact .bar i s{display:block;height:100%;border-radius:999px;transition:width .9s cubic-bezier(.3,1.4,.5,1)}
+.fact .bar i u{position:absolute;top:-4px;bottom:-4px;width:2px;background:#1d1d1d;left:var(--ok)}
 .fact .note{font-size:13px;line-height:19px;color:#8a7a68;margin:12px 0 0;padding-top:12px;border-top:1px dashed #D8C9B0}
-.fact .row{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:24px;margin:0 0 8px}.fact .row b{flex:none;width:56px;color:var(--red)}
-.fact .arrow{display:flex;align-items:center;justify-content:center;gap:12px;font-family:var(--serif);font-size:24px;line-height:34px;font-weight:700;margin:4px 0 8px}.fact .arrow span{display:inline-flex;width:56px;height:56px;border-radius:16px;align-items:center;justify-content:center;background:#F4EDE2;border:1.5px solid #C9A25B}.fact .arrow em{font-style:normal;color:var(--red);font-size:17px}
+.fact .row{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:24px;margin:0 0 8px}.fact .row b{flex:none;width:64px;color:var(--red)}
+.fact .say{font-family:var(--serif);font-size:17px;line-height:27px;text-align:center;color:var(--wood);min-height:27px;margin:16px 0 0}
+.over{animation:shake .4s 2}@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.adds{display:flex;gap:8px;margin-top:16px}.adds button{flex:1;display:flex;align-items:center;gap:8px;justify-content:center;height:56px;border-radius:16px;border:1.5px solid #C9A25B;background:#FBF5E8;font-size:15px;font-weight:600;color:var(--ink);font-family:var(--sans)}.adds button img{width:32px;height:32px;border-radius:999px;object-fit:cover}.adds button.done{opacity:.4}.adds button.hint{animation:glowd 1.2s ease-in-out infinite}
 .scene{margin:8px 16px 48px;background:linear-gradient(#7A1F1F,#A8352A);border-radius:20px;padding:24px 20px;color:#fff}
 .scene .ey{font-size:13px;line-height:19px;color:#fbd;font-weight:700;margin:0 0 12px}
 .scene div{background:#fff;color:#222;border-radius:16px;padding:16px}.scene p{font-size:15px;line-height:24px;margin:0 0 12px}.scene p:last-child{margin:0}.scene p b{color:#B8402F}
 .dates{display:flex;gap:8px;margin-top:4px}.dates span{flex:1;text-align:center;border-radius:12px;background:#F4EDE2;padding:12px 0;font-size:17px;line-height:27px;font-weight:700;color:#B8402F}.dates span.blur{filter:blur(5px)}
 .pvbar{position:sticky;top:0;z-index:20;background:#1d1d1d;color:#fff;font-size:13px;line-height:19px;text-align:center;padding:8px 20px}
 .buy{display:block;margin:0 20px 64px;height:56px;border:0;border-radius:16px;background:linear-gradient(#C24B39,#A8352A);color:#fff;font-size:17px;font-weight:700;width:calc(100% - 40px)}
+.act{display:block;margin:-32px auto 48px;height:56px;padding:0 24px;border-radius:999px;border:2px solid #1d1d1d;background:#fff;font-family:var(--sans);font-size:15px;font-weight:700;color:var(--ink);box-shadow:3px 3px 0 #1d1d1d;animation:glowd 1.4s ease-in-out infinite}.act:disabled{animation:none;opacity:.35}
+.gate{display:none}.gate.show{display:block;animation:fadein .6s}@keyframes fadein{from{opacity:0;transform:translateY(12px)}}
+.pop{position:absolute;z-index:4;padding:8px 16px;border-radius:999px;background:#fff;border:1.5px solid #3a3a3a;font-family:var(--bubble);font-size:15px;line-height:24px;white-space:nowrap;animation:popup 1.8s ease-out forwards;pointer-events:none}
+@keyframes popup{0%{opacity:0;transform:translate(-50%,10px) scale(.6)}15%{opacity:1;transform:translate(-50%,0) scale(1.05)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-40px)}}
+.xf{position:relative}.xf .im2{position:absolute;inset:0;opacity:0;transition:opacity .25s}.xf.on .im2{opacity:1}
+.cab button.bad .slipm{background:#FBE3DC}
+.slip2{position:absolute;z-index:3;left:18%;right:18%;top:-30%;padding:12px 16px;background:#FFFDF6;border:1.5px solid #C9B48E;box-shadow:0 6px 14px rgba(0,0,0,.25);font-family:"KyoboHand",cursive;font-size:20px;line-height:28px;text-align:center;color:#2a2622;transform:rotate(-4deg);transition:top 1s cubic-bezier(.4,1.3,.5,1),opacity .4s;opacity:0}
+.cal.on .slip2{top:38%;opacity:1}
+.cal .ring{position:absolute;z-index:4;left:12%;width:76%;top:30%;height:44%;overflow:visible;mix-blend-mode:multiply}.cal .ring path{fill:none;stroke:#C8352A;stroke-width:7;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}.cal.on .ring path{animation:draw 1.1s 1s cubic-bezier(.5,0,.3,1) forwards}
 </style></head><body>
-<div class="pvbar">미리보기 · 다혜 사주 예시 · 그림은 임시</div>
+<div class="pvbar">미리보기 · 다혜 사주 예시 · 눌러 보는 곳 5군데 · 새 컷 6장</div>
 <main id="res" style="max-width:480px;margin:0 auto;padding-top:24px">
 
 <p class="cap" style="padding-bottom:16px"><small style="margin:0 0 8px">저울을 다 단 뒤</small>그런데 이 저울을 보니<br><em>할미가 알겠더구나.</em></p>
-<div class="pn full" style="--h:420px;--p:center 30%"><img class="im" src="img/y/R3b.jpg"><div class="bb" style="left:46%;top:58%;width:52%"><span>다혜야.<br>너는 힘든 걸<br><b>말을 안 하지.</b></span></div></div>
-<div class="pn boxR" style="--h:440px;--p:center 25%"><img class="im" src="img/y/R10a.jpg"><div class="bb" style="left:-24%;top:6%;width:50%"><span>싫어도<br>«괜찮아요».</span></div><div class="bb" style="left:-24%;top:58%;width:52%"><span>서운해도<br>«괜찮아요».<br><b>그게 입에 붙었구나.</b></span></div></div>
+<div class="pn full" id="p1" style="--h:460px;--p:center 30%"><img class="im" src="img/c/C1.jpg"><div class="bb" style="left:2%;top:-8%;width:48%"><span>다혜야.<br>너는 힘든 걸<br><b>말을 안 하지.</b></span></div></div>
+<button class="act" id="a1">주머니를 꾹 눌러 보거라 (0/3)</button>
+<div class="gate" id="g1">
+<p class="cap">싫어도 «괜찮아요».<br>서운해도 «괜찮아요».<br><em>그게 입에 붙었구나.</em></p>
+<div class="pn tilt" style="--h:280px;--p:center"><img class="im" src="img/c/C2.jpg"><span class="sfx" style="left:8%;top:14%;transform:rotate(-8deg)">휘청</span><div class="bb" style="left:46%;top:-22%;width:52%"><span>돈, 집안, 사람.<br>남들 몫까지<br><b>네가 다 떠안고</b> 있잖니.</span></div></div>
 <p class="cap">네 맥엔 하고 싶은 말을<br>꺼내는 기운이 거의 없단다.<br><em>그 대신 챙길 것만 산더미지.</em></p>
-<div class="pn tilt" style="--h:280px;--p:center"><img class="im" src="img/y/R6a.jpg"><span class="sfx" style="left:64%;top:14%;transform:rotate(10deg)">쿵</span><div class="bb" style="left:4%;top:-20%;width:52%"><span>돈, 집안, 사람.<br>남들 몫까지<br><b>네가 다 떠안고</b> 있잖니.</span></div></div>
-<section class="fact"><p class="ey">근거 ① 네 몸의 기운</p><p class="tt">챙기는 기운은 넘치고,<br>말하는 기운은 거의 없다</p>
-<div class="bar"><p><span>챙기는 기운 · 돈·집안·사람</span><b>45%</b></p><i><s style="width:45%;background:#C9A25B"></s></i></div>
-<div class="bar"><p><span>말하는 기운 · 하고 싶은 말</span><b style="color:var(--red)">4%</b></p><i><s style="width:4%;background:#D9705A"></s></i></div>
-<p class="note">甲 일간 기준 재성(土) 44.7% 넘침 · 식상(火) 3.7% · 지금 10년 운 壬戌도 흙</p></section>
-
-<div class="pn box" style="--h:300px;--p:center 30%"><img class="im" src="img/y/R5c.jpg"><span class="sfx" style="left:70%;top:8%;transform:rotate(8deg)">흠…</span><div class="bb" style="left:46%;top:-24%;width:50%"><span>그런데<br><b>내년이 문제다.</b></span></div></div>
-<div class="pn full" style="--h:420px;--p:center 30%"><img class="im" src="img/y/R9a.jpg"><div class="bb" style="left:48%;top:56%;width:50%"><span>평생 없던<br><b>말하는 기운</b>이<br>내년에 처음 들어온다.</span></div></div>
+<section class="fact" id="f1"><p class="ey">근거 ① 네 몸의 기운</p><p class="tt">챙기는 기운은 넘치고,<br>말하는 기운은 거의 없다</p>
+<div class="bar" id="bE"><p><span>챙기는 기운 · 돈·집안</span><b>45%</b></p><i style="--ok:20%"><u></u><s style="width:45%;background:#C9A25B"></s></i></div>
+<div class="bar" id="bF"><p><span>말하는 기운 · 하고 싶은 말</span><b style="color:var(--red)">4%</b></p><i style="--ok:20%"><u></u><s style="width:4%;background:#D9705A"></s></i></div>
+<p class="note">검은 선이 알맞은 양 · 甲 일간 기준 재성(土) 44.7% · 식상(火) 3.7% · 지금 10년 운 壬戌도 흙</p>
+<p class="say" id="fsay">내년 약재를 이 몸에 넣어 보거라.</p>
+<div class="adds"><button id="addF" class="hint"><img src="img/ui/i-fire.jpg" onerror="this.remove()">불씨 한 톨</button><button id="addE"><img src="img/ui/i-earth.jpg" onerror="this.remove()">흙 한 줌</button></div></section>
+</div>
+<div class="gate" id="g2">
+<div class="pn full" style="--h:460px;--p:center 30%"><img class="im" src="img/c/C3.jpg"><div class="bb" style="left:48%;top:64%;width:50%"><span>평생 없던<br><b>말하는 기운</b>이<br>내년에 처음 들어온다.</span></div></div>
 <p class="cap">좋은 일 같지?<br><em>아니다. 삼킨 말이<br>한꺼번에 나온다는 뜻이다.</em></p>
-<div class="pn boxR" style="--h:420px;--p:center 30%"><img class="im" src="img/y/R8b.jpg"><div class="bb" style="left:-24%;top:54%;width:52%"><span>그 말이 어디로<br>가는지 아니.<br><b>제일 가까운 사람</b>한테 간다.</span></div></div>
+<div class="pn tilt" style="--h:280px;--p:center"><img class="im" src="img/c/C4.jpg"><span class="sfx" style="left:6%;top:8%;transform:rotate(-8deg)">펑!</span><div class="bb" style="left:2%;top:62%;width:50%"><span>그 말이 어디로<br>가는지 아니.<br><b>제일 가까운 사람</b>한테.</span></div></div>
+<div class="pn box xf" id="bowl" style="--h:360px;--p:center"><img class="im" src="img/c/C5a.jpg"><img class="im im2" src="img/c/C5b.jpg"><span class="sfx" id="clink" style="left:62%;top:14%;transform:rotate(8deg);display:none">쨍</span></div>
+<button class="act" id="a3">그릇을 톡 두드려 보거라</button>
+</div>
+<div class="gate" id="g3">
 <section class="fact"><p class="ey">근거 ② 2027년 글자가 치는 자리</p><p class="tt">곁 사람 자리가 깨지고,<br>집안 자리가 흔들린다</p>
-<div class="arrow"><span>未</span><em>깨짐 →</em><span>戌</span></div>
 <div class="row"><b>곁 사람</b><span>배우자·연인 자리. 내년 글자와 부딪혀 금이 간다.</span></div>
 <div class="row"><b>집안·일터</b><span>정면으로 맞부딪힌다. 집안 일과 일터 일이 한꺼번에 몰린다.</span></div>
-<p class="note">2027 未 ↔ 일지 戌 형·파 · 월지 丑 충·형 · 丁 ↔ 시간 癸 충</p></section>
-<section class="fact"><p class="ey">근거 ③ 짐은 하나 더</p><p class="tt">넘치는 흙이 3개에서 4개로</p>
-<div class="arrow"><span>3</span><em>2027 →</em><span style="background:#FBE3DC;border-color:var(--red);color:var(--red)">4</span></div>
-<p class="note">내년 未(흙)가 더해짐 · 나에게 내년은 12운성 «묘(墓)», 갇히는 자리</p></section>
-<div class="pn tilt" style="--h:280px;--p:center"><img class="im" src="img/y/R12.jpg"><div class="bb" style="left:4%;top:-22%;width:48%"><span>말은 터지는데<br>짐은 더 늘고.</span></div><div class="bb" style="left:50%;top:62%;width:48%"><span>내년은 네게<br><b>갇히는 해</b>란다.</span></div></div>
-
-<div class="pn boxL" style="--h:340px;--p:center 30%"><img class="im" src="img/y/R6b.jpg"><div class="bb" style="left:50%;top:-8%;width:50%"><span>그대로 두면<br><b>이렇게 된다.</b></span></div></div>
+<div class="row"><b>기댈 곳</b><span>받쳐 주던 어른과 한 번 어긋난다.</span></div>
+<p class="note">2027 未 ↔ 일지 戌 형·파 · 월지 丑 충·형 · 丁 ↔ 시간 癸 충 · 내년은 12운성 «묘», 갇히는 자리</p></section>
+<p class="cap">말은 터지는데 짐은 더 늘고.<br><em>내년은 네게 갇히는 해란다.</em></p>
+<p class="cap">한 번 금 간 그릇은<br><em>붙여도 금이 남는다.</em></p>
+<section class="blk"><p class="ey">언제 터지나</p><p class="tt">서랍 열두 칸이 내년 열두 달</p><p class="ask">붉은 기운이 새는 칸이 있다. 세 칸만 열어 보련?</p><div class="cab" id="dr"><img src="img/y/R7b.jpg" alt=""></div><p class="react" id="drsay"></p></section>
+</div>
+<div class="gate" id="g4">
 <section class="scene"><p class="ey">2027년, 그대로 두면</p><div>
 <p><b>칠월</b>, 참던 말이 한 번에 나온다. 상대는 «갑자기 왜 그래»라고 한다.</p>
 <p>집안 일이 겹쳐 돈이 한쪽으로 쏠린다. <b>네 몫부터</b> 비운다.</p>
 <p>기대던 어른과도 한 번 크게 어긋난다.</p></div></section>
-<section class="fact"><p class="ey">근거 ④ 가장 센 날</p><p class="tt">이날은 말을 아껴라</p><div class="dates"><span>7월 12일</span><span class="blur">7월 24일</span><span class="blur">8월 5일</span></div><p class="note">조심 달 칠월 > 구월 > 팔월 · 일진이 내 일지와 부딪히는 날</p></section>
-<p class="cap">한 번 깨진 그릇은<br><em>붙여도 금이 남는다.</em></p>
-
+<section class="fact"><p class="ey">근거 ③ 가장 센 날</p><p class="tt">이날은 말을 아껴라</p><div class="dates"><span>7월 12일</span><span class="blur">7월 24일</span><span class="blur">8월 5일</span></div><p class="note">조심 달 칠월 > 구월 > 팔월 · 일진이 내 일지와 부딪히는 날</p></section>
 <div class="pn full" style="--h:460px;--p:center 25%"><img class="im" src="img/y/R11.jpg"><div class="bb" style="left:46%;top:58%;width:52%"><span>네가 물은 거,<br>할미가 잊지<br>않았다.</span></div></div>
 <p class="quote">«내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요»</p>
+<div class="pn box cal" id="cal" style="--h:360px;--p:center;margin-top:32px"><img class="im" src="img/c/C6.jpg"><p class="slip2">내년에 미국 발령이<br>날 것 같은데…</p><svg class="ring" viewBox="0 0 200 120" preserveAspectRatio="none"><path pathLength="1" d="M150 14 C 118 2, 52 4, 22 26 C -2 44, 4 84, 42 104 C 84 124, 160 116, 188 86 C 206 64, 196 26, 160 14 C 132 6, 96 8, 70 16"/></svg></div>
+<button class="act" id="a5">쪽지를 내년 달력에 대 보거라</button>
+</div>
+<div class="gate" id="g5">
 <p class="cap">…하필 칠월 언저리구나.<br><em>방금 말한 그 탈이랑<br>정확히 겹친다.</em><small>가도 되는지, 언제 말을 꺼내야 하는지는 약첩 첫 장에 적어 뒀다.</small></p>
-
 <div class="pn boxL" style="--h:320px;--p:center 30%"><img class="im" src="img/y/R9c.jpg"><div class="bb" style="left:50%;top:-10%;width:50%"><span>막는 법은 있다.<br><b>미리 알면 막는다.</b></span></div></div>
 <p class="cap">아픈 데 짚어만 놓고 약을 안 지어 주면,<br><em>그게 어디 할미겠니.</em></p>
 <section class="blk"><p class="ey">다혜의 약첩에 든 것</p><p class="tt">막는 법은 여기 있다</p><div class="lock"><h5>🔒 약첩을 열어야 보여요</h5><ul><li>칠월에 터질 말을 미리 빼는 법</li><li>곁 사람과 금 가지 않게 하는 날</li><li>떠안은 짐 중 내려놓을 것</li><li>내년에 오는 귀인 알아보는 법</li><li>미국 발령, 가도 되는지와 말 꺼낼 때</li></ul></div></section>
 <p class="cap">괜찮다.<br>내년은 <em>귀인이 오는 해</em>이기도 하니까.<small>그 얘기도 약첩에 있다.</small></p>
 <button class="buy">할미 약첩 받기</button>
-</main></body></html>
+</div>
+</main>
+<script>
+const $ = (s) => document.querySelector(s), vib = (p) => navigator.vibrate?.(p);
+const open = (id) => { const g = $(id); g.classList.add("show"); setTimeout(() => g.scrollIntoView({ behavior: "smooth", block: "start" }), 250); };
+/* ① 삼킨 말 주머니 */
+const SW = ["괜찮아요", "제가 할게요", "신경 쓰지 마세요"]; let n1 = 0;
+$("#a1").onclick = () => { if (n1 >= 3) return; const p = document.createElement("span"); p.className = "pop"; p.textContent = "«" + SW[n1] + "»"; p.style.left = [28, 72, 46][n1] + "%"; p.style.top = [74, 60, 46][n1] + "%"; $("#p1").appendChild(p); vib(25); n1++; $("#a1").textContent = n1 < 3 ? `주머니를 꾹 눌러 보거라 (${n1}/3)` : "다 삼킨 말이구나"; if (n1 === 3) { $("#a1").disabled = true; setTimeout(() => open("#g1"), 1400); } };
+/* ② 내년 약재 넣기 */
+let fF = 0, fE = 0;
+const after = () => { if (fF && fE) { $("#fsay").innerHTML = "말은 처음 터지는데, <b style='color:var(--red)'>짐은 더 무거워졌구나.</b>"; setTimeout(() => open("#g2"), 1600); } };
+$("#addF").onclick = () => { if (fF) return; fF = 1; vib(20); $("#bF s").style.width = "22%"; $("#bF b").textContent = "4% → 처음 들어옴"; $("#addF").className = "done"; $("#addE").classList.add("hint"); $("#fsay").textContent = "불씨가 들어오니 말하는 기운이 확 솟는다."; after(); };
+$("#addE").onclick = () => { if (fE) return; fE = 1; vib([20, 40, 20]); $("#bE s").style.width = "58%"; $("#bE b").textContent = "45% → 넘침"; $("#bE b").style.color = "var(--red)"; $("#bE").classList.add("over"); $("#addE").className = "done"; if (!fF) $("#addF").classList.add("hint"); $("#fsay").textContent = "흙이 또 쌓인다. 짐이 셋에서 넷으로 늘었구나."; after(); };
+/* ③ 그릇 */
+$("#a3").onclick = () => { $("#bowl").classList.add("on"); $("#clink").style.display = "block"; vib([60, 30, 120]); $("#a3").disabled = true; $("#a3").textContent = "…금이 갔구나"; setTimeout(() => open("#g3"), 1400); };
+/* ④ 서랍 */
+const MO = ["이월", "삼월", "사월", "오월", "유월", "칠월", "팔월", "구월", "시월", "동짓달", "섣달", "정월"], BAD = [5, 7, 6], GOOD = [1, 10, 0];
+const dr = $("#dr"); let pk = 0;
+MO.forEach((m, i) => { const b = document.createElement("button"); b.style.left = [3.7, 28, 51.5, 75][i % 4] + "%"; b.style.top = [5, 36, 65.5][Math.floor(i / 4)] + "%"; b.innerHTML = '<span class="slipm"></span>'; if (BAD.includes(i)) b.classList.add("hint"); b.onclick = () => {
+  if (pk >= 3 || b.classList.contains("open")) return; pk++; const bad = BAD.includes(i), good = GOOD.includes(i);
+  b.classList.add("open", bad ? "bad" : good ? "good" : "mid"); b.querySelector(".slipm").innerHTML = `<b>${m}</b><small>${bad ? "터짐" : good ? "풀림" : "고름"}</small>`; vib(bad ? [40, 40, 40] : 15);
+  $("#drsay").textContent = bad ? (i === 5 ? "아이고, 칠월이다. 참던 말이 터지는 달이 여기구나." : `${m}에도 붉은 기운이 새는구나.`) : good ? `${m}은 풀리는 달이다. 그건 다행이지.` : `${m}은 고요하구나.`;
+  if (pk === 3) { dr.querySelectorAll("button").forEach((x) => x.classList.remove("hint")); setTimeout(() => open("#g4"), 1500); } }; dr.appendChild(b); });
+/* ⑤ 쪽지 × 달력 */
+$("#a5").onclick = () => { $("#cal").classList.add("on"); vib(20); $("#a5").disabled = true; $("#a5").textContent = "…겹치는구나"; setTimeout(() => open("#g5"), 2400); };
+</script></body></html>
