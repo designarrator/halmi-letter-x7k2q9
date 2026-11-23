@@ -249,6 +249,14 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .fire{position:absolute;z-index:2;left:18%;bottom:14%;width:22%;height:12%;border-radius:50%;background:radial-gradient(#FFD36B,#F2702B 60%,transparent 70%);filter:blur(4px);opacity:.3;transition:opacity .2s,transform .2s}
 .tag{position:absolute;top:8px;left:8px;z-index:4;font-size:11px;background:rgba(0,0,0,.5);color:#fff;padding:1px 6px;border-radius:6px}
 @media (max-height:740px){.sc.form-sc .low{top:12%}.sc.form-sc .pic::after{background:linear-gradient(rgba(247,239,226,0) 6%,rgba(247,239,226,.92) 16%,var(--paper) 20%)}.form{gap:4px;margin-top:8px}.form label{margin-bottom:0}.form input{height:40px}.seg button{height:36px}.say{font-size:15px;line-height:24px}.slip{min-height:96px}.sc .low{padding-bottom:calc(96px + env(safe-area-inset-bottom))}}
+/* 11/23 확대 버그: 2:3 그림을 화면 높이에 맞추면 양옆이 잘리며 확대됨 → 첫 화면 외에는 폭에 맞추고 위쪽 정렬, 다가가는 효과 끔 */
+.sc:not(.s1):not(.split) .pic img{height:auto;object-fit:initial;animation:none}
+.sc:not(.s1):not(.split) .pic::after{background:linear-gradient(rgba(247,239,226,0) 46%,rgba(247,239,226,.9) 60%,var(--paper) 68%)}
+.sc.form-sc .pic::after{background:linear-gradient(rgba(247,239,226,0) 22%,rgba(247,239,226,.92) 34%,var(--paper) 40%)!important}
+@media (max-height:740px){.sc.form-sc .pic::after{background:linear-gradient(rgba(247,239,226,0) 6%,rgba(247,239,226,.92) 16%,var(--paper) 20%)!important}}
+.sc:not(.s1):not(.split):not(.form-sc) .pic{position:relative;inset:auto;flex:0 1 auto;max-height:calc(100% - 230px)}
+.sc:not(.s1):not(.split):not(.form-sc) .pic::after{background:linear-gradient(rgba(247,239,226,0) 70%,var(--paper))}
+.sc:not(.s1):not(.split):not(.form-sc) .low{position:relative;inset:auto;flex:1 1 auto;padding-top:8px}
 </style>
 </head>
 <body>
