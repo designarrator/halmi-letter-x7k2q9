@@ -18,7 +18,7 @@
 @font-face{font-family:"HSB";src:url("fonts/GapyeongHanseokbong.woff2") format("woff2");font-display:swap}
 :root{--ink:#2B2219;--ink2:#6B5A49;--ink3:#A0907D;--paper:#F7EFE2;--card:#FFFBF4;--wood:#5A3A24;--amber:#E9A94B;--red:#B8402F;--redS:#F6E1DA;--navy:#2E4A62;--line:#E8DCC8;--serif:"KoPub","Noto Serif KR",serif;--title:"Hahmlet","KoPub",serif;--bubble:"NanumBarunGothic","Pretendard Variable",sans-serif;--sans:"Pretendard Variable",Pretendard,-apple-system,sans-serif;--brush:"HSB","GB",serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:#120D09;color:var(--ink);font-family:var(--sans);word-break:keep-all}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);word-break:keep-all}
 p{margin:0}
 button{font:inherit;cursor:pointer;padding:0}
 input[type=checkbox]{margin:0}
@@ -283,7 +283,7 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .slip{font-family:var(--sans)!important;font-size:17px!important;line-height:27px!important;color:var(--ink)!important}
 .sc.scrolly{height:auto;min-height:100vh;min-height:100dvh;overflow:visible}
 .sc.scrolly .pic{flex:none;height:auto}
-.sc.scrolly .pic video.mv,.sc.scrolly .pic img{height:56vh;object-fit:cover;object-position:center 18%}
+.sc.scrolly .pic video.mv,.sc.scrolly .pic img{height:42vh;object-fit:cover;object-position:center 18%}
 .sc.scrolly .slip{height:auto;min-height:168px;max-height:none;overflow:hidden;resize:none;margin-top:24px}
 .sc.scrolly .low{padding-bottom:calc(164px + env(safe-area-inset-bottom))}
 </style>
@@ -374,13 +374,14 @@ async function S2() {
 }
 /* S3 마음에 걸리는 것 */
 async function S3() {
-  show(scr("S3", `<div id="say"></div><textarea class="slip" id="wish" maxlength="200" placeholder="예) 내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요?">${esc(U.wish)}</textarea>`, "talk-in scrolly"), `<button class="btn" id="go">다 적었어요</button><button class="lnk" id="skip">딱히 없어요</button>`, false);
+  show(scr("S3", `<div id="say"></div><textarea class="slip" id="wish" maxlength="200" placeholder="예) 내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요?"></textarea>`, "talk-in scrolly"), `<button class="btn" id="go">다 적었어요</button><button class="lnk" id="skip">딱히 없어요</button>`, false);
   const wb = $("#wish"), grow = () => { wb.style.height = "auto"; wb.style.height = Math.max(168, wb.scrollHeight + 2) + "px"; }; wb.addEventListener("input", grow); grow();
   wb.addEventListener("focus", () => setTimeout(() => wb.scrollIntoView({ block: "center", behavior: "smooth" }), 300));
   $("#go").disabled = true; $("#go").onclick = () => { U.wish = $("#wish").value.trim(); save(); S4(); };
+  const ok = () => ($("#go").disabled = !wb.value.trim()); wb.addEventListener("input", ok); ok();
+
   $("#skip").onclick = () => { U.wish = ""; save(); S4(); };
   await says(["급할 거 하나 없다. 따뜻할 때 차부터 한 모금 마시거라.", "내년 생각하면 자꾸 마음에 걸리는 거 있지? 그거 하나만 여기 적어 보련?"], $("#say"));
-  $("#go").disabled = false;
 }
 /* S4 접수표 */
 async function S4() {
