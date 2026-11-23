@@ -369,8 +369,8 @@ async function says(lines, box) {
   }
 }
 function show(html, bot = "", lock = true) { document.body.classList.toggle("noscroll", lock); $("#app").innerHTML = html; $("#cta").classList.remove("on"); window.scrollTo(0, 0); const b = document.querySelector(".bot"); if (b) b.remove(); if (bot) document.body.insertAdjacentHTML("beforeend", `<div class="bot"><div>${bot}</div></div>`); }
-const VIDS = new Set(["S3", "S4"]); // S5·S6 영상은 눈 깜빡임·새 그림 때문에 다시 만들 때까지 정지 그림
-const media = (img, extra = "") => (VIDS.has(img) ? `<video class="mv" src="vid/${img}.mp4?v=2" poster="${IMG(img)}" autoplay muted loop playsinline ${extra}></video>` : `<img src="${IMG(img)}?v=3" alt="" ${extra}>`);
+const VIDS = new Set(["S3", "S4", "S5", "S6"]);
+const media = (img, extra = "") => (VIDS.has(img) ? `<video class="mv" src="vid/${img}.mp4?v=3" poster="${IMG(img)}" autoplay muted loop playsinline ${extra}></video>` : `<img src="${IMG(img)}?v=3" alt="" ${extra}>`);
 const scr = (img, inner, cls = "") => `<section class="sc ${cls}"><div class="pic">${media(img)}</div><div class="low">${inner}</div></section>`;
 
 /* S1 첫 화면 */
