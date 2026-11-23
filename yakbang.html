@@ -29,16 +29,19 @@ input[type=checkbox]{margin:0}
 body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .sc{position:relative;height:100vh;height:100dvh;display:flex;flex-direction:column;background:var(--paper);animation:fade .45s ease-out;overflow:hidden}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-.sc .pic{position:relative;flex:1 1 auto;min-height:0;overflow:hidden}
-.sc.form-sc .pic{flex:0 0 30%}
-.sc.form-sc .low{flex:1 1 auto}
-@media (max-height:740px){.sc.form-sc .pic{flex-basis:18%}.form{gap:8px;margin-top:12px}.form input{height:44px}.seg button{height:40px}.say{font-size:15px;line-height:24px;min-height:0}.slip{min-height:96px}.sc .low{padding-bottom:calc(96px + env(safe-area-inset-bottom))}}
-.sc .pic img{width:100%;height:100%;object-fit:cover;object-position:center 30%;animation:drift 14s ease-in-out infinite alternate}
+.sc .pic{position:absolute;inset:0;overflow:hidden}
+.sc.form-sc .pic::after{background:linear-gradient(rgba(247,239,226,0) 22%,rgba(247,239,226,.9) 34%,var(--paper) 40%)}
+.sc .pic img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top;animation:drift 14s ease-in-out infinite alternate}
 @keyframes drift{from{transform:scale(1.02)}to{transform:scale(1.08) translateY(-1.5%)}}
-.sc .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,0) 55%,var(--paper))}
-.sc .low{position:relative;flex:0 0 auto;background:var(--paper);padding:0 20px calc(112px + env(safe-area-inset-bottom));margin-top:0}
-.say{font-family:var(--serif);font-weight:400;font-size:17px;line-height:27px;color:var(--ink);text-align:center;min-height:54px}
-.say+.say{margin-top:12px}
+.sc .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(247,239,226,0) 48%,rgba(247,239,226,.88) 62%,var(--paper) 70%)}
+.sc .low{position:absolute;left:0;right:0;bottom:0;padding:0 20px calc(112px + env(safe-area-inset-bottom))}
+.sc.form-sc .low{top:36%;bottom:auto}
+.sc.split .pic{position:relative;inset:auto;flex:0 0 62%}
+.sc.split .pic::after{background:linear-gradient(rgba(247,239,226,0) 80%,var(--paper))}
+.sc.split .low{position:relative;flex:1 1 auto}
+.says{min-height:72px;display:flex;flex-direction:column;justify-content:flex-end;gap:4px;transition:opacity .35s}
+.says.dim{opacity:0}
+.say{font-family:var(--serif);font-weight:400;font-size:17px;line-height:27px;color:var(--ink);text-align:center}
 .hint{font-size:13px;line-height:19px;color:var(--ink3);text-align:center;margin-top:8px}
 .bot{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:12px 20px calc(16px + env(safe-area-inset-bottom));background:linear-gradient(rgba(247,239,226,0),var(--paper) 30%)}
 .bot>div{max-width:448px;margin:0 auto}
@@ -46,7 +49,7 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .btn:disabled{opacity:.35}
 .lnk{display:block;width:100%;background:none;border:0;color:var(--ink2);text-decoration:underline;font-size:13px;line-height:19px;margin-top:8px;height:28px}
 /* 첫 화면 */
-.s1 .pic{flex:1 1 auto}
+
 .s1 .pic::after{background:linear-gradient(rgba(8,14,34,.55),rgba(8,14,34,0) 45%,rgba(8,14,34,.45))}
 .s1 .tt{position:absolute;z-index:2;left:20px;right:20px;top:88px;text-align:center;color:#FFF7E6;text-shadow:0 2px 12px rgba(0,0,0,.55)}
 .s1 .tt .y{font-family:var(--serif);font-weight:400;font-size:17px;line-height:27px;letter-spacing:2px}
@@ -71,7 +74,7 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .sent{margin-top:16px;font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink2);text-align:center}
 .sent select{font-family:var(--sans);font-size:17px;height:40px;border-radius:999px;border:1px solid var(--line);background:#FFFDF7;color:var(--ink);padding:0 8px;margin:0 4px}
 /* 맥 짚기 */
-.pulse-zone{position:absolute;z-index:3;left:50%;top:79%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;touch-action:none}
+.pulse-zone{position:absolute;z-index:3;left:50%;top:74%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;touch-action:none}
 .pulse-zone::before,.pulse-zone::after{content:"";position:absolute;inset:30px;border-radius:50%;border:2px solid rgba(255,230,190,.9);animation:ring 1.1s ease-out infinite}
 .pulse-zone::after{animation-delay:.55s}
 @keyframes ring{from{transform:scale(.6);opacity:1}to{transform:scale(1.6);opacity:0}}
@@ -83,12 +86,12 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 /* 표지 */
 .cover{position:relative;height:100vh;overflow:hidden}
 .cover img{width:100%;height:100%;object-fit:cover}
-.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(10,15,35,.45),rgba(10,15,35,.1) 45%,rgba(10,15,35,.55))}
-.cover .ct{position:absolute;z-index:2;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#FFF7E6;text-shadow:0 2px 16px rgba(0,0,0,.6);text-align:center}
-.cover .ey{font-family:var(--serif);font-size:16px;letter-spacing:1px}
-.cover .nm{font-family:var(--title);font-weight:900;font-size:76px;line-height:92px;margin:6px 0;letter-spacing:2px}
-.cover .ln{font-family:var(--serif);font-size:20px;line-height:32px}
-.cover .down{margin-top:28px;font-size:13px;opacity:.8;animation:bob 1.6s ease-in-out infinite}
+.cover::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,rgba(20,12,6,.55),rgba(20,12,6,.15) 70%)}
+.cover .ct{position:absolute;z-index:2;inset:0;padding:0 20px 120px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#FFF7E6;text-shadow:0 2px 16px rgba(0,0,0,.6);text-align:center}
+.cover .ey{font-family:var(--serif);font-size:15px;line-height:24px;letter-spacing:0}
+.cover .nm{font-family:var(--title);font-weight:900;font-size:64px;line-height:76px;margin:12px 0 16px;letter-spacing:0}
+.cover .ln{font-family:var(--serif);font-size:20px;line-height:30px}
+.cover .down{margin-top:32px;font-size:13px;line-height:19px;opacity:.8;animation:bob 1.6s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(6px)}}
 
 /* ── 결과(웹툰) ── */
@@ -110,8 +113,8 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .cap em{font-style:normal;color:var(--red)}
 .cap small{display:block;font-family:var(--sans);font-size:13px;line-height:20px;color:#999;margin-top:8px}
 /* 쪽지·맥 기록지 */
-.wish .wt2{position:absolute;z-index:2;left:24%;right:24%;top:33%;text-align:center;font-family:"Nanum Pen Script",cursive;font-size:29px;line-height:34px;color:#2a2520;mix-blend-mode:multiply;transform:rotate(-1.5deg)}
-.wish .ring{position:absolute;z-index:3;left:12%;width:76%;top:24%;height:42%;overflow:visible;mix-blend-mode:multiply}
+.wish .wt2{position:absolute;z-index:2;left:22%;right:22%;top:30%;height:40%;display:flex;align-items:center;justify-content:center;text-align:center;font-family:"Nanum Pen Script",cursive;font-size:29px;line-height:34px;color:#2a2520;mix-blend-mode:multiply;transform:rotate(-1.5deg)}
+.wish .ring{position:absolute;z-index:3;left:13%;width:74%;top:25%;height:50%;overflow:visible;mix-blend-mode:multiply}
 .wish .ring path{fill:none;stroke:#C8352A;stroke-width:9;stroke-linecap:round;opacity:.85;stroke-dasharray:1;stroke-dashoffset:1}
 .wish.in .ring path{animation:draw 1.1s .3s cubic-bezier(.5,0,.3,1) forwards}
 @keyframes draw{to{stroke-dashoffset:0}}
@@ -127,25 +130,34 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .soul img{display:block;width:100%;height:300px;object-fit:cover}
 .soul p{position:absolute;left:0;right:0;bottom:12%;text-align:center;font-family:var(--serif);font-size:20px;line-height:32px;color:#fff;text-shadow:0 2px 10px rgba(10,20,45,.75)}
 /* 블록 */
-.blk{position:relative;margin:8px 14px 48px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 20px}
+.blk{position:relative;margin:8px 16px 48px;background:linear-gradient(rgba(255,250,240,.55),rgba(255,250,240,.55)),url(img/ui/hanji.jpg) center/cover;border:1px solid #E2CFA6;border-radius:20px;padding:28px 20px;box-shadow:0 4px 12px rgba(90,60,30,.12)}
 .blk .ey{font-family:var(--serif);font-size:15px;color:var(--ink2);text-align:center}
 .blk .tt{font-family:var(--serif);font-size:24px;line-height:34px;color:var(--wood);text-align:center;margin:4px 0 16px}
 .blk .dv{width:120px;height:1px;background:var(--line);margin:0 auto 18px}
 .ask{font-family:var(--serif);font-size:16px;line-height:26px;color:var(--ink2);text-align:center;margin-bottom:12px}
 /* 저울 */
-.scale svg{display:block;margin:0 auto;width:100%;max-width:320px}
-.wbtns{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
-.wbtns button{height:58px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:13px;color:var(--ink2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
-.wbtns button b{font-family:var(--serif);font-size:18px;color:var(--ink)}
-.wbtns button.on{background:#F3E6D0;border-color:#C9A25B}
-.wres{margin-top:14px;display:grid;gap:6px}
-.wres div{display:grid;grid-template-columns:40px 1fr 44px;gap:8px;align-items:center;font-size:14px;color:var(--ink2)}
-.wres span.bar{height:10px;border-radius:10px;background:#EFE6D7;overflow:hidden}.wres span.bar i{display:block;height:100%;border-radius:10px}
+.scale .stage{position:relative;border-radius:16px;overflow:hidden;border:2px solid #1d1d1d}
+.scale .stage>img.bg{display:block;width:100%;aspect-ratio:1/1;object-fit:cover}
+.scale .drop{position:absolute;width:22%;aspect-ratio:1/1;border-radius:50%;object-fit:cover;box-shadow:0 4px 10px rgba(0,0,0,.35);transition:all .55s cubic-bezier(.3,1.3,.5,1);opacity:0}
+.scale .drop.in{opacity:1}
+.scale .bub{position:absolute;right:4%;top:4%;width:52%;background:#fff;border:1.5px solid #3a3a3a;border-radius:50%;aspect-ratio:1.4/1;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--bubble);font-size:15px;line-height:22px;padding:12px;opacity:0;transform:scale(.6);transition:all .3s}
+.scale .bub.in{opacity:1;transform:scale(1)}.scale .bub b{color:var(--red)}
+.tokens{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:16px}
+.tokens button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--serif);font-size:15px;line-height:24px;color:var(--ink)}
+.tokens button img{width:100%;aspect-ratio:1/1;border-radius:50%;object-fit:cover;border:2px solid #C9A25B;box-shadow:0 2px 6px rgba(90,60,30,.2);transition:transform .2s,opacity .3s}
+.tokens button.on img{opacity:.35;transform:scale(.9)}
+.wres{margin-top:16px;display:grid;gap:8px}
+.wres div{display:grid;grid-template-columns:32px 44px 1fr auto;gap:8px;align-items:center;font-family:var(--serif);font-size:15px;line-height:24px;color:var(--ink)}
+.wres img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.wres .dots i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:4px;background:#E2D3B8}
+.wres .dots i.f{background:#7A4A2C}
+.wres em{font-style:normal;font-size:13px;line-height:19px;color:var(--ink2)}
+.wres em.hi{color:var(--red);font-weight:600}
 .wres b{text-align:right;font-variant-numeric:tabular-nums}
 /* 약연 긁기 */
 .grind{position:relative;border-radius:16px;overflow:hidden;margin-top:6px}
 .grind canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;touch-action:none;transition:opacity .6s}
-.gradeCard{padding:24px 16px;text-align:center;background:#FBF3E3}
+.gradeCard{padding:32px 16px;text-align:center;background:linear-gradient(rgba(255,250,240,.45),rgba(255,250,240,.45)),url(img/ui/hanji.jpg) center/cover}
 .gradeCard .g{font-family:var(--title);font-weight:900;font-size:56px;line-height:66px;color:var(--red)}
 .gradeCard .l{font-family:var(--serif);font-size:18px;line-height:28px;color:var(--ink);margin-top:4px}
 .grades{display:flex;gap:4px;justify-content:center;margin:14px 0 4px;flex-wrap:wrap}
@@ -236,6 +248,7 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .fan-zone{position:absolute;z-index:3;left:8%;bottom:6%;width:44%;height:30%;border-radius:20px;background:rgba(0,0,0,.08);border:2px dashed rgba(255,230,190,.8);display:flex;align-items:center;justify-content:center;color:#FFEFD6;font-size:14px;text-shadow:0 1px 4px #000}
 .fire{position:absolute;z-index:2;left:18%;bottom:14%;width:22%;height:12%;border-radius:50%;background:radial-gradient(#FFD36B,#F2702B 60%,transparent 70%);filter:blur(4px);opacity:.3;transition:opacity .2s,transform .2s}
 .tag{position:absolute;top:8px;left:8px;z-index:4;font-size:11px;background:rgba(0,0,0,.5);color:#fff;padding:1px 6px;border-radius:6px}
+@media (max-height:740px){.sc.form-sc .low{top:12%}.sc.form-sc .pic::after{background:linear-gradient(rgba(247,239,226,0) 6%,rgba(247,239,226,.92) 16%,var(--paper) 20%)}.form{gap:4px;margin-top:8px}.form label{margin-bottom:0}.form input{height:40px}.seg button{height:36px}.say{font-size:15px;line-height:24px}.slip{min-height:96px}.sc .low{padding-bottom:calc(96px + env(safe-area-inset-bottom))}}
 </style>
 </head>
 <body>
@@ -249,6 +262,7 @@ const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const IMG = (n) => `img/y/${n}.jpg`;
 const WXK = { 木: "목", 火: "화", 土: "토", 金: "금", 水: "수" }, WXN = { 木: "나무", 火: "불", 土: "흙", 金: "쇠", 水: "물" };
+const ICON = { 木: "wood", 火: "fire", 土: "earth", 金: "metal", 水: "water" };
 const WXC = { 木: "#5E9C8F", 火: "#D9705A", 土: "#C9A25B", 金: "#9A948C", 水: "#4E5A7A" };
 const CTL = { 木: "土", 火: "金", 土: "水", 金: "木", 水: "火" }, GEN = { 木: "火", 火: "土", 土: "金", 金: "水", 水: "木" };
 const ELOF = (c) => ("甲乙寅卯".includes(c) ? "木" : "丙丁巳午".includes(c) ? "火" : "戊己辰戌丑未".includes(c) ? "土" : "庚辛申酉".includes(c) ? "金" : "水");
@@ -272,7 +286,16 @@ function fetchChart() {
 
 /* 말이 한 글자씩 */
 async function typeTo(el, text, speed = 38) { el.textContent = ""; for (const ch of text) { el.textContent += ch; await sleep(ch === "…" || ch === "." ? speed * 5 : speed); } }
-async function says(lines, box) { box.innerHTML = lines.map(() => `<p class="say"></p>`).join(""); const ps = box.querySelectorAll(".say"); for (let i = 0; i < lines.length; i++) { await typeTo(ps[i], lines[i]); await sleep(260); } }
+/* 할미 말: 한 문장에 한 줄, 두 줄이 차면 흐려지며 다음 두 줄로 바뀜. 마지막 두 줄은 남김 */
+const splitS = (t) => t.match(/[^.?!…]+(?:[.?!…]+["”」]?|$)\s*/g).map((x) => x.trim()).filter(Boolean);
+async function says(lines, box) {
+  const sents = lines.flatMap(splitS); box.classList.add("says");
+  for (let i = 0; i < sents.length; i += 2) {
+    if (i) { await sleep(900); box.classList.add("dim"); await sleep(380); }
+    const pair = sents.slice(i, i + 2); box.innerHTML = pair.map(() => `<p class="say"></p>`).join(""); box.classList.remove("dim");
+    const ps = box.querySelectorAll(".say"); for (let k = 0; k < pair.length; k++) { await typeTo(ps[k], pair[k]); await sleep(220); }
+  }
+}
 function show(html, bot = "", lock = true) { document.body.classList.toggle("noscroll", lock); $("#app").innerHTML = html; $("#cta").classList.remove("on"); window.scrollTo(0, 0); const b = document.querySelector(".bot"); if (b) b.remove(); if (bot) document.body.insertAdjacentHTML("beforeend", `<div class="bot"><div>${bot}</div></div>`); }
 const scr = (img, inner, cls = "") => `<section class="sc ${cls}"><div class="pic"><img src="${IMG(img)}" alt=""></div><div class="low">${inner}</div></section>`;
 
@@ -287,7 +310,7 @@ async function S2() {
   show(scr("S2a", `<div id="say"></div>`), `<button class="btn" id="go" disabled>할미, 저 어디가 안 좋아요?</button>`);
   await says(["아이고, 우리 아가 왔구나. 이 추운 밤에… 얼른 들어와서 몸부터 녹이거라.", "벌써 또 한 해가 저무는구나. 세월 참 빠르지… 곧 2027년이란다."], $("#say"));
   await sleep(500);
-  document.querySelector(".pic img").src = IMG("S2b");
+  const im2 = document.querySelector(".pic img"); im2.src = IMG("S2b"); im2.style.objectPosition = "center 20%";
   await says(["그런데 얼굴이 왜 이리 핼쑥하누. 쯧쯧… 맥을 한번 짚어 봐야겠구나. 몇 군데 탈이 보이는구먼."], $("#say"));
   $("#go").disabled = false; $("#go").onclick = S3;
 }
@@ -334,7 +357,7 @@ async function S5() {
 /* S6 맥 짚기 (꾹 누르기) */
 async function S6() {
   fetchChart().catch(() => {});
-  show(`<section class="sc"><div class="pic" style="height:66vh"><img src="${IMG("S6")}" alt="" style="animation:none"><div class="pulse-zone" id="pz"><b></b></div></div><div class="low"><div id="say"></div><div class="prog"><i id="pg"></i></div><p class="steam" id="st">손목을 꾹 누르고 있어요</p></div></section>`, `<button class="btn" id="go" disabled>표지 보기</button>`);
+  show(`<section class="sc split"><div class="pic"><img src="${IMG("S6")}" alt="" style="animation:none;object-position:center bottom"><div class="pulse-zone" id="pz"><b></b></div></div><div class="low"><div id="say"></div><div class="prog"><i id="pg"></i></div><p class="steam" id="st">손목을 꾹 누르고 있어요</p></div></section>`, `<button class="btn" id="go" disabled>표지 보기</button>`);
   await says(["태어난 때는 타고난 바탕이고, 맥은 지금 네 기운이란다. 둘을 같이 봐야 앞날이 보이지.", "자, 손목 이리 내 보거라. 가만히, 빼지 말고."], $("#say"));
   const SUB = ["…어디 가만있어 보자", "아이고, 손목이 이게 뭐냐. 얼음장이네", "맥이 가라앉았구나. 요새 많이 지쳤지", "내년 이맘때까지 어디서 탈이 나는지, 할미가 보고 있단다"];
   let p = 0, holding = false, last = 0, beat = 0, done = false;
@@ -409,7 +432,7 @@ function renderResult(v) {
   H.push(`<div class="wt">`);
   if (U.wish) {
     H.push(pn({ img: "R1a", h: 460, kind: "full", pos: "center 25%", b: [{ t: "네가 적은 것부터<br>읽어 봤다.", x: 50, y: 60, w: 46 }] }));
-    H.push(`<div class="pn box wish" style="--h:340px"><img class="im" src="${IMG("R1b")}" alt=""><p class="wt2">${esc(U.wish)}</p><svg class="ring" viewBox="0 0 200 120" preserveAspectRatio="none"><path pathLength="1" d="M150 14 C 118 2, 52 4, 22 26 C -2 44, 4 84, 42 104 C 84 124, 160 116, 188 86 C 206 64, 196 26, 160 14 C 132 6, 96 8, 70 16"/></svg><div class="bb" style="left:46%;top:72%;width:50%"><span>…그래그래,<br>이게 마음에<br>걸렸구나.</span></div></div>`);
+    H.push(`<div class="pn box wish" style="--h:360px"><img class="im" src="${IMG("R1b")}" alt=""><p class="wt2">${esc(U.wish)}</p><svg class="ring" viewBox="0 0 200 120" preserveAspectRatio="none"><path pathLength="1" d="M150 14 C 118 2, 52 4, 22 26 C -2 44, 4 84, 42 104 C 84 124, 160 116, 188 86 C 206 64, 196 26, 160 14 C 132 6, 96 8, 70 16"/></svg><div class="bb" style="left:46%;top:72%;width:50%"><span>…그래그래,<br>이게 마음에<br>걸렸구나.</span></div></div>`);
     H.push(capt(`걱정 마라. 이건 할미가<br><em>맨 끝에 꼭 답해 주마.</em>`, "맥부터 보고."));
   }
   /* R2 맥 기록지 */
@@ -422,7 +445,7 @@ function renderResult(v) {
   /* R3 체질 + 저울 */
   H.push(`<div class="soul"><img src="img/s/${encodeURIComponent(meCh + baseCh)}.jpg" onerror="this.src='img/l/L1-7.jpg'" alt=""><p>${esc(baseCh)} ${esc(base)} 위에 선<br>${esc(meCh)} ${esc(me)}</p></div>`);
   H.push(pn({ img: "R3a", h: 260, kind: "box", pos: "center", b: [{ t: "네 몸에 든 기운을<br>저울에 한번<br>달아 보자꾸나.", x: 48, y: -26, w: 50 }] }));
-  H.push(`<section class="blk scale" id="scale"><p class="ey">체질 저울</p><p class="tt">하나씩 올려 보거라</p><svg viewBox="0 0 320 170"><line x1="160" y1="30" x2="160" y2="150" stroke="#8a6a4e" stroke-width="5"/><rect x="120" y="148" width="80" height="10" rx="4" fill="#8a6a4e"/><g id="beam" style="transform-origin:160px 40px;transition:transform .6s cubic-bezier(.3,1.4,.5,1)"><line x1="50" y1="40" x2="270" y2="40" stroke="#C9A25B" stroke-width="6" stroke-linecap="round"/><path d="M50 40 L30 100 M50 40 L70 100 M270 40 L250 100 M270 40 L290 100" stroke="#C9A25B" stroke-width="1.5"/><ellipse cx="50" cy="102" rx="34" ry="8" fill="#C9A25B"/><ellipse cx="270" cy="102" rx="34" ry="8" fill="#C9A25B"/><text id="pl" x="50" y="94" text-anchor="middle" font-size="13" fill="#5a3a24"></text><text x="270" y="94" text-anchor="middle" font-size="12" fill="#8a7a68">고른 무게</text></g><circle cx="160" cy="40" r="7" fill="#8a6a4e"/></svg><div class="wbtns">${["木", "火", "土", "金", "水"].map((e) => `<button data-e="${e}"><b>${WXN[e]}</b>${WXK[e]}</button>`).join("")}</div><div class="wres" id="wres"></div><p class="react" id="wsay"></p></section>`);
+  H.push(`<section class="blk scale" id="scale"><p class="ey">체질 저울</p><p class="tt">하나씩 올려 보거라</p><div class="stage"><img class="bg" src="${IMG("R3a")}" alt=""><img class="drop" id="drop" alt=""><div class="bub" id="wbub"></div></div><div class="tokens">${["木", "火", "土", "金", "水"].map((e) => `<button data-e="${e}"><img src="img/ui/i-${ICON[e]}.jpg" alt="">${WXN[e]}</button>`).join("")}</div><div class="wres" id="wres"></div></section>`);
   H.push(pn({ img: "R3b", h: 420, kind: "full", pos: "center 30%", b: [{ t: `그런데 아이고…<br>${WXN[heavy]}이 한쪽으로 쿵.<br><b>${WXN[weak]}은 하나도 없구나.</b>`, x: 46, y: 58, w: 52 }] }));
   H.push(capt(`힘들어도 내색 한 번 안 하지.<br><em>그러다 한꺼번에 와르르 무너지고…</em>`, "할미는 그게 제일 속상하단다."));
   /* R4 2026 */
@@ -433,7 +456,7 @@ function renderResult(v) {
   /* R5 약연 → 총운 */
   H.push(`<div class="wt">`);
   H.push(pn({ img: "R5a", h: 440, kind: "full", pos: "center 30%", b: [{ t: "이제 내년 맥이다.<br>이걸 네 손으로<br>곱게 갈아 보거라.", x: 46, y: 56, w: 52 }] }));
-  H.push(`<section class="blk"><p class="ey">2027년 ${esc(NAME)}의 앞날 맥</p><p class="tt">약재를 갈면 바닥에 적혀 있단다</p><div class="grind" id="grind"><div class="gradeCard"><p class="g">${grade}</p><p class="l">${shortV(v.yearVerdict)}</p><div class="grades">${GRADES.map((g) => `<span class="${g === grade ? "on" : ""}">${g}</span>`).join("")}</div><p style="font-size:13px;color:#8a7a68;margin-top:6px">삼재: ${v.samjae?.is ? esc(v.samjae.name) : "무삼재"}</p></div><canvas id="gc"></canvas></div><div id="after" style="display:none"><div class="dv" style="margin-top:20px"></div><p style="font-size:13px;color:#8a7a68;text-align:center">약한 데부터 보여 주마 ${EX}</p><div class="area">${A.map(([n, s], i) => `<span class="${i === 0 ? "low" : ""}">${n}</span><span class="moons">${[1, 2, 3, 4, 5].map((k) => `<i class="${k <= s ? "" : "e"}"></i>`).join("")}</span>`).join("")}</div></div></section>`);
+  H.push(`<section class="blk"><p class="ey">2027년 ${esc(NAME)}의 앞날 맥</p><p class="tt">약재를 갈면 바닥에 적혀 있단다</p><div class="grind" id="grind" style="border:2px solid #1d1d1d"><div class="gradeCard"><p class="g">${grade}</p><p class="l">${shortV(v.yearVerdict)}</p><div class="grades">${GRADES.map((g) => `<span class="${g === grade ? "on" : ""}">${g}</span>`).join("")}</div><p style="font-size:13px;color:#8a7a68;margin-top:6px">삼재: ${v.samjae?.is ? esc(v.samjae.name) : "무삼재"}</p></div><canvas id="gc"></canvas></div><div id="after" style="display:none"><div class="dv" style="margin-top:20px"></div><p style="font-size:13px;color:#8a7a68;text-align:center">약한 데부터 보여 주마 ${EX}</p><div class="area">${A.map(([n, s], i) => `<span class="${i === 0 ? "low" : ""}">${n}</span><span class="moons">${[1, 2, 3, 4, 5].map((k) => `<i class="${k <= s ? "" : "e"}"></i>`).join("")}</span>`).join("")}</div></div></section>`);
   H.push(pn({ img: "R5c", h: 300, kind: "box", pos: "center 30%", sfx: [{ t: "흠…", x: 70, y: 8, r: 8 }], b: [{ t: "할미는 듣기 좋은<br>소리는 못 한다.", x: 46, y: -24, w: 50 }] }));
   H.push(capt(`내년엔 마른 불기운이 확 들어온단다.<br>${cold ? "언 땅이 갑자기 녹으면 어찌 되겠니. <em>질척해지지.</em>" : "<em>안 그래도 마른 데에 불이 붙는 셈이지.</em>"}`));
   H.push(capt(`정미년은,<br><em>모르고 맞으면 크게 다치는 해</em>란다.`));
@@ -492,29 +515,29 @@ function renderResult(v) {
 }
 
 /* 저울 */
+const LV = (p) => (p >= 35 ? [5, "넘친다", 1] : p >= 25 ? [4, "많다", 0] : p >= 12 ? [3, "알맞다", 0] : p >= 5 ? [2, "모자라다", 1] : [1, "거의 없다", 1]);
 function bindScale(v) {
-  const done = new Set(), res = $("#wres");
+  const done = new Set(), res = $("#wres"), drop = $("#drop"), bub = $("#wbub");
   document.querySelectorAll("#scale [data-e]").forEach((b) => (b.onclick = () => {
     const e = b.dataset.e; if (done.has(e)) return; done.add(e); b.classList.add("on");
-    const p = Math.round(v.pct[e]);
-    $("#beam").style.transform = `rotate(${Math.max(-22, Math.min(22, (p - 20) * 0.7))}deg)`;
-    $("#pl").textContent = `${WXN[e]} ${p}`;
+    const [n, word, hi] = LV(v.pct[e]);
+    drop.classList.remove("in"); drop.style.transition = "none"; drop.src = `img/ui/i-${ICON[e]}.jpg`; drop.style.left = "18%"; drop.style.top = "-30%";
+    requestAnimationFrame(() => requestAnimationFrame(() => { drop.style.transition = ""; drop.classList.add("in"); drop.style.top = `${44 - n * 3}%`; }));
     navigator.vibrate?.(20);
-    res.insertAdjacentHTML("beforeend", `<div><span>${WXN[e]}</span><span class="bar"><i style="width:${Math.min(100, p * 2)}%;background:${WXC[e]}"></i></span><b>${p}</b></div>`);
-    if (done.size === 5) {
-      const heavy = Object.entries(v.pct).sort((a, b) => b[1] - a[1])[0][0], weak = Object.entries(v.pct).sort((a, b) => a[1] - b[1])[0][0];
-      $("#wsay").textContent = `${WXN[heavy]}은 이렇게 무겁고, ${WXN[weak]}은… 거의 없구나.`;
-    }
+    const SAY = { 5: `${WXN[e]}이 쿵—<br><b>넘치는구나.</b>`, 4: `${WXN[e]}이<br>묵직하구나.`, 3: `${WXN[e]}은<br>알맞단다.`, 2: `${WXN[e]}이<br><b>모자라는구나.</b>`, 1: `아이고,<br>${WXN[e]}이 <b>거의 없구나.</b>` };
+    bub.classList.remove("in"); setTimeout(() => { bub.innerHTML = `<span>${SAY[n]}</span>`; bub.classList.add("in"); }, 350);
+    res.insertAdjacentHTML("beforeend", `<div><img src="img/ui/i-${ICON[e]}.jpg" alt=""><span>${WXN[e]}</span><span class="dots">${[1, 2, 3, 4, 5].map((k) => `<i class="${k <= n ? "f" : ""}"></i>`).join("")}</span><em class="${hi ? "hi" : ""}">${word}</em></div>`);
+    if (done.size === 5) setTimeout(() => { const ent = Object.entries(v.pct).sort((a, b) => b[1] - a[1]); bub.innerHTML = `<span>${WXN[ent[0][0]]}은 이리 무겁고,<br><b>${WXN[ent[4][0]]}은… 거의 없구나.</b></span>`; }, 1600);
   }));
 }
 /* 약연 긁기 */
 function bindGrind() {
   const wrap = $("#grind"), c = $("#gc"), r = wrap.getBoundingClientRect();
   c.width = r.width * 2; c.height = r.height * 2; const x = c.getContext("2d"); x.scale(2, 2);
-  const g = x.createLinearGradient(0, 0, r.width, r.height); g.addColorStop(0, "#9B7A4E"); g.addColorStop(1, "#6F5233"); x.fillStyle = g; x.fillRect(0, 0, r.width, r.height);
-  for (let i = 0; i < 900; i++) { x.fillStyle = ["#C9A25B", "#5E7A45", "#8E3B2E", "#E8D3A4", "#4A3420"][i % 5]; x.globalAlpha = 0.55; x.beginPath(); x.ellipse(Math.random() * r.width, Math.random() * r.height, 1 + Math.random() * 4, 0.6 + Math.random() * 1.5, Math.random() * 3, 0, 7); x.fill(); }
-  x.globalAlpha = 1; x.fillStyle = "#FFF4E2"; x.font = "600 17px Pretendard Variable, sans-serif"; x.textAlign = "center"; x.fillText("손가락으로 문질러 갈아 보거라", r.width / 2, r.height / 2);
-  x.globalCompositeOperation = "destination-out";
+  const herb = new Image(); herb.src = "img/ui/herbs.jpg";
+  const paint = () => { const k = Math.max(r.width / herb.width, r.height / herb.height); x.drawImage(herb, (r.width - herb.width * k) / 2, (r.height - herb.height * k) / 2, herb.width * k, herb.height * k);
+    x.fillStyle = "rgba(40,24,12,.5)"; x.fillRect(0, r.height / 2 - 22, r.width, 44); x.fillStyle = "#FFF4E2"; x.font = "600 17px Pretendard Variable, sans-serif"; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText("손가락으로 문질러 갈아 보거라", r.width / 2, r.height / 2); x.globalCompositeOperation = "destination-out"; };
+  herb.complete ? paint() : (herb.onload = paint);
   let down = false, n = 0, done = false;
   const scratch = (ev) => { if (!down || done) return; const b = c.getBoundingClientRect(); x.beginPath(); x.arc(ev.clientX - b.left, ev.clientY - b.top, 22, 0, 7); x.fill(); if (++n % 12 === 0) { navigator.vibrate?.(8); check(); } };
   const check = () => { const d = x.getImageData(0, 0, c.width, c.height).data; let clear = 0; for (let i = 3; i < d.length; i += 64) if (d[i] === 0) clear++; if (clear / (d.length / 64) > 0.45) { done = true; c.style.opacity = 0; setTimeout(() => c.remove(), 650); $("#after").style.display = ""; } };
@@ -548,7 +571,7 @@ function P1() {
   $("#go").onclick = P2;
 }
 async function P2() {
-  show(`<section class="sc"><div class="pic" style="height:66vh"><img src="${IMG("P2")}" alt="" style="animation:none"><i class="fire" id="fire"></i><button class="fan-zone" id="fan">톡톡 부채질</button></div><div class="low"><div id="say"></div><div class="prog"><i id="pg"></i></div><p class="steam" id="st">부채를 톡톡 눌러 불을 지펴요</p></div></section>`, `<button class="btn" id="go" disabled>처방 펼치기</button>`);
+  show(`<section class="sc split"><div class="pic"><img src="${IMG("P2")}" alt="" style="animation:none;object-position:center bottom"><i class="fire" id="fire"></i><button class="fan-zone" id="fan">톡톡 부채질</button></div><div class="low"><div id="say"></div><div class="prog"><i id="pg"></i></div><p class="steam" id="st">부채를 톡톡 눌러 불을 지펴요</p></div></section>`, `<button class="btn" id="go" disabled>처방 펼치기</button>`);
   await says(["약은 불이 좋아야 잘 달여진단다. 부채질 좀 해 주련?"], $("#say"));
   let heat = 0;
   $("#fan").onclick = () => {
