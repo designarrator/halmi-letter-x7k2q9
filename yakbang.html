@@ -257,8 +257,10 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .sc:not(.s1):not(.split):not(.form-sc) .pic{position:relative;inset:auto;flex:0 1 auto;max-height:calc(100% - 230px)}
 .sc:not(.s1):not(.split):not(.form-sc) .pic::after{background:linear-gradient(rgba(247,239,226,0) 90%,var(--paper))}
 .sc:not(.s1):not(.split):not(.form-sc) .low{position:relative;inset:auto;flex:1 1 auto;padding-top:8px}
-.bv{position:absolute;left:0;top:0;width:100%;height:auto;display:block;opacity:0;transform-origin:50% 40%;transition:opacity 1.4s ease,transform 1.8s cubic-bezier(.25,.6,.3,1);-webkit-mask-image:linear-gradient(#000 92%,transparent);mask-image:linear-gradient(#000 92%,transparent)}
+.bv{position:absolute;left:0;top:0;width:100%;height:auto;display:block;opacity:0;transition:none;-webkit-mask-image:linear-gradient(#000 92%,transparent);mask-image:linear-gradient(#000 92%,transparent)}
 .bv.on{opacity:1}
+#veil{position:absolute;inset:0;z-index:2;background:var(--paper);opacity:0;transition:opacity .9s ease;pointer-events:none}
+#veil.on{opacity:1}
 .sc:not(.s1):not(.split):not(.form-sc) .pic:has(.bv){aspect-ratio:2/3;width:100%}
 </style>
 </head>
@@ -324,20 +326,17 @@ async function S2() {
     ["S2b", ["그런데 얼굴이 왜 이리 핼쑥하누. 쯧쯧…", "맥을 한번 짚어 봐야겠구나. 몇 군데 탈이 보이는구먼."]],
   ];
   const vids = BEATS.map(([n], k) => `<video class="bv${k ? "" : " on"}" data-k="${k}" src="vid/${n}.mp4?v=2" poster="${IMG(n)}?v=2" muted loop playsinline preload="auto"></video>`).join("");
-  show(`<section class="sc"><div class="pic">${vids}</div><div class="low"><div id="say" class="says"></div></div></section>`, `<button class="btn" id="go" disabled>할미, 저 어디가 안 좋아요?</button>`);
+  show(`<section class="sc"><div class="pic">${vids}<i id="veil"></i></div><div class="low"><div id="say" class="says"></div></div></section>`, `<button class="btn" id="go" disabled>할미, 저 어디가 안 좋아요?</button>`);
   const vs = [...document.querySelectorAll(".bv")]; vs[0].play().catch(() => {});
   const box = $("#say");
   for (let k = 0; k < BEATS.length; k++) {
     if (k) {
+      // 자연스러운 딤 아웃 → 딤 인: 앞 장면이 검게 어두워졌다가, 다음 장면이 밝아지며 나타남
       await sleep(1500); box.classList.add("dim");
-      // 1→2: 멀어지며(할미가 자리로 돌아가는 느낌), 2→3: 다가가며
-      const out = k === 1 ? 0.9 : 1.1, inn = k === 1 ? 1.1 : 0.92;
-      const nx = vs[k], pv = vs[k - 1];
-      nx.style.transition = "none"; nx.style.transform = `scale(${inn})`; nx.play().catch(() => {});
-      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-      nx.style.transition = ""; nx.classList.add("on"); nx.style.transform = "scale(1)";
-      pv.classList.remove("on"); pv.style.transform = `scale(${out})`;
-      await sleep(1100);
+      const nx = vs[k], pv = vs[k - 1], veil = $("#veil");
+      veil.classList.add("on"); await sleep(900);
+      pv.classList.remove("on"); nx.play().catch(() => {}); nx.classList.add("on");
+      await sleep(250); veil.classList.remove("on"); await sleep(900);
     }
     box.innerHTML = BEATS[k][1].map(() => `<p class="say"></p>`).join(""); box.classList.remove("dim");
     const ps = box.querySelectorAll(".say"); for (let i = 0; i < ps.length; i++) { await typeTo(ps[i], BEATS[k][1][i]); await sleep(220); }
