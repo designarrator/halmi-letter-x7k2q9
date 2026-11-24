@@ -562,7 +562,7 @@ const ELOF = (c) => ("甲乙寅卯".includes(c) ? "木" : "丙丁巳午".include
 const hasJ = (w) => { const c = w.charCodeAt(w.length - 1) - 0xac00; return c >= 0 && c % 28 > 0; };
 const isBal = (v) => { const a = Object.values(v.pct); return Math.max(...a) < 30 && Math.min(...a) >= 10; };
 const JO = (w, a, b) => w + (hasJ(w) ? a : b);
-const voc = (w) => (hasJ(w) ? "아" : "야");
+const voc = (w) => (/[가-힣]$/.test(String(w)) ? (hasJ(w) ? "아" : "야") : "");
 /* 대사에서 부를 이름: 성을 뺀다(3글자 → 뒤 2글자, 두 글자 성 → 뒤). 2글자·영문은 그대로 */
 const SUR2 = ["남궁", "제갈", "선우", "독고", "황보", "사공", "서문", "동방", "어금", "망절", "장곡"];
 const callName = (n) => { n = String(n || "").trim(); if (!/^[가-힣]+$/.test(n)) return n; if (n.length >= 4 && SUR2.includes(n.slice(0, 2))) return n.slice(2); if (n.length >= 3) return n.slice(1); return n; };
@@ -927,7 +927,7 @@ function renderResult(v) {
   H.push(`<section class="blk"><p class="tt">약재를 갈면<br>바닥에 적혀 있단다</p><div class="grind" id="grind" style="border:2px solid #1d1d1d"><div class="gradeCard"><p class="gy">2027 丁未年</p><p class="gs">붉은 양의 해, 정미년</p><p class="gk">${esc(NAME)}${hasJ(NAME) ? "이" : ""}의 내년은</p><p class="g gv">${shortV(v.yearVerdict)}</p><p class="gl">${GLINE(v)}</p></div><canvas id="gc"></canvas></div><div id="after" style="display:none"></div></section>`);
   H.push(`<div style="height:40px"></div>`);
   H.push(pn({ img: "R5c", h: 300, kind: "box", pos: "center 30%", sfx: [{ t: "흠…", x: 70, y: 8, r: 8 }], b: [{ t: "할미는 듣기 좋은<br>소리는 못 한다.", x: 46, y: -24, w: 50 }] }));
-  H.push(capt(`내년은,<br><em>그렇게 버티던 힘이<br>안 통하는 해</em>란다.`));
+  H.push(capt(/힘이 붙/.test(v.yearVerdict) ? `내년은 힘이 붙는 해다.<br>그런데 <em>힘이 붙을 때가<br>제일 크게 새는 때</em>란다.` : `내년은,<br><em>그렇게 버티던 힘이<br>안 통하는 해</em>란다.`));
   H.push(CR.act2);
   /* 할미 눈에 보이는 내년 그림 */
   H.push(`<i id="ctaAt"></i>`);
@@ -964,9 +964,9 @@ function renderResult(v) {
   H.push(`<div class="wt">`);
   H.push(pn({ img: "R10a", h: 420, kind: "boxR", pos: "center 25%", b: [{ t: "그래도<br>걱정만 할 건<br><b>아니란다.</b>", x: -24, y: 8, w: 50 }] }));
   H.push(capt(`내년엔 너를 도와줄 사람이<br><em>${v.guiren?.in2027 ? "제 발로 찾아온단다." : "가까이 와 있단다. 찾아가야 만나지."}</em>`));
-  H.push(`<section class="blk"><p class="ey">내년에 오는 귀인</p><p class="tt">이런 사람을 놓치지 마라</p><div class="guiren"><img src="${IMG(GRIMG)}" alt=""><div><p><span>어디서</span><b>${esc(gP)}</b></p><p><span>어떤 사람</span><b>${{ 木: "먼저 손 내미는 사람", 火: "밝고 말이 시원한 사람", 土: "말수 적고 믿음직한 사람", 金: "셈이 정확하고 단호한 사람", 水: "조용하고 생각 깊은 사람" }[v.useful[0]]}</b></p><p><span>그 사람 기운</span><b>${WXN[v.useful[0]]} 기운</b></p><p><span>만나는 때</span><b class="blur">${esc(MK(om[0] || ""))}</b></p></div></div><p class="callout">🔒 이 사람을 <b>어떻게 알아보는지</b>, <b>무엇을 부탁해야 하는지</b>는<br>편지 일곱째 장에 적어 두마.</p></section>`);
+  H.push(`<section class="blk"><p class="ey">내년에 오는 귀인</p><p class="tt">이런 사람을 놓치지 마라</p><div class="guiren"><img src="${IMG(GRIMG)}" alt=""><div><p><span>어디서</span><b>${esc(gP)}</b></p><p><span>어떤 사람</span><b>${{ 木: "먼저 손 내미는 사람", 火: "밝고 말이 시원한 사람", 土: "말수 적고 믿음직한 사람", 金: "셈이 정확하고 단호한 사람", 水: "조용하고 생각 깊은 사람" }[v.useful[0]]}</b></p><p><span>그 사람 기운</span><b>${WXN[v.useful[0]]} 기운</b></p><p><span>가까워지는 때</span><b class="blur">${esc(MK(om[0] || ""))}</b></p></div></div><p class="callout">🔒 이 사람을 <b>어떻게 알아보는지</b>, <b>무엇을 부탁해야 하는지</b>는<br>편지 일곱째 장에 적어 두마.</p></section>`);
   H.push(capt(`그래도 내년에<br><em>볕 드는 데가 세 군데 있단다.</em>`));
-  H.push(`<section class="sun">${[["귀인", `${esc(gP)} 쪽에서 너를 도와줄 사람이 ${v.guiren?.in2027 ? "온다" : "기다린다"}.`], ["풀리는 때", `${SEA(om[0] || "")}엔 막혔던 게 풀린다.`], ["모이는 달", `돈과 사람이 모이는 달이 ${om.length || 1}번 온다.`]].map(([t, d], k) => `<div><span>${["一", "二", "三"][k]}</span><b>${t}</b><p>${d}</p></div>`).join("")}<p class="note2">어느 달인지, 어떻게 붙잡는지는 편지 여섯째, 일곱째, 여덟째 장에 적어 두마.</p></section>`);
+  H.push(`<section class="sun">${[["귀인", `${esc(gP)} 쪽에서 너를 도와줄 사람이 ${v.guiren?.in2027 ? "온다" : "기다린다"}.`], ["풀리는 때", `${SEA(om[0] || "")}엔 막혔던 게 풀린다.`], ["모이는 달", "돈과 사람이 모이는 달이 따로 있다."]].map(([t, d], k) => `<div><span>${["一", "二", "三"][k]}</span><b>${t}</b><p>${d}</p></div>`).join("")}<p class="note2">어느 달인지, 어떻게 붙잡는지는 편지 여섯째, 일곱째, 여덟째 장에 적어 두마.</p></section>`);
   H.push(`<section class="blk"><p class="ey">내년 네 돈은</p><p class="tt">${["버는 해", "지키는 해", "새는 해"][moneyY]}란다</p><div class="pouch">${["버는 해", "지키는 해", "새는 해"].map((t, k) => `<div class="${k === moneyY ? "on" : ""}"><i>${["↗", "＝", "↘"][k]}</i><b>${t}</b></div>`).join("")}</div><p class="ask pask">${["들어올 길이 열린다. 다만 들어온 만큼 새는 데도 막아야 한다.", "크게 벌기보다 있는 걸 지키는 게 이기는 해다.", "나가는 길이 먼저 열린다. 어디로 새는지 알면 막는다."][moneyY]}</p></section>`);
   H.push(`</div>`);
   /* 고민: 답 대신 «걸려 있다» */
