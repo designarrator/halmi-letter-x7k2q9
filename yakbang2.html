@@ -455,6 +455,24 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .vis .vs{margin:0 0 12px;font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink);white-space:pre-line}
 .vis .vh{margin:0 0 4px;font-size:15px;line-height:24px;color:#4a3f35;filter:blur(4px);user-select:none}
 .vis .vc{margin:12px 0 0;padding-top:12px;border-top:1px dashed #D8C9B0;font-family:var(--serif);font-size:15px;line-height:24px;color:#8a7a68}
+/* 11/24 총운 카드 한자 */
+.gradeCard .gy{font-family:var(--serif);font-size:20px;line-height:30px;font-weight:700;color:var(--wood);margin:0;letter-spacing:.08em}
+.gradeCard .gs{font-family:var(--serif);font-size:13px;line-height:19px;color:#8a7a68;margin:0 0 16px}
+/* 11/24 그림 카드 */
+.vis .vimg{height:220px!important}.vis .vimg img{filter:none!important;transform:none!important}
+.vis .vtag{display:inline-block;margin-left:8px;padding:0 8px;border-radius:999px;background:#F4EDE2;color:var(--wood);font-size:13px;line-height:19px;font-weight:600}
+/* 11/24 편지 구성 안내 */
+.detail .chs,.detail .steps{list-style:none;margin:0;padding:0}
+.detail .chs li{display:flex;gap:12px;padding:16px 0;border-top:1px dashed #D8C9B0}
+.detail .chs li:first-child{border-top:0;padding-top:0}
+.detail .chs .no{flex:none;width:40px;height:24px;border-radius:999px;background:var(--wood);color:#fff;font-size:13px;line-height:24px;font-weight:600;text-align:center}
+.detail .chs b{display:block;font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink)}
+.detail .chs p{margin:4px 0 0;font-size:15px;line-height:24px;color:#5a5048}
+.detail .chs .smp{margin-top:8px;padding:12px;border-radius:16px;background:#FFFDF8;font-family:var(--serif);color:var(--ink)}
+.detail .chs .smp i{font-style:normal;filter:blur(3.5px);user-select:none}
+.detail .steps li{display:flex;gap:12px;align-items:flex-start;padding:8px 0}
+.detail .steps b{flex:none;width:24px;height:24px;border-radius:999px;background:#C9A25B;color:#fff;font-size:13px;line-height:24px;text-align:center}
+.detail .steps p{margin:0;font-size:15px;line-height:24px;color:#4a3f35}
 </style>
 </head>
 <body>
@@ -716,7 +734,7 @@ function crisis(v) {
   const act2 = [
     `<div class="wt">`,
     capt(`왜 그러냐면…`),
-    `<div class="pn full" style="--h:460px;--p:center 30%"><img class="im" src="img/c/C3.jpg" alt=""><div class="bb" style="left:48%;top:64%;width:50%"><span>내년엔 네 맥에<br>불씨가 들어온다.<br><b>${FX[gF]}.</b></span></div></div>`,
+    `<div class="pn full" style="--h:460px;--p:center 30%"><img class="im" src="img/c/C3.jpg" alt=""><div class="bb" style="left:48%;top:64%;width:50%"><span>내년엔 네 맥에<br>불씨가 들어온단다.<br><b>${FX[gF]}.</b></span></div></div>`,
     capt(`불이 붙으면<br><em>꽉 묶어 둔 매듭이 풀린단다.</em>`),
     `<div class="pn tilt" style="--h:280px;--p:center"><img class="im" src="img/c/C4.jpg" alt=""><span class="sfx" style="left:6%;top:8%;transform:rotate(-8deg)">펑!</span><div class="bb" style="left:2%;top:62%;width:50%"><span>그동안 삼킨 게<br><b>한꺼번에</b><br>쏟아지지.</span></div></div>`,
     `<div class="pn box xf" id="bowl" style="--h:360px;--p:center"><img class="im" src="img/c/C5a.jpg" alt=""><img class="im im2" src="img/c/C5b.jpg" alt=""><span class="sfx" id="clink" style="left:62%;top:14%;transform:rotate(8deg)">쨍</span><div class="bb" style="left:2%;top:-14%;width:50%"><span>하필이면<br><b>${tgt}</b>${/사람$/.test(tgt) ? "한테" : hasJ(tgt) ? "으로" : "로"}<br>간단다.</span></div></div>`,
@@ -819,50 +837,61 @@ function renderResult(v) {
   /* R5 약연 → 내년 */
   H.push(`<div class="wt">`);
   H.push(pn({ img: "R5a", h: 440, kind: "full", pos: "center 30%", b: [{ t: "이제 내년 맥이다.<br>이걸 네 손으로<br>곱게 갈아 보거라.", x: 46, y: 56, w: 52 }] }));
-  H.push(`<section class="blk"><p class="tt">약재를 갈면<br>바닥에 적혀 있단다</p><div class="grind" id="grind" style="border:2px solid #1d1d1d"><div class="gradeCard"><p class="gk">${esc(NAME)}${hasJ(NAME) ? "이" : ""}의 내년은</p><p class="g gv">${shortV(v.yearVerdict)}</p><p class="gl">${GLINE(v)}</p></div><canvas id="gc"></canvas></div><div id="after" style="display:none"></div></section>`);
+  H.push(`<section class="blk"><p class="tt">약재를 갈면<br>바닥에 적혀 있단다</p><div class="grind" id="grind" style="border:2px solid #1d1d1d"><div class="gradeCard"><p class="gy">2027 丁未年</p><p class="gs">붉은 양의 해, 정미년</p><p class="gk">${esc(NAME)}${hasJ(NAME) ? "이" : ""}의 내년은</p><p class="g gv">${shortV(v.yearVerdict)}</p><p class="gl">${GLINE(v)}</p></div><canvas id="gc"></canvas></div><div id="after" style="display:none"></div></section>`);
+  H.push(`<div style="height:40px"></div>`);
   H.push(pn({ img: "R5c", h: 300, kind: "box", pos: "center 30%", sfx: [{ t: "흠…", x: 70, y: 8, r: 8 }], b: [{ t: "할미는 듣기 좋은<br>소리는 못 한다.", x: 46, y: -24, w: 50 }] }));
   H.push(capt(`내년은,<br><em>그렇게 버티던 힘이<br>안 통하는 해</em>란다.`));
   H.push(CR.act2);
   /* 할미 눈에 보이는 내년 그림 */
   H.push(`<i id="ctaAt"></i>`);
   H.push(`<div class="wt">`);
-  H.push(pn({ img: "VS1", h: 480, kind: "full", pos: "center 35%", b: [{ t: "눈을 감으니<br>내년 그림이<br><b>몇 장 보이는구나.</b>", x: 48, y: 44, w: 50 }] }));
+  H.push(pn({ img: "VS1b", h: 480, kind: "full", pos: "center 35%", b: [{ t: "눈을 감으니<br>내년 그림이<br><b>몇 장 보이는구나.</b>", x: 48, y: 44, w: 50 }] }));
   H.push(capt(`겁주려는 게 아니다.<br><em>미리 봐 두면 비켜 갈 수 있으니까.</em>`));
+  H.push(capt(`할미 눈에 보인 그림을<br>하나씩 꺼내 보여 주마.`));
   const AREA = { 돈: "money", 마음: "love", "일, 명예": "work", "일·명예": "work", 몸: "body", "시험, 계약": "work", "시험·계약": "work" };
   const byWeak = [...new Set(A.map(([n]) => AREA[n]).filter(Boolean)), "money", "work", "love", "body", "people"].filter((k, i, a) => a.indexOf(k) === i);
   const VO = L.topic ? [L.topic, ...byWeak.filter((k) => k !== L.topic)] : byWeak;
   const couple = /연애중|기혼/.test(U.love || "");
   const PLACE = { 木: "옆구리", 火: "가슴께", 土: "명치", 金: "목이랑 가슴", 水: "허리" }[weak] || "가슴께";
   const VIS = {
-    money: { img: "R6b", name: "돈", see: "통장에서 뭔가 빠져나가는데,\n네가 막지를 못하는구나.", more: "생각보다 큰돈이란다.", hide: ["누구 일 때문에 나가는지", "그게 한 번으로 끝나지 않는 까닭"], coda: "돈 얘기는 늘 사람 얘기더구나." },
-    work: { img: "R7a", name: "일", see: "다들 자리를 떴는데,\n너 혼자 책상 앞에 남아 있구나.", more: "그 자리가 오래가지는 않을 게다.", hide: ["누가 네 몫을 가져가는지", "그 뒤에 오는 소식"], coda: "열심히 하는 게 늘 답은 아니란다." },
-    love: { img: "R8a", name: "마음", see: couple ? "둘이 마주 앉았는데,\n아무도 먼저 입을 안 여는구나." : "누가 다가오는데,\n네가 먼저 문을 닫는구나.", more: couple ? "그 침묵이 생각보다 길구나." : "그 사람이 그냥 지나가지는 않는구나.", hide: ["그 사람이 누구인지", "그 말 한마디가 어디까지 번지는지"], coda: "마음은 미리 알면 덜 다친단다." },
-    body: { img: "R9b", name: "몸", see: `밤에 잠이 안 와서\n${PLACE}를 쓸어내리는 네가 보이는구나.`, more: "처음엔 별것 아닌 줄 알 게다.", hide: ["처음 신호가 오는 때", "그냥 넘기면 어디까지 가는지"], coda: "몸은 거짓말을 안 한단다." },
-    people: { img: "R10b", name: "사람", see: "웃으면서 다가오는 사람이 하나 있는데…\n얼굴이 잘 안 보이는구나.", more: "처음엔 반가운 얼굴이란다.", hide: ["그 사람이 너한테 바라는 것", "그 뒤에 남는 것"], coda: "사람은 오는 것보다 가는 걸 봐야 한단다." },
+    money: { img: "VM", name: "돈", see: "통장에서 뭔가 빠져나가는데,\n네가 막지를 못하는구나.", more: "생각보다 큰돈이란다.", hide: ["누구 일 때문에 나가는지", "그게 한 번으로 끝나지 않는 까닭"], coda: "돈 얘기는 늘 사람 얘기더구나." },
+    work: { img: "VW", name: "일", see: "다들 자리를 떴는데,\n너 혼자 책상 앞에 남아 있구나.", more: "그 자리가 오래가지는 않을 게다.", hide: ["누가 네 몫을 가져가는지", "그 뒤에 오는 소식"], coda: "열심히 하는 게 늘 답은 아니란다." },
+    love: { img: couple ? "VC" : "VD", name: "마음", see: couple ? "둘이 마주 앉았는데,\n아무도 먼저 입을 안 여는구나." : "누가 다가오는데,\n네가 먼저 문을 닫는구나.", more: couple ? "그 침묵이 생각보다 길구나." : "그 사람이 그냥 지나가지는 않는구나.", hide: ["그 사람이 누구인지", "그 말 한마디가 어디까지 번지는지"], coda: "마음은 미리 알면 덜 다친단다." },
+    body: { img: "VB", name: "몸", see: `밤에 잠이 안 와서\n${PLACE}를 쓸어내리는 네가 보이는구나.`, more: "처음엔 별것 아닌 줄 알 게다.", hide: ["처음 신호가 오는 때", "그냥 넘기면 어디까지 가는지"], coda: "몸은 거짓말을 안 한단다." },
+    people: { img: "VP", name: "사람", see: "웃으면서 다가오는 사람이 하나 있는데…\n얼굴이 잘 안 보이는구나.", more: "처음엔 반가운 얼굴이란다.", hide: ["그 사람이 너한테 바라는 것", "그 뒤에 남는 것"], coda: "사람은 오는 것보다 가는 걸 봐야 한단다." },
   };
   const NUM = ["첫째", "둘째", "셋째", "넷째", "다섯째"];
   VO.slice(0, 4).forEach((k, i) => {
     const x = VIS[k];
-    H.push(`<section class="vis"><div class="vimg"><img src="${IMG(x.img)}" alt=""></div><div class="vt"><p class="vn">${NUM[i]} 그림</p><p class="vs">${esc(x.see)}${i === 0 ? `\n${esc(x.more)}` : ""}</p>${x.hide.map((h) => `<p class="vh">${esc(h)}</p>`).join("")}<p class="vc">${esc(x.coda)}</p></div></section>`);
+    H.push(`<section class="vis"><div class="vimg"><img src="${IMG(x.img)}" alt=""></div><div class="vt"><p class="vn">${NUM[i]} 그림 <span class="vtag">${x.name}</span></p><p class="vs">${esc(x.see)}${i === 0 ? `\n${esc(x.more)}` : ""}</p>${x.hide.map((h) => `<p class="vh">${esc(h)}</p>`).join("")}<p class="vc">${esc(x.coda)}</p></div></section>`);
     if (i === 0 && L.topic && U.wish) H.push(capt(`네가 물은 그 일도,<br><em>이 그림 안에 들어 있구나.</em>`));
   });
-  H.push(pn({ img: "VS2", h: 380, kind: "box", pos: "center", b: [{ t: "이 한 장은…<br>할미가 지금<br><b>말로 하기가 좀 그렇구나.</b>", x: 2, y: -22, w: 54 }] }));
-  H.push(capt(`그건 약첩 안에<br><em>조용히 적어 두마.</em>`));
+  H.push(pn({ img: "VS2b", h: 380, kind: "box", pos: "center", b: [{ t: "이 한 장은…<br>할미가 지금<br><b>말로 하기가 좀 그렇구나.</b>", x: 2, y: -22, w: 54 }] }));
+  H.push(capt(`그건 편지 안에<br><em>조용히 적어 두마.</em>`));
   H.push(`</div>`);
   /* 고민: 답 대신 «걸려 있다» */
   if (U.wish) {
     H.push(`<div class="wt">`);
     H.push(pn({ img: "R11", h: 460, kind: "full", pos: "center 25%", b: [{ t: `네가 물은 거,<br>할미가 잊지<br>않았다.`, x: 46, y: 58, w: 52 }] }));
     H.push(`<p class="quote">«${esc(wishQ)}»</p>`);
-    H.push(capt(`이 일은 ${L.topic ? "첫째" : "다섯"} 그림${L.topic ? "" : " 가운데 하나"}에<br><em>단단히 걸려 있구나.</em>`, "해도 되는지, 언제 움직여야 하는지는 약첩 첫 장에 적어 두마."));
+    H.push(capt(`이 일은 ${L.topic ? "첫째" : "다섯"} 그림${L.topic ? "" : " 가운데 하나"}에<br><em>단단히 걸려 있구나.</em>`, "해도 되는지, 언제 움직여야 하는지는 편지 넷째 장에 적어 두마."));
     H.push(`</div>`);
   }
   /* 쥐여 줌: 약첩 */
   H.push(`<div class="wt">`);
-  H.push(pn({ img: "R12", h: 280, kind: "tilt", pos: "center", b: [{ t: "그림만 보여 주고<br>약을 안 지어 주면,", x: 4, y: -22, w: 48 }, { t: "그게 어디<br><b>할미겠니.</b>", x: 52, y: 62, w: 44 }] }));
-  H.push(capt(`그림 다섯 장,<br><em>하나씩 풀어서 약첩에 넣어 주마.</em>`));
-  H.push(`<section class="blk"><p class="tt">약첩을 열면</p>${lockList("할미가 적어 둔 것", ["그림 다섯 장이 각각 언제 오는지", "누구 때문에, 어디서 오는지", "그 그림을 비켜 가는 법", ...(U.wish ? ["네가 물은 그 일, 해도 되는지"] : []), "말로 못 한 마지막 한 장"])}</section>`);
-  H.push(`<p class="cap" style="padding-bottom:16px">덤으로 같이 넣어 주마</p><div class="keys">${[["R13a", "조심 달력", "다칠 날마다 미리 동그라미를 쳐 두마"], ["R13b", "막을 것 목록", "하나씩 지워 가며 한 해를 넘기거라"], ["R13c", "기운 채우는 첫 곡", `모자란 ${WXN[weak]} 기운을 채워 줄 노래란다`], ["R13d", "액막이 나무패", "피할 방향, 채울 색, 버릴 습관을 적어 두마"]].map(([im, t, d]) => `<div><img src="${IMG(im)}" alt=""><p><b>${t}</b>${d}</p></div>`).join("")}</div>`);
+  H.push(pn({ img: "R12", h: 280, kind: "tilt", pos: "center", b: [{ t: "다칠 데를 보고도<br>그냥 보내면,", x: 4, y: -22, w: 48 }, { t: "그게 어디<br><b>할미겠니.</b>", x: 52, y: 62, w: 44 }] }));
+  H.push(capt(`그래서 할미가<br><em>${esc(NAME)}${hasJ(NAME) ? "이" : ""}한테 편지를 한 통 써 주마.</em>`, "약첩 안에 넣어 주는 할미 편지란다."));
+  const CH6 = [
+    ["1장", "네 여덟 글자 뜯어보기", "태어난 해, 달, 날, 시간 네 기둥을 하나씩 풀어서, 네가 어떤 사람인지 짚어 줘요.", `너는 ${base} 위에 선 ${me}다.`],
+    ["2장", "내년 글자와 맞물리면", "2027년 丁未가 네 사주의 어느 자리를 건드리는지, 그래서 내년이 왜 이런 해인지 알려 줘요."],
+    ["3장", "조심할 세 군데", "할미가 본 그림 가운데 가장 센 세 장을 풀어요. 무엇이, 왜, 언제 오는지, 그대로 두면 어디까지 가는지, 막는 법까지요."],
+    U.wish ? ["4장", "네가 물은 그 일", "적어 준 고민을 지금, 고비, 갈림길 순서로 따라가고, 마지막에 할미의 답을 줘요."] : ["4장", "내년에 제일 크게 막을 것", "한 해 동안 가장 크게 막아야 할 한 가지를 처음부터 끝까지 따라가요."],
+    ["5장", "달마다", "2027년 2월부터 2028년 1월까지 열두 달, 달마다 조심할 장면과 할 일을 한 줄씩 적어 줘요."],
+    ["6장", "매일 막는 법", "색, 방향, 몸, 음식, 습관, 말. 매일 할 수 있는 여섯 가지예요."],
+    ["끝", "다시 열어볼 날", "첫 고비가 지난 뒤 편지를 다시 펼쳐 볼 날짜와, 그날 확인할 것 하나를 적어 줘요."],
+  ];
+  H.push(`<section class="blk detail"><p class="tt">할미 편지에 든 것</p><p class="ask">${esc(NAME)}${hasJ(NAME) ? "이" : ""} 사주로만 쓰는 편지예요.<br>약 5,000자, 천천히 읽으면 15분쯤 걸려요.</p><ol class="chs">${CH6.map(([n, t, d, smp]) => `<li><span class="no">${n}</span><div><b>${t}</b><p>${d}</p>${smp ? `<p class="smp">«${esc(smp)} <i>그래서 너는 늘 혼자 버티는 쪽을 고르지. 그런데 그 버팀이…</i>»</p>` : ""}</div></li>`).join("")}</ol></section>`);
+  H.push(`<section class="blk detail"><p class="tt">이렇게 받아요</p><ol class="steps"><li><b>1</b><p>복채를 내면 할미가 바로 편지를 쓰기 시작해요. 2~3분이면 다 써요.</p></li><li><b>2</b><p>다 쓰면 이 화면에서 바로 읽을 수 있어요.</p></li><li><b>3</b><p>받은 편지는 링크로 언제든 다시 열어 볼 수 있어요.</p></li></ol></section>`);
   H.push(`</div>`);
   /* 왜 지금 */
   H.push(`<div class="wt">`);
@@ -872,7 +901,7 @@ function renderResult(v) {
   H.push(`</div>`);
   /* R16 가격 */
   H.push(pn({ img: "R16", h: 280, kind: "box", pos: "center", b: [{ t: "듣기 좋은 말이야<br>어디서든 듣지.<br><b>할미는 미리 막아 주는 거란다.</b>", x: 40, y: -26, w: 58 }] }));
-  H.push(`<section class="price"><p class="ey" style="text-align:center;font-family:var(--serif);color:#6b5a49">아프기 전에 짓는 약</p><h3>할미약방</h3><p style="text-align:center;font-size:14px;color:#6b5a49;margin:6px 0 16px">2027 약첩 아홉 첩 + 따로 물은 것 처방</p><div class="r"><span>복채</span><s>62,400원</s></div><div class="r"><span>얼리버드 40%</span><span style="color:var(--red)">-25,000원</span></div><div class="fin"><span>최종</span><b>37,400원</b></div><p style="font-size:12px;color:#aaa;margin-top:8px">가격은 시험용 자리예요 ${EX}</p></section>`);
+  H.push(`<section class="price"><p class="ey" style="text-align:center;font-family:var(--serif);color:#6b5a49">아프기 전에 짓는 약</p><h3>할미약방</h3><p style="text-align:center;font-size:14px;color:#6b5a49;margin:6px 0 16px">할미 편지 한 통 (6장, 약 5,000자)</p><div class="r"><span>복채</span><s>62,400원</s></div><div class="r"><span>얼리버드 40%</span><span style="color:var(--red)">-25,000원</span></div><div class="fin"><span>최종</span><b>37,400원</b></div><p style="font-size:12px;color:#aaa;margin-top:8px">가격은 시험용 자리예요 ${EX}</p></section>`);
   /* R17 편지 */
   H.push(`<section class="letter">우리 ${esc(NAME)}${voc(NAME)}. 할미는 좋은 말부터 꺼내는 사람이 못 된다. 다칠 데가 먼저 보이면 그것부터 말해 주는 사람이지. 듣기 싫었을 거다, 미안하구나. 그래도 미리 알면 막을 수 있으니… 여기까지 왔으면 약은 꼭 받아 가거라. 밥 잘 챙겨 먹고.<p class="sig">— 끝까지 네 편인 할미가</p></section>`);
   $("#res").innerHTML = `<div class="res">${H.join("")}</div>`;
