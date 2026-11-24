@@ -505,6 +505,27 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .rec{list-style:none;margin:0;padding:0}
 .rec li{position:relative;padding:8px 0 8px 28px;font-size:15px;line-height:24px;color:#4a3f35}
 .rec li::before{content:"✓";position:absolute;left:0;top:8px;width:20px;height:20px;border-radius:999px;background:#C9A25B;color:#fff;font-size:12px;line-height:20px;text-align:center}
+/* 11/25 장별 소제목·편지 미리보기·볕 드는 세 군데 */
+.detail .chs .subs{list-style:none;margin:8px 0 0;padding:0}
+.detail .chs .subs li{display:block;border:0;padding:2px 0 2px 16px;position:relative;font-size:13px;line-height:19px;color:#5a5048}
+.detail .chs .subs li::before{content:"";position:absolute;left:4px;top:8px;width:4px;height:4px;border-radius:999px;background:#C9A25B}
+.lp{margin:8px 20px 48px;border-radius:20px;overflow:hidden;background:#FFFDF8;border:1px solid #E2CFA6;box-shadow:0 4px 12px rgba(90,60,30,.12)}
+.lph{display:flex;align-items:center;gap:8px;padding:16px 20px;background:var(--wood);color:#fff}
+.lph span{padding:0 8px;border-radius:999px;background:rgba(255,255,255,.2);font-size:13px;line-height:24px;font-weight:600}
+.lph b{font-family:var(--serif);font-size:17px;line-height:27px}
+.lpb{padding:20px}
+.lpb h4{margin:0 0 12px;font-family:var(--serif);font-size:17px;line-height:27px;color:var(--red)}
+.lpb>p{margin:0 0 16px;font-family:var(--serif);font-size:15px;line-height:24px;color:var(--ink)}
+.lpb .kv{padding:12px 0;border-top:1px dashed #D8C9B0}
+.lpb .kv b{display:inline-block;margin-bottom:4px;padding:0 8px;border-radius:999px;background:#F4EDE2;color:var(--wood);font-size:13px;line-height:24px}
+.lpb .kv p{margin:0;font-family:var(--serif);font-size:15px;line-height:24px;color:var(--ink)}
+.lpb .kv.bl p{filter:blur(4px);user-select:none}
+.lpf{margin:0;padding:12px 20px;background:#F4EDE2;font-size:13px;line-height:19px;color:#8a7a68;text-align:center}
+.sun{margin:8px 20px 48px;display:grid;gap:12px}
+.sun>div{display:grid;grid-template-columns:40px 1fr;column-gap:12px;align-items:center;padding:16px;border-radius:20px;background:linear-gradient(#FFF6DF,#FDEBC4);border:1px solid #F0D79A}
+.sun span{grid-row:1/3;width:40px;height:40px;border-radius:999px;background:#E9A94B;color:#fff;font-family:var(--serif);font-size:20px;line-height:40px;text-align:center}
+.sun b{font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink)}
+.sun p{margin:0;font-size:15px;line-height:24px;color:#5a5048}
 </style>
 </head>
 <body>
@@ -909,7 +930,8 @@ function renderResult(v) {
   H.push(pn({ img: "R10a", h: 420, kind: "boxR", pos: "center 25%", b: [{ t: "그래도<br>걱정만 할 건<br><b>아니란다.</b>", x: -24, y: 8, w: 50 }] }));
   H.push(capt(`내년엔 너를 도와줄 사람이<br><em>${v.guiren?.in2027 ? "제 발로 찾아온단다." : "가까이 와 있단다. 찾아가야 만나지."}</em>`));
   H.push(`<section class="blk"><p class="ey">내년에 오는 귀인</p><p class="tt">이런 사람을 놓치지 마라</p><div class="guiren"><img src="${IMG("R10c")}" alt=""><div><p><span>어디서</span><b>${esc(gP)}</b></p><p><span>어떤 사람</span><b>${esc(gDesc)}</b></p><p><span>그 사람 기운</span><b>${WXN[v.useful[0]]} 기운</b></p><p><span>만나는 때</span><b class="blur">${esc(MK(om[0] || ""))}</b></p></div></div><p class="note2">어떻게 알아보는지, 무엇을 부탁하면 되는지는 편지 일곱째 장에 적어 두마.</p></section>`);
-  H.push(capt(`볕 드는 때도 있단다.<br>내년 <em>${SEA(om[0] || "")}</em>엔 막혔던 게 풀린단다.`));
+  H.push(capt(`그래도 내년에<br><em>볕 드는 데가 세 군데 있단다.</em>`));
+  H.push(`<section class="sun">${[["귀인", `${esc(gP)} 쪽에서 너를 도와줄 사람이 ${v.guiren?.in2027 ? "온다" : "기다린다"}.`], ["풀리는 때", `${SEA(om[0] || "")}엔 막혔던 게 풀린다.`], ["모이는 달", `돈과 사람이 모이는 달이 ${om.length || 1}번 온다.`]].map(([t, d], k) => `<div><span>${["一", "二", "三"][k]}</span><b>${t}</b><p>${d}</p></div>`).join("")}<p class="note2">어느 달인지, 어떻게 붙잡는지는 편지 여섯째, 일곱째, 여덟째 장에 적어 두마.</p></section>`);
   H.push(`<section class="blk"><p class="ey">내년 네 돈은</p><p class="tt">${["버는 해", "지키는 해", "새는 해"][moneyY]}란다</p><div class="pouch">${["버는 해", "지키는 해", "새는 해"].map((t, k) => `<div class="${k === moneyY ? "on" : ""}"><i>${["↗", "＝", "↘"][k]}</i><b>${t}</b></div>`).join("")}</div><p class="ask" style="margin-top:16px">${["들어올 길이 열린다. 다만 들어온 만큼 새는 데도 막아야 한다.", "크게 벌기보다 있는 걸 지키는 게 이기는 해다.", "나가는 길이 먼저 열린다. 어디로 새는지 알면 막는다."][moneyY]}</p></section>`);
   H.push(`</div>`);
   /* 고민: 답 대신 «걸려 있다» */
@@ -924,6 +946,7 @@ function renderResult(v) {
   H.push(`<div class="wt">`);
   H.push(pn({ img: "R12", h: 280, kind: "tilt", pos: "center", b: [{ t: "다칠 데를 보고도<br>그냥 보내면,", x: 4, y: -22, w: 48 }, { t: "그게 어디<br><b>할미겠니.</b>", x: 52, y: 62, w: 44 }] }));
   H.push(capt(`그래서 할미가<br><em>${esc(NAME)}${hasJ(NAME) ? "이" : ""}한테 편지를 한 통 써 주마.</em>`, "약첩 안에 넣어 주는 할미 편지란다."));
+  const SUBS = { "1장": ["태어난 해, 달, 날, 시간 네 기둥 풀이", "체질: 차가운지, 넘치는 기운, 없는 기운", "너는 어떤 식으로 다치는 사람인가", "채울 것과 덜어 낼 것"], "2장": ["丁未가 네 사주 어느 자리에 닿는지", "지금 10년 운과 내년이 엇갈리는 곳", "삼재가 드는지", "내년은 너에게 어떤 해인가"], "3장": ["그림마다 무엇이, 왜, 언제", "그대로 두면 어디까지 가는지", "할미의 역제안 세 가지", "말로 못 한 다섯째 그림"], "4장": ["지금 네 상태", "내년에 오는 고비와 때", "갈림길마다 어떻게 되는지", "해도 되는지, 할미의 답"], "5장": ["옮길 때와 버틸 때", "붙는 달과 미끄러지는 달", "윗사람, 동료와 부딪히는 자리", "시험, 계약, 당첨 운"], "6장": ["버는 해, 지키는 해, 새는 해", "돈이 새는 달과 그 까닭", "돈이 모이는 달", "돈 때문에 멀어질 수 있는 사람", "큰돈 결정은 언제"], "7장": ["연애, 결혼에서 부딪히는 자리", "내년에 오는 귀인: 어디서, 어떤 사람, 언제", "귀인을 알아보는 법", "피할 사람"], "8장": ["열두 달 장면과 할 일", "조심할 날", "좋은 날"], "9장": ["색, 방향, 몸, 음식, 습관, 기운 돌리기", "내년에 이것 하나만은 꼭", "편지를 다시 열어볼 날"] };
   const CH9 = [
     ["1장", "네 여덟 글자", "태어난 해, 달, 날, 시간 네 기둥을 하나씩 풀고, 네가 어떤 식으로 다치는 사람인지 짚어 줘요.", "R2a", "너는 겉은 단단한데 속은 얼어 있는 사람이다."],
     ["2장", "내년 글자와 맞물리면", "2027년 丁未가 네 사주 어디를 건드리는지, 지금 10년 운과 어떻게 엇갈리는지 알려 줘요.", "R5a", "등불 하나가 네 마른 흙 위에 올라앉는다."],
@@ -935,7 +958,10 @@ function renderResult(v) {
     ["8장", "달마다", "2027년 2월부터 2028년 1월까지 열두 달, 달마다 장면과 할 일, 조심할 날과 좋은 날을 적어 줘요.", "R13a", "달력에 붉은 동그라미를 쳐 두거라."],
     ["9장", "매일 막는 법", "색, 방향, 몸, 음식, 습관, 기운 돌리기. 매일 할 수 있는 여섯 가지와, 내년에 꼭 할 한 가지예요.", "R13d", "이것만은 매일 해라."],
   ];
-  H.push(`<section class="blk detail"><p class="tt">할미 편지에 든 것</p><p class="ask">${esc(NAME)}${hasJ(NAME) ? "이" : ""} 사주로만 쓰는 아홉 장짜리 편지예요.<br>약 1만 7천 자, 천천히 읽으면 40분쯤 걸려요.</p><ol class="chs">${CH9.map(([n, t, d, im, say]) => `<li><img class="thumb" src="${IMG(im)}" alt=""><div><p class="cn"><span class="no">${n}</span><b>${t}</b></p><p>${d}</p><p class="smp">«${esc(say)}»</p></div></li>`).join("")}</ol></section>`);
+  H.push(`<section class="blk detail"><p class="tt">할미 편지에 든 것</p><p class="ask">${esc(NAME)}${hasJ(NAME) ? "이" : ""} 사주로만 쓰는 아홉 장짜리 편지예요.<br>약 1만 7천 자, 천천히 읽으면 40분쯤 걸려요.</p><ol class="chs">${CH9.map(([n, t, d, im, say]) => `<li><img class="thumb" src="${IMG(im)}" alt=""><div><p class="cn"><span class="no">${n}</span><b>${t}</b></p><p>${d}</p><ul class="subs">${(SUBS[n] || []).map((x) => `<li>${x}</li>`).join("")}</ul><p class="smp">«${esc(say)}»</p></div></li>`).join("")}</ol></section>`);
+  /* 편지 미리보기 */
+  H.push(capt(`편지는 이렇게 생겼단다.`, "결혼을 앞둔 다른 손주의 실제 편지 한 장이에요. 셋째 장, 첫째 그림."));
+  H.push(`<section class="lp"><div class="lph"><span>셋째 장</span><b>할미 눈에 보인 그림 다섯 장</b></div><div class="lpb"><h4>첫째 그림 · 사람<br>약속하고 서류 맞추다 말이 날카로워지는 너</h4><p>할미 눈에는 날짜와 예식장, 집 문제를 맞추다 사소한 말 한마디에 서로 얼굴이 굳는 네가 보인다.</p><div class="kv"><b>무엇이</b><p>큰 싸움이 아니라 작은 말 한마디가 며칠씩 가는 그림이다. «그때 내가 말했잖아» 하는 말이 먼저 나오기 쉽다.</p></div><div class="kv"><b>왜</b><p>네 곁 사람 자리의 마른 흙에 내년 마른 흙이 닿아, 고집이 두 배로 단단해진다.</p></div><div class="kv bl"><b>언제</b><p>●월이 가장 크다. 조심할 날은 ●/●, ●/●, ●/●다. 이 사흘에는 도장 찍는 일을 피해라.</p></div><div class="kv bl"><b>바닥까지 가면</b><p>사소한 말다툼이 쌓여 «정말 맞는 걸까» 하는 의심으로 번진다. 물러서지도 못하고 속으로만 곪다가…</p></div><div class="kv bl"><b>할미의 역제안</b><p>첫째, 날짜, 비용, 서류는 입으로 정하지 말고 둘이 같이 쓰는 메모 하나에 전부 적어라. 둘째, 마음이 상하면…</p></div></div><p class="lpf">이런 그림이 다섯 장, 장은 모두 아홉 장이에요.</p></section>`);
   /* 예시 풀이 */
   H.push(capt(`실제로는 이렇게 써 준단다.`, "다른 손주의 편지 일부예요. 이름과 고민은 바꿨어요."));
   H.push(`<section class="blk sample"><p class="q">«내년에 이직하려는데 지금 옮겨도 될까요?»<small>병오일주, 이OO 님의 고민</small></p><div class="a"><p>결론부터 말하마. 옮기는 건 맞는데, 봄은 아니다.</p><p>네 일 자리에 내년 마른 흙이 정면으로 부딪힌다. 봄에 서둘러 나가면 새 자리에서 윗사람과 먼저 부딪히고, 석 달 만에 다시 짐을 싸게 된다.</p><p class="fade">할미라면 여름까지는 지금 자리에서 이력부터 정리하고, 가을 문턱에 움직인다. 그때는 네 필요한 기운이 들어와서…</p></div></section>`);
