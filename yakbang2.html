@@ -526,6 +526,22 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .sun span{grid-row:1/3;width:40px;height:40px;border-radius:999px;background:#E9A94B;color:#fff;font-family:var(--serif);font-size:20px;line-height:40px;text-align:center}
 .sun b{font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink)}
 .sun p{margin:0;font-size:15px;line-height:24px;color:#5a5048}
+/* 11/25 */
+.ptip2{position:relative;width:max-content;max-width:100%;margin:16px auto 0;padding:8px 16px;border-radius:999px;background:rgba(29,29,29,.88);color:#fff;font-family:var(--sans);font-size:15px;line-height:24px;font-weight:600;animation:tipb2 1.6s ease-in-out infinite;transition:opacity .25s}
+.ptip2::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:0;border-top-color:rgba(29,29,29,.88)}
+.ptip2.off{opacity:0;height:0;margin:0;padding:0;overflow:hidden}
+@keyframes tipb2{50%{transform:translateY(-4px)}}
+.vis .vh2{margin:0 0 8px;font-size:15px;line-height:24px;color:#4a3f35}
+.vis .vh2 span{display:inline-block;margin-right:8px;padding:0 8px;border-radius:999px;background:#F4EDE2;color:var(--wood);font-size:13px;line-height:24px;font-weight:600}
+.vis .vh2 i{font-style:normal;filter:blur(4px);user-select:none}
+.callout{margin:16px 0 0;padding:16px;border-radius:16px;background:#FFF1E8;border:1.5px solid var(--red);font-size:15px;line-height:24px;color:var(--ink);text-align:center}
+.callout b{color:var(--red)}
+.guiren img{object-position:center 30%}
+.pouch+.pask{margin:16px 0 0!important}
+.fw{margin:8px 20px 48px;display:grid;gap:12px}
+.fw div{padding:16px 20px;border-radius:20px;background:#FFFDF8;border:1px solid #E2CFA6}
+.fw span{display:inline-block;margin-bottom:8px;padding:0 8px;border-radius:999px;background:#F4EDE2;color:var(--wood);font-size:13px;line-height:24px;font-weight:600}
+.fw p{margin:0;font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -752,6 +768,19 @@ const PAST = {
   "over:비겁": ["도와달란 말을 못 해 혼자 다 한 적.", "«내가 하는 게 빨라» 하고 떠안은 날.", "다 해 놓고도 아무도 몰라줘서 서운했던 밤."],
   "bal": ["이것저것 다 맡다가 정작 네 일은 밀린 적.", "«네가 잘하잖아» 한마디에 또 떠안은 날.", "다 잘하는데 이상하게 허전했던 밤."],
 };
+const FAMWORK = {
+  "miss:식상": ["집에서는 늘 «괜찮은 애»였지. 서운해도 티를 안 내니, 식구들은 네가 정말 괜찮은 줄 알았을 게다.", "일에선 잘해 놓고도 말을 못 해서, 공은 남이 가져간 적이 있었지."],
+  "over:식상": ["식구들한테 바른말 했다가 «말 좀 곱게 해라» 소리를 들은 적 있지.", "일에선 맞는 말을 해도 윗사람 눈 밖에 나곤 했지."],
+  "over:재성": ["집안 일, 식구들 돈 걱정까지 네가 먼저 챙겼지. 그게 어느새 당연한 게 돼 버렸고.", "일에선 남의 몫까지 떠안아 늘 바빴지."],
+  "miss:재성": ["식구들 사이에서 네 몫은 늘 맨 뒤였지.", "일한 만큼 받지 못한다는 생각, 여러 번 했을 게다."],
+  "over:관성": ["어른들 눈치를 먼저 보는 아이였지. 기대에 맞추느라 하고 싶은 걸 접은 적도 있고.", "일에선 실수할까 봐 늘 긴장해 있었지."],
+  "miss:관성": ["식구들 부탁은 거절을 못 해서, 결국 네가 다 떠안았지.", "일에선 선 넘는 사람한테 한마디 못 하고 참은 날이 많았지."],
+  "miss:인성": ["기댈 어른이 마땅치 않아 일찍 철이 들었지.", "일에선 물어볼 사람 없이 혼자 길을 찾아야 했지."],
+  "over:인성": ["식구들 걱정을 끌어안고 혼자 생각만 많았지.", "일에선 준비만 하다가 때를 놓친 적이 있었지."],
+  "miss:비겁": ["식구들 기분 맞추느라 네 마음은 늘 뒷전이었지.", "일에선 남들 일정에 맞추느라 네 일은 밤에 했지."],
+  "over:비겁": ["식구들한테도 힘든 내색 없이 혼자 해결했지.", "일에선 맡기질 못해서 혼자 다 했지."],
+  "bal": ["집에선 뭐든 잘하는 애라 다들 너한테 기댔지.", "일에선 이것저것 다 맡다 정작 네 일은 밀렸지."],
+};
 const SEATW = { 일지: ["곁 사람", "배우자나 연인 자리", "제일 가까운 사람", "가장 가까운 사람과 말 한마디로 금이 간다."], 월지: ["집안 일터", "집안과 일터 자리", "집안과 일터", "집안 일과 일터 일이 겹쳐 <b>네 몫부터</b> 비운다."], 년지: ["윗사람", "부모와 윗사람 자리", "윗사람", "부모나 윗사람과 크게 어긋난다."], 시지: ["앞날", "아랫사람과 앞날 계획 자리", "앞날 계획", "아랫사람 일, 앞날 계획이 틀어진다."], 월간: ["일터", "일터 자리", "일터", "일터에서 정면으로 부딪힌다."], 년간: ["윗사람", "윗사람 자리", "윗사람", "윗사람과 부딪힌다."], 시간: ["기댈 곳", "받쳐 주던 자리", "기대던 사람", "기대던 사람과 한 번 크게 어긋난다."] };
 const RELE = { 충: ["정면으로 부딪히고", "정면으로 부딪힌다"], 형: ["꼬여서 다치고", "꼬여서 다친다"], 파: ["금이 가고", "금이 간다"], 해: ["서서히 상하고", "서서히 상한다"], 원진: ["미움이 쌓이고", "미움이 쌓인다"] };
 const relSay = (rs) => rs.map((r, i) => (RELE[r] || [r, r])[i === rs.length - 1 ? 1 : 0]).join(" ");
@@ -803,7 +832,7 @@ function crisis(v) {
     capt(`내년 달력에 대 보니…<br><em>${bad.m} 탈이랑 맞물려 있구나.</em>`, "되는지 안 되는지, 언제 움직여야 하는지는 약첩 첫 장에 적어 뒀다."),
     `</div>`,
   ].join("") : "";
-  return { act1, act2, wish, T, gF, gE, EG, cm, past: PAST[key] };
+  return { act1, act2, wish, T, gF, gE, EG, cm, past: PAST[key], fw: FAMWORK[key] };
 }
 function bindCrisis(v, CR) {
   document.querySelectorAll(".vis.cl").forEach((c) => (c.onclick = () => { if (c.classList.contains("op")) return; c.classList.add("op"); navigator.vibrate?.(15); }));
@@ -878,7 +907,7 @@ function renderResult(v) {
   /* R3 체질 + 저울 */
   H.push(`<div class="soul"><img src="img/s/${encodeURIComponent(meCh + baseCh)}.jpg" onerror="this.src='img/l/L1-7.jpg'" alt=""><p>${esc(baseCh)} ${esc(base)} 위에 선<br>${esc(meCh)} ${esc(me)}</p></div>`);
   H.push(pn({ img: "R3a", h: 260, kind: "box", pos: "center", b: [{ t: "네 몸에 든 기운을<br>저울에 한번<br>달아 보자꾸나.", x: 48, y: -26, w: 50 }] }));
-  H.push(`<section class="blk scale" id="scale"><p class="ey">체질 저울</p><p class="tt">하나씩 올려 보거라</p><p class="ask">왼쪽이 내려가면 넘치고, 올라가면 모자란 거다.</p><div class="stage"><img class="bg" id="scimg" src="img/ui/scale-0.jpg?v=2" alt=""><img class="pre" src="img/ui/scale-L.jpg?v=2" alt=""><img class="pre" src="img/ui/scale-R.jpg?v=2" alt=""><img class="drop" id="drop" src="" alt=""><div class="bub" id="wbub"></div></div><div class="tokens">${["木", "火", "土", "金", "水"].map((e, k) => `<button data-e="${e}" class="${k ? "" : "hint"}"><img src="img/ui/i-${ICON[e]}.jpg" alt="">${WXN[e]}</button>`).join("")}</div><div class="wres" id="wres"></div></section>`);
+  H.push(`<section class="blk scale" id="scale"><p class="ey">체질 저울</p><p class="tt">하나씩 올려 보거라</p><p class="ask">왼쪽이 내려가면 넘치고, 올라가면 모자란 거다.</p><div class="stage"><img class="bg" id="scimg" src="img/ui/scale-0.jpg?v=2" alt=""><img class="pre" src="img/ui/scale-L.jpg?v=2" alt=""><img class="pre" src="img/ui/scale-R.jpg?v=2" alt=""><img class="drop" id="drop" src="" alt=""><div class="bub" id="wbub"></div></div><p class="ptip2" id="sctip">약재를 하나 눌러 저울에 올려 보거라</p><div class="tokens">${["木", "火", "土", "金", "水"].map((e, k) => `<button data-e="${e}" class="${k ? "" : "hint"}"><img src="img/ui/i-${ICON[e]}.jpg" alt="">${WXN[e]}</button>`).join("")}</div><div class="wres" id="wres"></div></section>`);
   H.push(pn({ img: "R3b", h: 420, kind: "full", pos: "center 30%", b: [{ t: `${isBal(v) ? `자, 봤지?<br>다섯 기운이<br><b>고르게 섰구나.</b>` : `자, 봤지?<br>${JO(WXN[heavy], "은", "는")} 한쪽으로 쿵,<br><b>${JO(WXN[weak], "은", "는")} ${v.pct[weak] < 5 ? "하나도 없구나" : "모자라구나"}.</b>`}`, x: 46, y: 58, w: 52 }] }));
   const CR = crisis(v);
   H.push(CR.act1);
@@ -886,7 +915,11 @@ function renderResult(v) {
   H.push(pn({ img: "R4", h: 420, kind: "boxR", pos: "center 30%", b: [{ t: "그래서 말이다,<br>이런 적<br><b>있었을 게다.</b>", x: -24, y: 54, w: 50 }] }));
   H.push(`<section class="past" id="past">${CR.past.map((t, i) => `<p style="transition-delay:${0.3 + i * 0.9}s">${esc(t)}</p>`).join("")}</section>`);
   H.push(capt(`어떠냐.<br><em>할미 말이 틀렸니.</em>`));
-  H.push(capt(`그래도 지금까지는<br>어떻게든 버텨 왔지.`));
+  H.push(`<section class="fw"><div><span>식구들 사이에서</span><p>${esc(CR.fw[0])}</p></div><div><span>일에서</span><p>${esc(CR.fw[1])}</p></div></section>`);
+  H.push(capt(`그래도 지금까지는<br><em>어떻게든 버텨 왔지.</em>`, "참 많이 애썼구나."));
+  H.push(capt(`다른 데 가면<br>다들 좋은 얘기를 해 줄 게다.<br>그것도 좋지.`));
+  H.push(capt(`그런데 할미는<br><em>네가 결국 덜 힘들었으면 해서.</em>`));
+  H.push(capt(`제일 어려운 걸 알아야<br>미리 막을 수 있거든.<br><em>조금 불편해도 콕 짚어 주마.</em>`));
   H.push(`</div>`);
   /* R5 약연 → 내년 */
   H.push(`<div class="wt">`);
@@ -901,45 +934,47 @@ function renderResult(v) {
   H.push(`<div class="wt">`);
   H.push(pn({ img: "VS1b", h: 480, kind: "full", pos: "center 35%", b: [{ t: "눈을 감으니<br>내년 그림이<br><b>몇 장 보이는구나.</b>", x: 48, y: 44, w: 50 }] }));
   H.push(capt(`겁주려는 게 아니다.<br><em>미리 봐 두면 비켜 갈 수 있으니까.</em>`));
-  H.push(capt(`할미 눈에 보인 그림을<br>하나씩 꺼내 보여 주마.`));
+  H.push(capt(`할미 눈에 보인 그림을<br>하나씩 꺼내 보여 주마.`, U.wish && L.topic ? "네가 물은 일과 가장 가까운 그림부터 꺼내마." : "가장 센 그림부터 꺼내마."));
   const AREA = { 돈: "money", 마음: "love", "일, 명예": "work", "일·명예": "work", 몸: "body", "시험, 계약": "work", "시험·계약": "work" };
   const byWeak = [...new Set(A.map(([n]) => AREA[n]).filter(Boolean)), "money", "work", "love", "body", "people"].filter((k, i, a) => a.indexOf(k) === i);
   const VO = L.topic ? [L.topic, ...byWeak.filter((k) => k !== L.topic)] : byWeak;
   const couple = /연애중|기혼/.test(U.love || "");
   const PLACE = { 木: "옆구리", 火: "가슴께", 土: "명치", 金: "목이랑 가슴", 水: "허리" }[weak] || "가슴께";
+  const SEA2 = (lab) => { const n = parseInt(String(lab).match(/(\d+)\s*월/)?.[1] || lab); return n >= 3 && n <= 5 ? "봄" : n >= 6 && n <= 8 ? "여름" : n >= 9 && n <= 11 ? "가을" : "겨울"; };
+  const S1 = SEA2(cm[0]?.m || ""), S2 = SEA2(om[0] || "");
   const VIS = {
-    money: { img: "VM", name: "돈", see: "통장에서 뭔가 빠져나가는데,\n네가 막지를 못하는구나.", more: "생각보다 큰돈이란다.", hide: ["누구 일 때문에 나가는지", "그게 한 번으로 끝나지 않는 까닭"], coda: "돈 얘기는 늘 사람 얘기더구나." },
-    work: { img: "VW", name: "일", see: "다들 자리를 떴는데,\n너 혼자 책상 앞에 남아 있구나.", more: "그 자리가 오래가지는 않을 게다.", hide: ["누가 네 몫을 가져가는지", "그 뒤에 오는 소식"], coda: "열심히 하는 게 늘 답은 아니란다." },
-    love: { img: couple ? "VC" : "VD", name: "마음", see: couple ? "둘이 마주 앉았는데,\n아무도 먼저 입을 안 여는구나." : "누가 다가오는데,\n네가 먼저 문을 닫는구나.", more: couple ? "그 침묵이 생각보다 길구나." : "그 사람이 그냥 지나가지는 않는구나.", hide: ["그 사람이 누구인지", "그 말 한마디가 어디까지 번지는지"], coda: "마음은 미리 알면 덜 다친단다." },
-    body: { img: "VB", name: "몸", see: `밤에 잠이 안 와서\n${PLACE}를 쓸어내리는 네가 보이는구나.`, more: "처음엔 별것 아닌 줄 알 게다.", hide: ["처음 신호가 오는 때", "그냥 넘기면 어디까지 가는지"], coda: "몸은 거짓말을 안 한단다." },
-    people: { img: "VP", name: "사람", see: "웃으면서 다가오는 사람이 하나 있는데…\n얼굴이 잘 안 보이는구나.", more: "처음엔 반가운 얼굴이란다.", hide: ["그 사람이 너한테 바라는 것", "그 뒤에 남는 것"], coda: "사람은 오는 것보다 가는 걸 봐야 한단다." },
+    money: { img: "VM", name: "돈", see: "통장에서 뭔가 빠져나가는데,\n네가 막지를 못하는구나.", more: "생각보다 큰돈이란다.", hide: [["언제", `${S1} 무렵, 큰돈이`, "한 번에 빠져나가는 달이 있다"], ["누구 때문에", "가까운 사람의 부탁을", "들어주다 네 몫부터 빈다"]], coda: "돈 얘기는 늘 사람 얘기더구나." },
+    work: { img: "VW", name: "일", see: "다들 자리를 떴는데,\n너 혼자 책상 앞에 남아 있구나.", more: "그 자리가 오래가지는 않을 게다.", hide: [["언제", `${S1} 무렵, 일터에서`, "네 자리가 흔들리는 달이 있다"], ["누구 때문에", "윗사람의 한마디로", "네가 한 일이 남의 것이 된다"]], coda: "열심히 하는 게 늘 답은 아니란다." },
+    love: { img: couple ? "VC" : "VD", name: "마음", see: couple ? "둘이 마주 앉았는데,\n아무도 먼저 입을 안 여는구나." : "누가 다가오는데,\n네가 먼저 문을 닫는구나.", more: couple ? "그 침묵이 생각보다 길구나." : "그 사람이 그냥 지나가지는 않는구나.", hide: couple ? [["언제", `${S1} 무렵, 말 한마디가`, "크게 번지는 날이 온다"], ["어디까지", "그 침묵이", "둘이 그리던 앞날까지 멈춰 세운다"]] : [["언제", `${S2} 무렵, 다가오는 사람이`, "하나 있다"], ["어디까지", "네가 문을 닫으면", "그 사람은 다시 오지 않는다"]], coda: "마음은 미리 알면 덜 다친단다." },
+    body: { img: "VB", name: "몸", see: `밤에 잠이 안 와서\n${PLACE}를 쓸어내리는 네가 보이는구나.`, more: "처음엔 별것 아닌 줄 알 게다.", hide: [["언제", `${S1} 무렵, 잠이`, "먼저 무너진다"], ["어디까지", "처음엔 피로인 줄 알다가", "한 철 내내 끌고 간다"]], coda: "몸은 거짓말을 안 한단다." },
+    people: { img: "VP", name: "사람", see: "웃으면서 다가오는 사람이 하나 있는데…\n얼굴이 잘 안 보이는구나.", more: "처음엔 반가운 얼굴이란다.", hide: [["언제", `${S1} 무렵, 웃으며 온 사람이`, "부탁을 꺼낸다"], ["어디까지", "정으로 들어준 것이", "돈과 시간으로 돌아온다"]], coda: "사람은 오는 것보다 가는 걸 봐야 한단다." },
   };
   const NUM = ["첫째", "둘째", "셋째", "넷째", "다섯째"];
   VO.slice(0, 4).forEach((k, i) => {
     const x = VIS[k];
-    H.push(`<section class="vis cl" data-i="${i}"><p class="vback"><b>${NUM[i]} 그림</b>눌러서 뒤집어 보거라</p><div class="vimg"><img src="${IMG(x.img)}" alt=""></div><div class="vt"><p class="vn">${NUM[i]} 그림 <span class="vtag">${x.name}</span></p><p class="vs">${esc(x.see)}${i === 0 ? `\n${esc(x.more)}` : ""}</p>${x.hide.map((h) => `<p class="vh">${esc(h)}</p>`).join("")}<p class="vc">${esc(x.coda)}</p></div></section>`);
-    if (i === 0 && L.topic && U.wish) H.push(capt(`네가 물은 그 일도,<br><em>이 그림 안에 들어 있구나.</em>`));
+    H.push(`<section class="vis cl" data-i="${i}"><p class="vback"><b>${NUM[i]} 그림</b>눌러서 뒤집어 보거라</p><div class="vimg"><img src="${IMG(x.img)}" alt=""></div><div class="vt"><p class="vn">${NUM[i]} 그림 <span class="vtag">${x.name}</span></p><p class="vs">${esc(x.see)}${i === 0 ? `\n${esc(x.more)}` : ""}</p>${x.hide.map(([a, b, c]) => `<p class="vh2"><span>${a}</span>${esc(b)} <i>${esc(c)}</i></p>`).join("")}<p class="vc">${esc(x.coda)}</p></div></section>`);
   });
   H.push(pn({ img: "VS2b", h: 380, kind: "box", pos: "center", b: [{ t: "이 한 장은…<br>할미가 지금<br><b>말로 하기가 좀 그렇구나.</b>", x: 2, y: -22, w: 54 }] }));
   H.push(capt(`그건 편지 안에<br><em>조용히 적어 두마.</em>`));
   H.push(`</div>`);
   /* 볕 드는 쪽: 귀인·좋은 때·돈 판정 */
   const SEA = (lab) => { const n = parseInt(String(lab).match(/(\d+)\s*월/)?.[1] || lab); return n >= 3 && n <= 5 ? "봄" : n >= 6 && n <= 8 ? "여름" : n >= 9 && n <= 11 ? "가을" : "겨울"; };
+  const GRIMG = (v.dm.charCodeAt(0) + (U.gender === "m" ? 1 : 0)) % 2 ? "GRm" : "GRf";
   const wE = CTL[dmE], moneyY = v.useful.includes(wE) ? 0 : v.avoid.includes(wE) ? 2 : 1;
   H.push(`<div class="wt">`);
   H.push(pn({ img: "R10a", h: 420, kind: "boxR", pos: "center 25%", b: [{ t: "그래도<br>걱정만 할 건<br><b>아니란다.</b>", x: -24, y: 8, w: 50 }] }));
   H.push(capt(`내년엔 너를 도와줄 사람이<br><em>${v.guiren?.in2027 ? "제 발로 찾아온단다." : "가까이 와 있단다. 찾아가야 만나지."}</em>`));
-  H.push(`<section class="blk"><p class="ey">내년에 오는 귀인</p><p class="tt">이런 사람을 놓치지 마라</p><div class="guiren"><img src="${IMG("R10c")}" alt=""><div><p><span>어디서</span><b>${esc(gP)}</b></p><p><span>어떤 사람</span><b>${esc(gDesc)}</b></p><p><span>그 사람 기운</span><b>${WXN[v.useful[0]]} 기운</b></p><p><span>만나는 때</span><b class="blur">${esc(MK(om[0] || ""))}</b></p></div></div><p class="note2">어떻게 알아보는지, 무엇을 부탁하면 되는지는 편지 일곱째 장에 적어 두마.</p></section>`);
+  H.push(`<section class="blk"><p class="ey">내년에 오는 귀인</p><p class="tt">이런 사람을 놓치지 마라</p><div class="guiren"><img src="${IMG(GRIMG)}" alt=""><div><p><span>어디서</span><b>${esc(gP)}</b></p><p><span>어떤 사람</span><b>${{ 木: "먼저 손 내미는 사람", 火: "밝고 말이 시원한 사람", 土: "말수 적고 믿음직한 사람", 金: "셈이 정확하고 단호한 사람", 水: "조용하고 생각 깊은 사람" }[v.useful[0]]}</b></p><p><span>그 사람 기운</span><b>${WXN[v.useful[0]]} 기운</b></p><p><span>만나는 때</span><b class="blur">${esc(MK(om[0] || ""))}</b></p></div></div><p class="callout">🔒 이 사람을 <b>어떻게 알아보는지</b>, <b>무엇을 부탁해야 하는지</b>는<br>편지 일곱째 장에 적어 두마.</p></section>`);
   H.push(capt(`그래도 내년에<br><em>볕 드는 데가 세 군데 있단다.</em>`));
   H.push(`<section class="sun">${[["귀인", `${esc(gP)} 쪽에서 너를 도와줄 사람이 ${v.guiren?.in2027 ? "온다" : "기다린다"}.`], ["풀리는 때", `${SEA(om[0] || "")}엔 막혔던 게 풀린다.`], ["모이는 달", `돈과 사람이 모이는 달이 ${om.length || 1}번 온다.`]].map(([t, d], k) => `<div><span>${["一", "二", "三"][k]}</span><b>${t}</b><p>${d}</p></div>`).join("")}<p class="note2">어느 달인지, 어떻게 붙잡는지는 편지 여섯째, 일곱째, 여덟째 장에 적어 두마.</p></section>`);
-  H.push(`<section class="blk"><p class="ey">내년 네 돈은</p><p class="tt">${["버는 해", "지키는 해", "새는 해"][moneyY]}란다</p><div class="pouch">${["버는 해", "지키는 해", "새는 해"].map((t, k) => `<div class="${k === moneyY ? "on" : ""}"><i>${["↗", "＝", "↘"][k]}</i><b>${t}</b></div>`).join("")}</div><p class="ask" style="margin-top:16px">${["들어올 길이 열린다. 다만 들어온 만큼 새는 데도 막아야 한다.", "크게 벌기보다 있는 걸 지키는 게 이기는 해다.", "나가는 길이 먼저 열린다. 어디로 새는지 알면 막는다."][moneyY]}</p></section>`);
+  H.push(`<section class="blk"><p class="ey">내년 네 돈은</p><p class="tt">${["버는 해", "지키는 해", "새는 해"][moneyY]}란다</p><div class="pouch">${["버는 해", "지키는 해", "새는 해"].map((t, k) => `<div class="${k === moneyY ? "on" : ""}"><i>${["↗", "＝", "↘"][k]}</i><b>${t}</b></div>`).join("")}</div><p class="ask pask">${["들어올 길이 열린다. 다만 들어온 만큼 새는 데도 막아야 한다.", "크게 벌기보다 있는 걸 지키는 게 이기는 해다.", "나가는 길이 먼저 열린다. 어디로 새는지 알면 막는다."][moneyY]}</p></section>`);
   H.push(`</div>`);
   /* 고민: 답 대신 «걸려 있다» */
   if (U.wish) {
     H.push(`<div class="wt">`);
     H.push(pn({ img: "R11", h: 460, kind: "full", pos: "center 25%", b: [{ t: `네가 물은 거,<br>할미가 잊지<br>않았다.`, x: 46, y: 58, w: 52 }] }));
     H.push(`<p class="quote">«${esc(wishQ)}»</p>`);
-    H.push(capt(`이 일은 ${L.topic ? "첫째" : "다섯"} 그림${L.topic ? "" : " 가운데 하나"}에<br><em>단단히 걸려 있구나.</em>`, "해도 되는지, 언제 움직여야 하는지는 편지 넷째 장에 적어 두마."));
+    H.push(capt(`이 일은 아까 본<br>${VIS[VO[0]].name} 그림에 <em>단단히 걸려 있구나.</em>`, "해도 되는지, 언제 움직여야 하는지는 편지 넷째 장에 적어 두마."));
     H.push(`</div>`);
   }
   /* 쥐여 줌: 약첩 */
@@ -1003,7 +1038,7 @@ function bindScale(v) {
   const WHY = (e, n) => { const c = CNT[e]; if (c >= 3 && n <= 3) return `글자는 ${["", "하나", "둘", "셋", "넷", "다섯"][c] || "여럿"}인데,<br><b>힘이 약해</b> 알맞구나.`; if (c <= 1 && n >= 4) return `글자는 ${c ? "하나" : "없는"}데,<br><b>숨은 힘이 세구나.</b>`; return ""; };
   const put = (st) => { const [x, y] = PAN[st]; drop.style.left = x + "%"; drop.style.top = y + "%"; };
   document.querySelectorAll("#scale [data-e]").forEach((b) => (b.onclick = () => {
-    const e = b.dataset.e; if (done.has(e)) return; done.add(e); b.classList.remove("hint"); b.classList.add("on");
+    const e = b.dataset.e; if (done.has(e)) return; done.add(e); $("#sctip")?.classList.add("off"); b.classList.remove("hint"); b.classList.add("on");
     const [n, word, hi] = LV(v.pct[e]), st = n >= 4 ? "L" : n <= 2 ? "R" : "0";
     img.src = "img/ui/scale-0.jpg?v=2"; put("0"); drop.src = `img/ui/i-${ICON[e]}.jpg`; drop.classList.remove("in"); void drop.offsetWidth; drop.classList.add("in"); navigator.vibrate?.(20);
     setTimeout(() => { img.src = `img/ui/scale-${st}.jpg`; put(st); }, 600);
