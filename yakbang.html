@@ -462,9 +462,11 @@ async function typeTo(el, text, speed = 38) { el.textContent = ""; for (const ch
 const splitS0 = (t) => t.match(/[^.?!]+(?:[.?!]+["”」]?|$)\s*/g).map((x) => x.trim()).filter(Boolean);
 const isShort = (x) => x.replace(/[.?!…,\s"”」]/g, "").length <= 4;
 const splitS = (t) => splitS0(t).reduce((a, x) => { if (a.length && isShort(x)) a[a.length - 1] += " " + x; else a.push(x); return a; }, []);
-const lineify = (t) => splitS(t).join("\n");
+/* 긴 문장(19자 넘음)은 첫 쉼표에서 두 줄로: «태어난 때는 타고난 바탕이고,» / «맥은 지금 네 기운이란다.» */
+const unitize = (x) => { const k = x.indexOf(", "); return x.length > 18 && k > 3 && k < x.length - 6 ? [x.slice(0, k + 1), x.slice(k + 2)] : [x]; };
+const lineify = (t) => splitS(t).flatMap(unitize).join("\n");
 async function says(lines, box) {
-  const sents = lines.flatMap(splitS); box.classList.add("says");
+  const sents = lines.flatMap(splitS).flatMap(unitize); box.classList.add("says");
   for (let i = 0; i < sents.length; i += 2) {
     if (i) { await sleep(2600); box.classList.add("dim"); await sleep(380); }
     const pair = sents.slice(i, i + 2); box.innerHTML = pair.map(() => `<p class="say"></p>`).join(""); box.classList.remove("dim");
