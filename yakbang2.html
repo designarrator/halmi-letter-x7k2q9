@@ -397,6 +397,29 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .cal.on .slip2{top:38%;opacity:1}
 .cal .ring{position:absolute;z-index:4;left:12%;width:76%;top:30%;height:44%;overflow:visible;mix-blend-mode:multiply}.cal .ring path{fill:none;stroke:#C8352A;stroke-width:7;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}.cal.on .ring path{animation:draw 1.1s 1s cubic-bezier(.5,0,.3,1) forwards}
 .fact .bar.hi p span,.fact .bar.lo p span{font-weight:700}
+/* 11/24 맥 짚기 안내·진행 원 */
+.ptip{position:absolute;z-index:4;left:50%;top:calc(74% - 112px);transform:translateX(-50%);margin:0;padding:8px 16px;border-radius:999px;background:rgba(29,29,29,.88);color:#fff;font-family:var(--sans);font-size:15px;line-height:24px;font-weight:600;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.25);transition:opacity .25s;animation:tipb 1.6s ease-in-out infinite}
+.ptip::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:0;border-top-color:rgba(29,29,29,.88)}
+.ptip.off{opacity:0}
+@keyframes tipb{50%{transform:translate(-50%,-4px)}}
+.pring{position:absolute;inset:-4px;width:calc(100% + 8px);height:calc(100% + 8px);transform:rotate(-90deg);overflow:visible;pointer-events:none}
+.pring circle{fill:none;stroke:#FFE6BE;stroke-width:5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .15s linear;filter:drop-shadow(0 0 4px rgba(255,160,110,.8))}
+/* 11/24 주머니 속 말 — 웹툰 작은 말풍선 */
+.bbs{position:absolute;z-index:4;transform:translate(-50%,8px) scale(.6);opacity:0;padding:8px 16px;border-radius:999px;background:#fff;border:1.5px solid #3a3a3a;font-family:var(--bubble);font-size:15px;line-height:24px;white-space:nowrap;transition:opacity .3s,transform .4s cubic-bezier(.3,1.6,.5,1)}
+.bbs.in{opacity:1;transform:translate(-50%,0) scale(1)}
+/* 11/24 저울: 그림 3장(수평·왼쪽 무거움·왼쪽 가벼움) */
+.scale .stage{border-radius:16px!important}
+.scale .stage>img.pre{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.scale .stage>img.bg{transition:opacity .2s}
+.scale .drop{position:absolute;width:15%;aspect-ratio:1/1;border-radius:50%;object-fit:cover;border:2px solid #C9A25B;transform:translate(-50%,-92%);opacity:0;transition:left .5s,top .5s cubic-bezier(.3,1.4,.5,1)}
+.scale .drop.in{opacity:1;animation:dropin .55s cubic-bezier(.3,1.4,.5,1)}
+@keyframes dropin{from{transform:translate(-50%,-260%);opacity:0}to{transform:translate(-50%,-92%);opacity:1}}
+.tokens button{font-family:var(--sans)!important;font-size:13px!important;line-height:19px!important;font-weight:600!important;gap:8px!important}
+.tokens button img{width:56px!important;height:56px;aspect-ratio:auto!important;box-shadow:none!important;border-width:1.5px!important}
+.tokens button.hint img{animation:glow 1.2s ease-in-out infinite;transform:none}
+.tokens button{justify-content:flex-start!important}.tokens button img{transform:none!important;flex:none}.tokens button.on img{opacity:.35}.tokens button.hint{margin-top:0!important}
+.wres div{grid-template-columns:32px 40px 1fr auto!important;font-family:var(--sans)!important;font-size:15px!important;line-height:24px!important}
+.wres small{grid-column:2/5;margin-top:-8px;font-size:13px;line-height:19px;color:var(--ink3,#8a7a68)}
 </style>
 </head>
 <body>
@@ -416,6 +439,9 @@ const CTL = { 木: "土", 火: "金", 土: "水", 金: "木", 水: "火" }, GEN 
 const ELOF = (c) => ("甲乙寅卯".includes(c) ? "木" : "丙丁巳午".includes(c) ? "火" : "戊己辰戌丑未".includes(c) ? "土" : "庚辛申酉".includes(c) ? "金" : "水");
 const hasJ = (w) => { const c = w.charCodeAt(w.length - 1) - 0xac00; return c >= 0 && c % 28 > 0; };
 const voc = (w) => (hasJ(w) ? "아" : "야");
+/* 대사에서 부를 이름: 성을 뺀다(3글자 → 뒤 2글자, 두 글자 성 → 뒤). 2글자·영문은 그대로 */
+const SUR2 = ["남궁", "제갈", "선우", "독고", "황보", "사공", "서문", "동방", "어금", "망절", "장곡"];
+const callName = (n) => { n = String(n || "").trim(); if (!/^[가-힣]+$/.test(n)) return n; if (n.length >= 4 && SUR2.includes(n.slice(0, 2))) return n.slice(2); if (n.length >= 3) return n.slice(1); return n; };
 const EX = '<span class="ex">예시 값</span>';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const LS = { get: (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } }, set: (k, v) => localStorage.setItem(k, JSON.stringify(v)) };
@@ -423,7 +449,7 @@ const LS = { get: (k) => { try { return JSON.parse(localStorage.getItem(k)); } c
 /* 입력값 (데모: ?demo=1 이면 다혜 예시로 바로 결과) */
 let U = LS.get("yak_user") || { wish: "", name: "", y: "", m: "", d: "", cal: "solar", hour: "", minute: "", known: true, gender: "f", love: "", loveLen: "" };
 if (Q.get("demo")) U = { wish: "내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요?", name: "다혜", y: 1999, m: 1, d: 22, cal: "solar", hour: 17, minute: 30, known: true, gender: "f", love: "연애중", loveLen: "1년 ~ 3년" };
-if (Q.get("demo") && Q.get("wish") != null) { U.wish = Q.get("wish"); const b = (Q.get("b") || "").split("-"); if (b.length >= 3) Object.assign(U, { y: +b[0], m: +b[1], d: +b[2], hour: +(b[3] ?? 12), minute: 0, known: b[3] != null, love: Q.get("love") || "" }); } // 시험용
+if (Q.get("demo") && Q.get("wish") != null) { U.wish = Q.get("wish"); const b = (Q.get("b") || "").split("-"); if (b.length >= 3) Object.assign(U, { y: +b[0], m: +b[1], d: +b[2], hour: +(b[3] ?? 12), minute: 0, known: b[3] != null, love: Q.get("love") || "" }); if (Q.get("name")) U.name = Q.get("name"); } // 시험용
 const save = () => LS.set("yak_user", U);
 let CH = null, chP = null;
 function fetchChart() {
@@ -534,23 +560,23 @@ async function S5() {
 /* S6 맥 짚기 (꾹 누르기) */
 async function S6() {
   fetchChart().catch(() => {}); askAnswer();
-  show(`<section class="sc split"><div class="pic">${media("S6", 'style="object-position:center bottom"')}<div class="pulse-zone" id="pz"><b></b></div></div><div class="low"><div id="say"></div><div class="prog"><i id="pg"></i></div><p class="steam" id="st">손목을 꾹 누른 채 기다려 주세요</p></div></section>`, `<button class="btn" id="go" disabled>표지 보기</button>`);
+  show(`<section class="sc split"><div class="pic">${media("S6", 'style="object-position:center bottom"')}<div class="pulse-zone" id="pz"><b></b><svg class="pring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" pathLength="1" id="pg"/></svg></div><p class="ptip" id="st">여기 손목을 꾹 눌러 주세요</p></div><div class="low"><div id="say"></div></div></section>`, `<button class="btn" id="go" disabled>표지 보기</button>`);
   await says(["태어난 때는 타고난 바탕이고, 맥은 지금 네 기운이란다. 둘을 같이 봐야 앞날이 보이지.", "자, 손목 이리 내 보거라. 가만히, 빼지 말고."], $("#say"));
   const SUB = ["…어디 가만있어 보자", "아이고, 손목이 이게 뭐냐. 얼음장이네", "맥이 가라앉았구나. 요새 많이 지쳤지", "내년 이맘때까지 어디서 탈이 나는지, 할미가 보고 있단다"];
   let p = 0, holding = false, last = 0, beat = 0, done = false;
   const pz = $("#pz"), st = $("#st"), sayBox = $("#say");
   const start = (e) => { e.preventDefault(); if (done) return; holding = true; pz.classList.add("hold"); last = performance.now(); loop(); };
-  const stop = () => { if (done || !holding) return; holding = false; pz.classList.remove("hold"); st.textContent = "아직이다, 조금만 더. 다시 꾹 눌러 보거라"; };
+  const stop = () => { if (done || !holding) return; holding = false; pz.classList.remove("hold"); st.textContent = "조금만 더, 다시 꾹 눌러 주세요"; st.classList.remove("off"); };
   pz.addEventListener("pointerdown", start); window.addEventListener("pointerup", stop); pz.addEventListener("pointerleave", stop);
   async function loop() {
     if (!holding || done) return;
     const now = performance.now(); p = Math.min(1, p + (now - last) / 9000); last = now;
-    $("#pg").style.width = p * 100 + "%";
+    $("#pg").style.strokeDashoffset = 1 - p;
     const i = Math.min(SUB.length - 1, Math.floor(p * SUB.length)); if (sayBox.dataset.i != i) { sayBox.dataset.i = i; sayBox.innerHTML = `<p class="say">${SUB[i]}</p>`; }
-    st.textContent = "할미가 맥을 짚는 중이에요";
+    st.classList.add("off");
     if (now - beat > 850) { beat = now; navigator.vibrate?.([40, 110, 30]); }
     if (p >= 1) {
-      done = true; holding = false; pz.classList.remove("hold"); st.textContent = "맥을 다 짚었어요";
+      done = true; holding = false; pz.classList.remove("hold"); st.textContent = "맥을 다 짚었어요"; st.classList.remove("off"); setTimeout(() => st.classList.add("off"), 1600);
       try { await fetchChart(); sayBox.innerHTML = `<p class="say">됐다. 이제 손 거둬도 된다.</p>`; $("#go").disabled = false; $("#go").onclick = S8; }
       catch { sayBox.innerHTML = `<p class="say">맥이 잘 안 잡히는구나. 링크를 다시 확인해 주거라.</p>`; }
       return;
@@ -563,7 +589,6 @@ async function S8() {
   $("#go") && ($("#go").disabled = true);
   await Promise.race([askAnswer(), new Promise((r) => setTimeout(r, 7000))]); // 대개 맥 짚는 동안 이미 와 있음
   show(`<section class="cover"><img src="${IMG("S8")}" alt=""><div class="ct"><p class="ey">${U.y}년 ${String(U.m).padStart(2, "0")}월 ${String(U.d).padStart(2, "0")}일생</p><p class="nm">${esc(U.name)}</p><p class="ln">${esc(U.name)}의 2027년,<br>다칠 곳부터 짚어 보마</p><p class="down">아래로 내려 읽어요 ↓</p></div></section><div id="res"></div>`, "", false);
-  $("#cta").classList.add("on");
   renderResult(CH);
   loadAnswer();
 }
@@ -615,11 +640,10 @@ function crisis(v) {
   const grow = (v.balance || []).filter((b) => v.avoid.includes(b.e) && b.y2027 > b.now);
   const cs = CSE[v.cs2027];
   const cm = v.caution.map((c) => ({ m: MK(v.flow[c.idx].label), days: c.days || [] })), bad = cm[0] || { m: "그 달", days: [] };
-  const NAME = U.name, J = hasJ(NAME) ? "이" : "";
+  const NAME = callName(U.name), J = hasJ(NAME) ? "이" : "";
   const bars = Object.keys(EG).map((g) => `<div class="bar ${g === hi ? "hi" : g === lo ? "lo" : ""}" data-g="${g}"><p><span>${GNAME[g][0]} · ${GNAME[g][1]}</span><b ${g === lo ? 'style="color:var(--red)"' : ""}>${Math.round(gp[g])}%</b></p><i style="--ok:20%"><u></u><s style="width:${Math.min(100, gp[g])}%;background:${g === lo ? "#D9705A" : g === hi ? "#C9A25B" : "#B9AE9E"}"></s></i></div>`).join("");
   const act1 = [
-    `<div class="pn full" id="p1" style="--h:460px;--p:center 30%"><img class="im" src="img/c/C1.jpg" alt=""><div class="bb" style="left:2%;top:-8%;width:48%"><span>${esc(NAME)}${voc(NAME)}.<br>${T.hit}</span></div></div>`,
-    `<button class="act" id="a1">주머니를 꾹 눌러 보거라 (0/3)</button>`,
+    `<div class="pn full" id="p1" style="--h:460px;--p:center 30%"><img class="im" src="img/c/C1.jpg" alt=""><div class="bb" style="left:2%;top:-8%;width:48%"><span>${esc(NAME)}${voc(NAME)}.<br>${T.hit}</span></div>${T.pops.map((t, i) => `<span class="bbs" style="left:${[30, 70, 44][i]}%;top:${[78, 66, 54][i]}%;transition-delay:${0.9 + i * 0.7}s">«${t}»</span>`).join("")}</div>`,
     capt(T.cap),
     `<div class="pn tilt" style="--h:280px;--p:center"><img class="im" src="img/c/C2.jpg" alt=""><span class="sfx" style="left:8%;top:14%;transform:rotate(-8deg)">휘청</span><div class="bb" style="left:46%;top:-22%;width:52%"><span>${key === "over:재성" ? "돈, 집안, 사람.<br>남들 몫까지<br><b>네가 다 떠안고</b> 있잖니." : "그렇게 속에<br>쌓아 둔 게<br><b>산더미</b>구나."}</span></div></div>`,
     capt(`네 맥엔 ${GNAME[lo][0]}이<br>${gp[lo] < 8 ? "거의 없단다." : "모자라단다."}<br><em>그 대신 ${GNAME[hi][0]}만 산더미지.</em>`),
@@ -654,7 +678,7 @@ function crisis(v) {
 }
 function bindCrisis(v, CR) {
   const vib = (p) => navigator.vibrate?.(p), show = (id) => $(id)?.classList.add("show");
-  let n1 = 0; const a1 = $("#a1");
+  let n1 = 0; const a1 = null;
   if (a1) a1.onclick = () => { if (n1 >= 3) return; const p = document.createElement("span"); p.className = "pop"; p.textContent = "«" + CR.T.pops[n1] + "»"; p.style.left = [28, 72, 46][n1] + "%"; p.style.top = [74, 60, 46][n1] + "%"; $("#p1").appendChild(p); vib(25); n1++; a1.textContent = n1 < 3 ? `주머니를 꾹 눌러 보거라 (${n1}/3)` : "다 삼킨 말이구나"; if (n1 === 3) a1.disabled = true; };
   let fF = 0, fE = 0; const bump = (g) => { const b = document.querySelector(`#f1 .bar[data-g="${g}"]`); if (!b) return; const s = b.querySelector("s"); s.style.width = Math.min(100, parseFloat(s.style.width) + 14) + "%"; b.querySelector("b").textContent += " ↑"; b.classList.add("over"); };
   const done = () => { if (fF && fE) $("#fsay").innerHTML = v.avoid.includes("土") || v.avoid.includes("火") ? "<b style='color:var(--red)'>줄여야 할 기운이 더 쌓였구나.</b>" : "필요한 기운이 들어와도, <b style='color:var(--red)'>쌓인 게 먼저 터진다.</b>"; };
@@ -699,7 +723,7 @@ const MK = (lab) => { const m = String(lab).match(/(\d+)\s*월/); const n = m ? 
 
 function renderResult(v) {
   const L = { topic: topicOf(U.wish) }; L.open = L.topic ? `${{ love: "마음", work: "일", money: "돈", body: "몸", people: "사람" }[L.topic]} 얘기부터 하자꾸나. 네가 물은 게 그쪽이니.` : "";
-  const NAME = U.name, T = Object.fromEntries((v.table || []).map((c) => [c.label, c]));
+  const NAME = callName(U.name), T = Object.fromEntries((v.table || []).map((c) => [c.label, c]));
   const meCh = T["일"]?.gan || "", baseCh = T["월"]?.zhi || "", me = T["일"]?.ganM || "", base = T["월"]?.zhiM || "";
   const months = v.flow.map((m) => m.label), cm = v.caution.map((c) => ({ m: months[c.idx], days: c.days })), om = v.chance.map((i) => months[i]);
   const bad = cm[0] || { m: "", days: [] }, badK = MK(bad.m);
@@ -727,7 +751,7 @@ function renderResult(v) {
   /* R3 체질 + 저울 */
   H.push(`<div class="soul"><img src="img/s/${encodeURIComponent(meCh + baseCh)}.jpg" onerror="this.src='img/l/L1-7.jpg'" alt=""><p>${esc(baseCh)} ${esc(base)} 위에 선<br>${esc(meCh)} ${esc(me)}</p></div>`);
   H.push(pn({ img: "R3a", h: 260, kind: "box", pos: "center", b: [{ t: "네 몸에 든 기운을<br>저울에 한번<br>달아 보자꾸나.", x: 48, y: -26, w: 50 }] }));
-  H.push(`<section class="blk scale" id="scale"><p class="ey">체질 저울</p><p class="tt">하나씩 올려 보거라</p><p class="ask">네 사주에 든 다섯 기운을 하나씩 달아 본단다.<br>오른쪽 접시는 «알맞은 무게». 왼쪽이 내려가면 넘치고, 올라가면 모자란 거다.</p><div class="stage"><img class="bg" src="${IMG("R3bg")}" alt=""><svg class="sc-svg" viewBox="0 0 320 320" aria-hidden="true"><defs><linearGradient id="br" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#F3D58C"/><stop offset=".55" stop-color="#D6A548"/><stop offset="1" stop-color="#9C6B22"/></linearGradient><clipPath id="dc"><circle cx="60" cy="152" r="24"/></clipPath></defs><rect x="148" y="96" width="24" height="150" rx="6" fill="url(#br)" stroke="#5A3A1A" stroke-width="2.5"/><ellipse cx="160" cy="252" rx="62" ry="14" fill="url(#br)" stroke="#5A3A1A" stroke-width="2.5"/><g id="beam" style="transform-origin:160px 104px;transition:transform .8s cubic-bezier(.3,1.5,.5,1)"><rect x="50" y="98" width="220" height="12" rx="6" fill="url(#br)" stroke="#5A3A1A" stroke-width="2.5"/><g id="panL" style="transform-origin:60px 104px;transition:transform .8s cubic-bezier(.3,1.5,.5,1)"><path d="M60 104 L38 176 M60 104 L82 176" stroke="#7A5420" stroke-width="2"/><g id="dropg" style="transition:transform .5s cubic-bezier(.4,1.6,.6,1),opacity .3s;opacity:0;transform:translateY(-90px)"><image id="drop" x="36" y="128" width="48" height="48" href="" clip-path="url(#dc)"/></g><path d="M24 176 h72 a36 14 0 0 1 -72 0z" fill="url(#br)" stroke="#5A3A1A" stroke-width="2.5"/></g><g id="panR" style="transform-origin:260px 104px;transition:transform .8s cubic-bezier(.3,1.5,.5,1)"><path d="M260 104 L238 176 M260 104 L282 176" stroke="#7A5420" stroke-width="2"/><circle cx="260" cy="166" r="9" fill="#9C6B22" stroke="#5A3A1A" stroke-width="2"/><path d="M224 176 h72 a36 14 0 0 1 -72 0z" fill="url(#br)" stroke="#5A3A1A" stroke-width="2.5"/></g></g><circle cx="160" cy="104" r="10" fill="url(#br)" stroke="#5A3A1A" stroke-width="2.5"/></svg><div class="bub" id="wbub"></div></div><div class="tokens">${["木", "火", "土", "金", "水"].map((e, k) => `<button data-e="${e}" class="${k ? "" : "hint"}"><img src="img/ui/i-${ICON[e]}.jpg" alt="">${WXN[e]}</button>`).join("")}</div><div class="wres" id="wres"></div></section>`);
+  H.push(`<section class="blk scale" id="scale"><p class="ey">체질 저울</p><p class="tt">하나씩 올려 보거라</p><p class="ask">왼쪽이 내려가면 넘치고, 올라가면 모자란 거다.</p><div class="stage"><img class="bg" id="scimg" src="img/ui/scale-0.jpg" alt=""><img class="pre" src="img/ui/scale-L.jpg" alt=""><img class="pre" src="img/ui/scale-R.jpg" alt=""><img class="drop" id="drop" src="" alt=""><div class="bub" id="wbub"></div></div><div class="tokens">${["木", "火", "土", "金", "水"].map((e, k) => `<button data-e="${e}" class="${k ? "" : "hint"}"><img src="img/ui/i-${ICON[e]}.jpg" alt="">${WXN[e]}</button>`).join("")}</div><div class="wres" id="wres"></div></section>`);
   H.push(pn({ img: "R3b", h: 420, kind: "full", pos: "center 30%", b: [{ t: `그런데 아이고…<br>${WXN[heavy]}이 한쪽으로 쿵.<br><b>${WXN[weak]}은 하나도 없구나.</b>`, x: 46, y: 58, w: 52 }] }));
   const CR = crisis(v);
   H.push(CR.act1);
@@ -744,6 +768,7 @@ function renderResult(v) {
   H.push(capt(`내년엔 마른 불기운이 확 들어온단다.<br>${cold ? "언 땅이 갑자기 녹으면 어찌 되겠니. <em>질척해지지.</em>" : "<em>안 그래도 마른 데에 불이 붙는 셈이지.</em>"}`));
   H.push(capt(`정미년은,<br><em>모르고 맞으면 크게 다치는 해</em>란다.`));
   H.push(CR.act2);
+  H.push(`<i id="ctaAt"></i>`);
   const SEC = {};
   SEC.money = (NO, FIRST, PREV) => {
     H.push(pn({ img: "R6a", h: 280, kind: "tilt", pos: "center", sfx: [{ t: "짤랑", x: 64, y: 14, r: 10 }], b: [{ t: FIRST ? "제일 먼저 새는 건<br><b>돈</b>이구나." : "돈도 짚어 보자.<br><b>돈</b>이 새는 데가<br>있구나.", x: 4, y: -20, w: 48 }] }));
@@ -808,31 +833,35 @@ function renderResult(v) {
   /* R17 편지 */
   H.push(`<section class="letter">우리 ${esc(NAME)}${voc(NAME)}. 할미는 좋은 말부터 꺼내는 사람이 못 된다. 다칠 데가 먼저 보이면 그것부터 말해 주는 사람이지. 듣기 싫었을 거다, 미안하구나. 그래도 미리 알면 막을 수 있으니… 여기까지 왔으면 약은 꼭 받아 가거라. 밥 잘 챙겨 먹고.<p class="sig">— 끝까지 네 편인 할미가</p></section>`);
   $("#res").innerHTML = `<div class="res">${H.join("")}</div>`;
+  /* 하단 결제 버튼: 탈 구간(#ctaAt)에 닿으면 나타남 */
+  const ca = $("#ctaAt"); if (ca) new IntersectionObserver((es, o) => es.forEach((e) => { if (e.isIntersecting || e.boundingClientRect.top < 0) { $("#cta").classList.add("on"); o.disconnect(); } })).observe(ca);
   /* 말풍선 등장 */
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -18% 0px" });
-  document.querySelectorAll(".bb,.sfx,.wish").forEach((el) => io.observe(el));
+  document.querySelectorAll(".bb,.bbs,.sfx,.wish").forEach((el) => io.observe(el));
   fitWish(); document.fonts.ready.then(fitWish); bindScale(v); bindGrind(); bindCrisis(v, CR);
 }
 
 /* 쪽지 손글씨가 종이 안에 들어가게 글자 크기를 줄여 맞춤 */
-function fitWish() { const el = $("#wt2"); if (!el) return; let f = 30; el.style.setProperty("--wf", f + "px"); while (el.scrollHeight > el.clientHeight + 2 && f > 16) { f -= 2; el.style.setProperty("--wf", f + "px"); } }
+function fitWish() { const el = $("#wt2"); if (!el) return; let f = 30, t = U.wish; el.textContent = t; el.style.setProperty("--wf", f + "px"); while (el.scrollHeight > el.clientHeight + 2 && f > 20) { f -= 2; el.style.setProperty("--wf", f + "px"); } while (el.scrollHeight > el.clientHeight + 2 && t.length > 10) { t = t.slice(0, -4); el.textContent = t.trim() + "…"; } }
 /* 저울 */
 const LV = (p) => (p >= 35 ? [5, "넘친다", 1] : p >= 25 ? [4, "많다", 0] : p >= 12 ? [3, "알맞다", 0] : p >= 5 ? [2, "모자라다", 1] : [1, "거의 없다", 1]);
 function bindScale(v) {
-  const done = new Set(), res = $("#wres"), bub = $("#wbub"), drop = $("#drop"), dg = $("#dropg"), beam = $("#beam"), panL = $("#panL"), panR = $("#panR");
+  const done = new Set(), res = $("#wres"), bub = $("#wbub"), drop = $("#drop"), img = $("#scimg");
+  const PAN = { 0: [26, 68.5], L: [26, 72], R: [25, 63] }; // 왼쪽 접시 가운데(가로%, 접시 윗면 세로%)
+  const CNT = Object.fromEntries((v.balance || []).map((b) => [b.e, b.now]));
   const SAY = (e, n) => ({ 5: `${WXN[e]}이 쿵—<br><b>넘치는구나.</b>`, 4: `${WXN[e]}이<br>묵직하구나.`, 3: `${WXN[e]}은<br>알맞단다.`, 2: `${WXN[e]}이<br><b>모자라는구나.</b>`, 1: `아이고,<br>${WXN[e]}이 <b>거의 없구나.</b>` })[n];
-  const tilt = (deg) => { beam.style.transform = `rotate(${deg}deg)`; panL.style.transform = `rotate(${-deg}deg)`; panR.style.transform = `rotate(${-deg}deg)`; };
+  const WHY = (e, n) => { const c = CNT[e]; if (c >= 3 && n <= 3) return `글자는 ${["", "하나", "둘", "셋", "넷", "다섯"][c] || "여럿"}인데,<br><b>힘이 약해</b> 알맞구나.`; if (c <= 1 && n >= 4) return `글자는 ${c ? "하나" : "없는"}데,<br><b>숨은 힘이 세구나.</b>`; return ""; };
+  const put = (st) => { const [x, y] = PAN[st]; drop.style.left = x + "%"; drop.style.top = y + "%"; };
   document.querySelectorAll("#scale [data-e]").forEach((b) => (b.onclick = () => {
     const e = b.dataset.e; if (done.has(e)) return; done.add(e); b.classList.remove("hint"); b.classList.add("on");
-    const [n, word, hi] = LV(v.pct[e]);
-    dg.style.transition = "none"; dg.style.opacity = 0; dg.style.transform = "translateY(-90px)"; drop.setAttribute("href", `img/ui/i-${ICON[e]}.jpg`);
-    tilt(0); navigator.vibrate?.(20);
-    requestAnimationFrame(() => requestAnimationFrame(() => { dg.style.transition = ""; dg.style.opacity = 1; dg.style.transform = "translateY(0)"; }));
-    setTimeout(() => tilt(Math.max(-16, Math.min(16, (n - 3) * -7))), 520);
-    bub.classList.remove("in"); setTimeout(() => { bub.innerHTML = `<span>${SAY(e, n)}</span>`; bub.classList.add("in"); }, 700);
-    res.insertAdjacentHTML("beforeend", `<div><img src="img/ui/i-${ICON[e]}.jpg" alt=""><span>${WXN[e]}</span><span class="dots">${[1, 2, 3, 4, 5].map((k) => `<i class="${k <= n ? "f" : ""}"></i>`).join("")}</span><em class="${hi ? "hi" : ""}">${word}</em></div>`);
+    const [n, word, hi] = LV(v.pct[e]), st = n >= 4 ? "L" : n <= 2 ? "R" : "0";
+    img.src = "img/ui/scale-0.jpg"; put("0"); drop.src = `img/ui/i-${ICON[e]}.jpg`; drop.classList.remove("in"); void drop.offsetWidth; drop.classList.add("in"); navigator.vibrate?.(20);
+    setTimeout(() => { img.src = `img/ui/scale-${st}.jpg`; put(st); }, 600);
+    const why = WHY(e, n);
+    bub.classList.remove("in"); setTimeout(() => { bub.innerHTML = `<span>${why || SAY(e, n)}</span>`; bub.classList.add("in"); }, 800);
+    res.insertAdjacentHTML("beforeend", `<div><img src="img/ui/i-${ICON[e]}.jpg" alt=""><span>${WXN[e]}</span><span class="dots">${[1, 2, 3, 4, 5].map((k) => `<i class="${k <= n ? "f" : ""}"></i>`).join("")}</span><em class="${hi ? "hi" : ""}">${word}</em><small>글자 ${CNT[e] ?? "-"}개 · 힘 ${Math.round(v.pct[e])}%</small></div>`);
     const nx = [...document.querySelectorAll("#scale [data-e]")].find((x) => !done.has(x.dataset.e)); if (nx) nx.classList.add("hint");
-    if (done.size === 5) setTimeout(() => { const ent = Object.entries(v.pct).sort((a, b) => b[1] - a[1]); bub.innerHTML = `<span>${WXN[ent[0][0]]}은 이리 무겁고,<br><b>${WXN[ent[4][0]]}은… 거의 없구나.</b></span>`; }, 2200);
+    if (done.size === 5) setTimeout(() => { const ent = Object.entries(v.pct).sort((a, b) => b[1] - a[1]); bub.innerHTML = `<span>${WXN[ent[0][0]]}은 이리 무겁고,<br><b>${WXN[ent[4][0]]}은… ${ent[4][1] < 5 ? "거의 없구나." : "모자라구나."}</b></span>`; }, 2400);
   }));
 }
 /* 약연 긁기 */
