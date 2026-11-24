@@ -413,6 +413,8 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .gradeCard .gk{font-family:var(--serif);font-size:15px;line-height:24px;color:#8a7a68;margin:0 0 8px}
 .gradeCard .gv{font-size:28px!important;line-height:38px!important;margin:0 0 12px!important}
 .gradeCard .gl{font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink);white-space:pre-line;margin:0}
+.sc.talk-in.s5 .pic{flex:0 0 46vh!important;height:46vh!important;max-height:46vh!important;min-height:0}@media (max-height:740px){.sc.talk-in.s5 .pic{flex-basis:40vh!important;height:40vh!important;max-height:40vh!important}}
+.sc.talk-in.s5 .low{padding-bottom:calc(120px + env(safe-area-inset-bottom))!important}
 </style>
 </head>
 <body>
@@ -550,7 +552,7 @@ async function S4() {
 async function S5() {
   const LV = ["선택 안함", "솔로", "연애중", "짝사랑중", "썸타는중", "기혼"], LL = ["선택 안함", "3개월 미만", "3개월 ~ 1년", "1년 ~ 3년", "3년 ~ 5년", "5년 이상"];
   const opt = (a, v) => a.map((x) => `<option ${x === v ? "selected" : ""}>${x}</option>`).join("");
-  show(scr("S5", `<div id="say"></div><p class="sent">지금은 <select id="lv">${opt(LV, U.love || "선택 안함")}</select> 상태예요.</p><p class="sent">기간은 <select id="ll">${opt(LL, U.loveLen || "선택 안함")}</select> 이에요.</p><p class="hint">답하지 않아도 넘어갈 수 있어요.</p>`, "talk-in"), `<button class="btn" id="go">다음으로</button>`);
+  show(scr("S5", `<div id="say"></div><p class="sent">지금은 <select id="lv">${opt(LV, U.love || "선택 안함")}</select> 상태예요.</p><p class="sent">기간은 <select id="ll">${opt(LL, U.loveLen || "선택 안함")}</select> 이에요.</p><p class="hint">답하지 않아도 넘어갈 수 있어요.</p>`, "talk-in s5"), `<button class="btn" id="go">다음으로</button>`);
   $("#go").disabled = true; $("#go").onclick = () => { const a = $("#lv").value, b = $("#ll").value; U.love = a === "선택 안함" ? "" : a; U.loveLen = b === "선택 안함" ? "" : b; save(); S6(); };
   await says([`${U.name}${hasJ(U.name) ? "이" : ""}라… 고것 참, 이름도 곱구나.`, "하나만 더 묻자꾸나. 요새 마음 주는 사람은 있니?"], $("#say"));
   $("#go").disabled = false;
