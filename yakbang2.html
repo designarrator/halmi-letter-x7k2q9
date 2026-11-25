@@ -563,19 +563,20 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .rvs .r>p:last-child{margin:0;font-size:15px;line-height:24px;color:var(--ink)}
 .dots2{display:flex;justify-content:center;gap:8px;margin:12px 0 0}
 .dots2 i{width:8px;height:8px;border-radius:999px;background:#E2D3B8}.dots2 i.on{background:var(--wood)}
-.vs{margin:8px 20px 32px;display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;text-align:center}
-.vs div{padding:16px 8px;border-radius:20px;background:#F4EDE2}
-.vs span{display:block;font-size:13px;line-height:19px;color:#8a7a68}
-.vs s{font-size:17px;line-height:27px;color:#8a7a68}
-.vs b{font-family:var(--serif);font-size:20px;color:var(--red)}
-.vs .me{background:#FFF1E8;box-shadow:0 0 0 2px var(--red) inset}
-.vs strong{display:block;font-size:20px;line-height:30px;color:var(--red)}
-.vs small{font-size:13px;line-height:19px;color:var(--red)}
+.cmp{margin:8px 20px 32px;display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;text-align:center}
+.cmp div{padding:16px 8px;border-radius:20px;background:#F4EDE2}
+.cmp span{display:block;font-size:13px;line-height:19px;color:#8a7a68}
+.cmp s{font-size:17px;line-height:27px;color:#8a7a68}
+.cmp b{font-family:var(--serif);font-size:20px;color:var(--red)}
+.cmp .me{background:#FFF1E8;box-shadow:0 0 0 2px var(--red) inset}
+.cmp strong{display:block;font-size:20px;line-height:30px;color:var(--red)}
+.cmp small{font-size:13px;line-height:19px;color:var(--red)}
+.price .eb{margin:12px 0 0;font-size:13px;line-height:19px;color:var(--red);text-align:center}
 </style>
 </head>
 <body>
 <div id="app"></div>
-<div class="cta" id="cta"><div><p>할인혜택 종료까지 <b id="timer">--:--:--:--</b></p><button id="buy">할미 약첩 전부 받기</button></div></div>
+<div class="cta" id="cta"><div><p>얼리버드 종료까지 <b id="timer">--</b></p><button id="buy">할미 약첩 전부 받기</button></div></div>
 <script>
 const KEY = (location.hash.match(/k=([^&]+)/) || [])[1] || "";
 const Q = new URLSearchParams(location.search);
@@ -1050,9 +1051,9 @@ function renderResult(v) {
   H.push(`</div>`);
   /* R16 가격 */
   H.push(pn({ img: "R16", h: 280, kind: "box", pos: "center", b: [{ t: "듣기 좋은 말이야<br>어디서든 듣지.<br><b>할미는 미리 막아 주는 거란다.</b>", x: 40, y: -26, w: 58 }] }));
-  H.push(`<section class="vs"><div><span>철학관 대면 신년운세</span><s>150,000원</s></div><b>VS</b><div class="me"><span>할미약방 약첩</span><strong>37,400원</strong><small>하루 100원꼴</small></div></section>`);
+  H.push(`<section class="cmp"><div><span>철학관 대면 신년운세</span><s>150,000원</s></div><b>VS</b><div class="me"><span>할미약방 약첩</span><strong>${won(EARLY() ? PRICE.early : PRICE.full)}</strong><small>하루 ${Math.round((EARLY() ? PRICE.early : PRICE.full) / 365)}원꼴</small></div></section>`);
   H.push(capt(`철학관 앞에 줄 설 것 없이,<br><em>이불 속에서 받아 보거라.</em>`));
-  H.push(`<section class="price"><p class="ey" style="text-align:center;font-family:var(--serif);color:#6b5a49">아프기 전에 짓는 약</p><h3>할미약방</h3><p style="text-align:center;font-size:14px;color:#6b5a49;margin:6px 0 16px">할미 편지 한 통 (9장, 약 1만 7천 자)</p><div class="r"><span>복채</span><s>62,400원</s></div><div class="r"><span>얼리버드 40%</span><span style="color:var(--red)">-25,000원</span></div><div class="fin"><span>최종</span><b>37,400원</b></div><p style="font-size:12px;color:#aaa;margin-top:8px">가격은 시험용 자리예요 ${EX}</p></section>`);
+  H.push(`<section class="price"><p class="ey" style="text-align:center;font-family:var(--serif);color:#6b5a49">아프기 전에 짓는 약</p><h3>할미약방</h3><p style="text-align:center;font-size:14px;color:#6b5a49;margin:6px 0 16px">할미 편지 한 통 (9장, 약 1만 7천 자)</p>${EARLY() ? `<div class="r"><span>복채</span><s>${won(PRICE.full)}</s></div><div class="r"><span>얼리버드 ${Math.round((1 - PRICE.early / PRICE.full) * 100)}%</span><span style="color:var(--red)">-${won(PRICE.full - PRICE.early)}</span></div><div class="fin"><span>최종</span><b>${won(PRICE.early)}</b></div><p class="eb">얼리버드는 12월 31일까지예요. 1월 1일부터 ${won(PRICE.full)}이에요.</p>` : `<div class="fin"><span>복채</span><b>${won(PRICE.full)}</b></div>`}</section>`);
   /* R17 편지 */
   H.push(`<section class="letter">우리 ${esc(NAME)}${voc(NAME)}. 할미는 좋은 말부터 꺼내는 사람이 못 된다. 다칠 데가 먼저 보이면 그것부터 말해 주는 사람이지. 듣기 싫었을 거다, 미안하구나. 그래도 미리 알면 막을 수 있으니… 여기까지 왔으면 약은 꼭 받아 가거라. 밥 잘 챙겨 먹고.<p class="sig">— 끝까지 네 편인 할미가</p></section>`);
   $("#res").innerHTML = `<div class="res">${H.join("")}</div>`;
@@ -1144,9 +1145,13 @@ async function P2() {
   };
 }
 
-/* 할인 타이머 */
-let end = +localStorage.getItem("yak_deal") || 0;
-(function tick() { const now = Date.now(); if (!end || end <= now) { end = now + (15 * 3600 + 45 * 60 + 32) * 1000; localStorage.setItem("yak_deal", end); } const ms = end - now, p = (n) => String(n).padStart(2, "0"); const t = $("#timer"); if (t) t.textContent = `${p(Math.floor(ms / 3600000))}:${p(Math.floor(ms / 60000) % 60)}:${p(Math.floor(ms / 1000) % 60)}:${p(Math.floor(ms / 10) % 100)}`; requestAnimationFrame(tick); })();
+/* 가격: 얼리버드는 실제 마감일까지만(여기 한 곳만 고치면 됨) */
+const PRICE = { full: 59000, early: 39000, until: "2026-12-31T23:59:59+09:00" };
+const EARLY = () => Date.now() < Date.parse(PRICE.until);
+const won = (n) => n.toLocaleString() + "원";
+/* 할인 타이머: 얼리버드 마감까지 실제로 줄어듦 */
+let end = Date.parse(PRICE.until);
+(function tick() { const now = Date.now(), t = $("#timer"), lab = $("#cta p"); if (!EARLY()) { if (lab) lab.innerHTML = `할미 편지 한 통 <b>${won(PRICE.full)}</b>`; return; } const ms = end - now, p = (n) => String(n).padStart(2, "0"); const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60, sec = Math.floor(ms / 1e3) % 60; if (t) t.textContent = `${d}일 ${p(h)}:${p(m)}:${p(sec)}`; setTimeout(tick, 1000); })();
 
 /* 시작 */
 if (!KEY) $("#app").innerHTML = `<p style="padding:40px 20px;text-align:center;color:#B8402F">링크의 #k= 키를 확인해 주세요.</p>`;
