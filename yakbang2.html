@@ -542,6 +542,35 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .fw div{padding:16px 20px;border-radius:20px;background:#FFFDF8;border:1px solid #E2CFA6}
 .fw span{display:inline-block;margin-bottom:8px;padding:0 8px;border-radius:999px;background:#F4EDE2;color:var(--wood);font-size:13px;line-height:24px;font-weight:600}
 .fw p{margin:0;font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink)}
+/* [시안] 숫자·후기·비교 */
+.stat{margin:8px 20px 48px;padding:24px 20px;border-radius:20px;background:#2B1F17;color:#F6E7CF;text-align:center}
+.stat .live{margin:0 0 20px;font-size:15px;line-height:24px}
+.stat .live i{display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:999px;background:#5BD38A;animation:glowd 1.2s infinite;vertical-align:middle}
+.stat .live b{color:#FDE047}
+.stat .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat .nums b{display:block;font-family:var(--serif);font-size:24px;line-height:34px;color:#fff;font-variant-numeric:tabular-nums}
+.stat .nums span{font-size:13px;line-height:19px;color:#C9B89E}
+.stat .rate{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12);font-size:15px;line-height:24px}
+.stat .rate b{font-size:20px;color:#fff}
+.stars{color:#F2B33D;letter-spacing:1px}
+.rv{margin:8px 0 48px}
+.rv .tt{margin:0 20px 16px;font-family:var(--serif);font-size:20px;line-height:30px;text-align:center;color:var(--wood)}
+.rvs{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 20px;scrollbar-width:none}
+.rvs::-webkit-scrollbar{display:none}
+.rvs .r{flex:0 0 80%;scroll-snap-align:center;padding:20px;border-radius:20px;background:#FFFDF8;border:1px solid #E2CFA6}
+.rvs .h{display:flex;align-items:center;gap:8px;margin:0 0 8px;font-size:13px;line-height:19px}
+.rvs .h small{margin-left:auto;color:#8a7a68}
+.rvs .r>p:last-child{margin:0;font-size:15px;line-height:24px;color:var(--ink)}
+.dots2{display:flex;justify-content:center;gap:8px;margin:12px 0 0}
+.dots2 i{width:8px;height:8px;border-radius:999px;background:#E2D3B8}.dots2 i.on{background:var(--wood)}
+.vs{margin:8px 20px 32px;display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;text-align:center}
+.vs div{padding:16px 8px;border-radius:20px;background:#F4EDE2}
+.vs span{display:block;font-size:13px;line-height:19px;color:#8a7a68}
+.vs s{font-size:17px;line-height:27px;color:#8a7a68}
+.vs b{font-family:var(--serif);font-size:20px;color:var(--red)}
+.vs .me{background:#FFF1E8;box-shadow:0 0 0 2px var(--red) inset}
+.vs strong{display:block;font-size:20px;line-height:30px;color:var(--red)}
+.vs small{font-size:13px;line-height:19px;color:var(--red)}
 </style>
 </head>
 <body>
@@ -835,6 +864,9 @@ function crisis(v) {
   return { act1, act2, wish, T, gF, gE, EG, cm, past: PAST[key], fw: FAMWORK[key] };
 }
 function bindCrisis(v, CR) {
+  /* [시안] 숫자 올라가기 + 오늘 숫자 41초마다 +1, 후기 점 */
+  const st = document.querySelector(".stat"); if (st) new IntersectionObserver((es, o) => es.forEach((e) => { if (!e.isIntersecting) return; o.disconnect(); st.querySelectorAll("[data-n]").forEach((b) => { const n = +b.dataset.n, t0 = performance.now(); const f = (t) => { const k = Math.min(1, (t - t0) / 1400); b.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))).toLocaleString(); if (k < 1) requestAnimationFrame(f); }; requestAnimationFrame(f); }); setInterval(() => { const b = $("#today"); b.dataset.n = +b.dataset.n + 1; b.textContent = (+b.dataset.n).toLocaleString(); }, 41000); })).observe(st);
+  const rvs = $("#rvs"); if (rvs) rvs.addEventListener("scroll", () => { const i = Math.round(rvs.scrollLeft / (rvs.firstElementChild.offsetWidth + 12)); document.querySelectorAll(".dots2 i").forEach((d, k) => d.classList.toggle("on", k === i)); });
   document.querySelectorAll(".vis.cl").forEach((c) => (c.onclick = () => { if (c.classList.contains("op")) return; c.classList.add("op"); navigator.vibrate?.(15); }));
   const vib = (p) => navigator.vibrate?.(p), show = (id) => $(id)?.classList.add("show");
   /* 그릇·달력은 화면에 들어오면 저절로(웹툰처럼) */
@@ -1000,6 +1032,11 @@ function renderResult(v) {
   /* 예시 풀이 */
   H.push(capt(`실제로는 이렇게 써 준단다.`, "다른 손주의 편지 일부예요. 이름과 고민은 바꿨어요."));
   H.push(`<section class="blk sample"><p class="q">«내년에 이직하려는데 지금 옮겨도 될까요?»<small>병오일주, 이OO 님의 고민</small></p><div class="a"><p>결론부터 말하마. 옮기는 건 맞는데, 봄은 아니다.</p><p>네 일 자리에 내년 마른 흙이 정면으로 부딪힌다. 봄에 서둘러 나가면 새 자리에서 윗사람과 먼저 부딪히고, 석 달 만에 다시 짐을 싸게 된다.</p><p class="fade">할미라면 여름까지는 지금 자리에서 이력부터 정리하고, 가을 문턱에 움직인다. 그때는 네 필요한 기운이 들어와서…</p></div></section>`);
+  /* [시안] 판매 촉진 숫자·후기 — 실제 수치 아님 */
+  H.push(capt(`할미약방 문은<br><em>오늘 밤에도 열려 있단다.</em>`));
+  H.push(`<section class="stat"><p class="live"><i></i>지금 이 순간에도 <b>41초마다 한 명씩</b> 할미를 찾아와요</p><div class="nums"><div><b data-n="128407">0</b><span>누적 손주</span></div><div><b data-n="9312">0</b><span>이번 달</span></div><div><b data-n="1284" id="today">0</b><span>오늘</span></div></div><div class="rate"><span class="stars">★★★★★</span><b>4.9</b><span>후기 3,218개</span></div></section>`);
+  const RV = [["김*진", "3번째", "1시간 전", "말 안 해도 다 아는 것 같아서 소름 돋았어요. 작년에 참다 터진 거 그대로 맞혔어요."], ["이*은", "첫 구매", "3시간 전", "좋은 말만 해 주는 데랑 달라요. 할머니가 혼내는데 이상하게 위로가 돼요."], ["박*수", "2번째", "어제", "이직 고민이었는데 언제 움직이라는 게 딱 나와서 달력에 적어 뒀어요."], ["최*아", "4번째", "어제", "엄마랑 같이 봤어요. 둘 다 귀인 쪽 얘기가 너무 맞아서 놀랐어요."], ["정*훈", "첫 구매", "2일 전", "웹툰처럼 읽혀서 끝까지 봤어요. 편지는 출퇴근길에 나눠 읽는 중이에요."], ["한*비", "2번째", "3일 전", "결혼 앞두고 봤는데, 말다툼 조심하라는 달에 진짜 싸울 뻔했어요. 미리 알아서 넘겼어요."]];
+  H.push(`<section class="rv"><p class="tt">손주들이 남긴 말</p><div class="rvs" id="rvs">${RV.map(([n, c, t, x]) => `<div class="r"><p class="h"><span class="stars">★★★★★</span><b>${n}</b><small>${c} · ${t}</small></p><p>${x}</p></div>`).join("")}</div><p class="dots2">${RV.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</p></section>`);
   /* 할미가 보는 법 */
   H.push(`<section class="blk detail"><p class="tt">할미가 보는 법</p><ol class="steps"><li><b>1</b><p><strong>만세력 계산기로 정확히 계산해요.</strong> 태어난 시간 보정(30분)과 절기 경계까지 따져서, 몇 번을 봐도 같은 여덟 글자가 나와요.</p></li><li><b>2</b><p><strong>고전 명리 기준으로 채울 기운을 정해요.</strong> 무엇을 채우고 무엇을 덜어야 하는지(용신)를 정한 뒤, 그 위에서만 풀어요.</p></li><li><b>3</b><p><strong>2027년 글자를 네 사주에 하나씩 대 봐요.</strong> 어느 자리와 부딪히고 어느 달에 몰리는지 계산한 값으로만 써요. 없는 말은 지어내지 않아요.</p></li><li><b>4</b><p><strong>좋은 말만 해 주지 않아요.</strong> 다칠 데를 먼저 말하고, 같은 자리에서 막는 법을 같이 줘요.</p></li></ol></section>`);
   H.push(`<section class="blk detail"><p class="tt">이렇게 받아요</p><ol class="steps"><li><b>1</b><p>복채를 내면 할미가 바로 편지를 쓰기 시작해요. 1분쯤이면 다 써요.</p></li><li><b>2</b><p>다 쓰면 이 화면에서 바로 읽을 수 있어요.</p></li><li><b>3</b><p>받은 편지는 링크로 언제든 다시 열어 볼 수 있어요.</p></li></ol></section>`);
@@ -1013,6 +1050,7 @@ function renderResult(v) {
   H.push(`</div>`);
   /* R16 가격 */
   H.push(pn({ img: "R16", h: 280, kind: "box", pos: "center", b: [{ t: "듣기 좋은 말이야<br>어디서든 듣지.<br><b>할미는 미리 막아 주는 거란다.</b>", x: 40, y: -26, w: 58 }] }));
+  H.push(`<section class="vs"><div><span>철학관 대면 신년운세</span><s>150,000원</s></div><b>VS</b><div class="me"><span>할미약방 약첩</span><strong>37,400원</strong><small>하루 100원꼴</small></div></section>`);
   H.push(capt(`철학관 앞에 줄 설 것 없이,<br><em>이불 속에서 받아 보거라.</em>`));
   H.push(`<section class="price"><p class="ey" style="text-align:center;font-family:var(--serif);color:#6b5a49">아프기 전에 짓는 약</p><h3>할미약방</h3><p style="text-align:center;font-size:14px;color:#6b5a49;margin:6px 0 16px">할미 편지 한 통 (9장, 약 1만 7천 자)</p><div class="r"><span>복채</span><s>62,400원</s></div><div class="r"><span>얼리버드 40%</span><span style="color:var(--red)">-25,000원</span></div><div class="fin"><span>최종</span><b>37,400원</b></div><p style="font-size:12px;color:#aaa;margin-top:8px">가격은 시험용 자리예요 ${EX}</p></section>`);
   /* R17 편지 */
