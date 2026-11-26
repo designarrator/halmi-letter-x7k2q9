@@ -663,6 +663,9 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .lnkbtn{display:block;line-height:56px;text-align:center;text-decoration:none}
 .dbox .slip{height:96px;min-height:0;margin:0 0 12px;font-size:20px;line-height:28px}
 .mans p{margin-top:12px;padding:16px;border-radius:16px;background:#FAF3E4;font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink)}
+.opt2{align-items:flex-start;gap:12px}.opt2>span:first-child{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}.opt2 b{font-size:17px;line-height:24px}.opt2 small{flex-basis:100%;font-size:13px;line-height:20px;color:#8a7a68}
+.opt2 .badge2{font-style:normal;padding:0 8px;border-radius:999px;background:var(--red);color:#fff;font-size:13px;line-height:20px}
+.opt2 .pr{display:flex;flex-direction:column;align-items:flex-end;white-space:nowrap}.opt2 .pr b{font-size:17px}
 </style>
 </head>
 <body>
@@ -1062,7 +1065,7 @@ function chartSheet(v, NAME) {
   return `<section class="blk sheet"><p class="ey">${esc(NAME)}${hasJ(NAME) ? "이" : ""} 맥 기록지</p><p class="tt">타고난 다섯 기운</p><div class="wtab">${rows}</div>
 <div class="roles">${role.map(([t, e, c]) => `<div class="${c}"><span>${t}</span><b style="color:${WXC[e]}">${WXN[e]}</b></div>`).join("")}</div>
 <p class="sub">타고난 힘</p><div class="seven">${SL.map((l, i) => `<span class="${i === si ? "on" : ""}">${l}</span>`).join("")}</div><p class="ask">${esc(NAME)}${hasJ(NAME) ? "이" : ""} 힘은 <b>${SL[si]}</b> 쪽이란다.</p>
-${DA.length ? `<p class="sub">십 년마다 바뀌는 운</p><div class="daeun">${DA.map((d) => { const [t, c] = dtag(d.gz); return `<div class="${d === cur ? "cur" : ""} ${c}"><small>${d.age}살부터</small><b><i style="color:${WXC[ELOF(d.gz[0])]}">${d.gz[0]}</i><i style="color:${WXC[ELOF(d.gz[1])]}">${d.gz[1]}</i></b><span>${t}</span>${d === cur ? `<em>지금</em>` : ""}</div>`; }).join("")}</div><p class="ask">지금 네 십 년은 <b>${curT}</b>이다.<br>내년 丁未는 이 십 년 위에 얹혀 온다.</p>` : ""}</section>`;
+${DA.length ? `<p class="sub">십 년마다 바뀌는 운</p><div class="daeun">${DA.map((d) => { const [t, c] = dtag(d.gz); return `<div class="${d === cur ? "cur" : ""} ${c}"><small>${d.age}살부터</small><b><i style="color:${WXC[ELOF(d.gz[0])]}">${d.gz[0]}</i><i style="color:${WXC[ELOF(d.gz[1])]}">${d.gz[1]}</i></b><span>${t}</span>${d === cur ? `<em>지금</em>` : ""}</div>`; }).join("")}</div><p class="ask">지금 네 십 년은 <b>${curT}</b>이다.<br>내년 丁未는 이 십 년 위에 얹혀 온다.</p><p class="callout">🔒 십 년마다 무슨 일이 있는지는 평생 체질 약첩에 적어 두마.</p>` : ""}</section>`;
 }
 /* A12 결과 보내기: 이름·생일만 담은 링크(고민은 뺌). 받은 사람 화면 위엔 «나도 짚어 보기» */
 function shareUrl() {
@@ -1121,7 +1124,7 @@ function renderResult(v) {
   H.push(`<section class="past" id="past">${CR.past.map((t, i) => `<p style="transition-delay:${0.3 + i * 0.9}s">${esc(t)}</p>`).join("")}</section>`);
   H.push(capt(`어떠냐.<br><em>할미 말이 틀렸니.</em>`));
   H.push(`<section class="fw"><div><span>식구들 사이에서</span><p>${esc(CR.fw[0])}</p></div><div><span>일에서</span><p>${esc(CR.fw[1])}</p></div></section>`);
-  H.push(capt(`그래도 지금까지는<br><em>어떻게든 버텨 왔지.</em>`, "참 많이 애썼구나."));
+  H.push(capt(`그래도 지금까지는<br><em>어떻게든 버텨 왔지.</em>`, "참 많이 애썼구나. 이 버릇이 평생 어디서 되풀이되는지는 평생 체질 약첩에 적어 두마."));
   H.push(capt(`다른 데 가면<br>다들 좋은 얘기를 해 줄 게다.<br>그것도 좋지.`));
   H.push(capt(`그런데 할미는<br><em>네가 결국 덜 힘들었으면 해서.</em>`));
   H.push(capt(`제일 어려운 걸 알아야<br>미리 막을 수 있거든.<br><em>조금 불편해도 콕 짚어 주마.</em>`));
@@ -1327,8 +1330,13 @@ $("#buy").onclick = () => {
 };
 function P1() {
   $("#cta").classList.remove("on");
-  show(`<section class="pay"><h2>약첩 고르기</h2>${[["2027 약첩", 62400, 37400, 40], ["2027 약첩 + 평생 체질 약첩", 124800, 78000, 38], ["풀세트 (마음 약첩 포함)", 171800, 89400, 48]].map(([t, o, p, d], i) => `<div class="opt ${i ? "" : "on"}"><span>${t}</span><span><em>${d}%</em><s>${o.toLocaleString()}원</s><b>${p.toLocaleString()}원</b></span></div>`).join("")}<h2 style="margin-top:24px">휴대폰 번호</h2><p style="font-size:13px;color:#8a7a68;margin-bottom:8px">처방을 다시 볼 때와 안내에 써요.</p><input style="width:100%;height:50px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font-size:17px" inputmode="numeric" placeholder="010-0000-0000"><h2 style="margin-top:24px">결제 수단</h2><div class="opt on">카카오페이</div><div class="opt">네이버페이</div><div class="opt">카드</div><p style="font-size:12px;color:#aaa;margin-top:12px">시험 중이라 실제로 돈이 나가지 않아요.</p></section>`, `<button class="btn" id="go">40% 할인받고 약첩 받기</button>`, false);
-  document.querySelectorAll(".opt").forEach((o) => (o.onclick = () => { o.parentNode.querySelectorAll(".opt").forEach((x) => x.classList.toggle("on", x === o)); }));
+  /* 11/26 2단: 2027 약첩 / 2027 + 평생 체질 약첩(추천). 마음 약첩은 다음 상품 */
+  const E = EARLY(), OPTS = [["2027 약첩", "편지 아홉 장 + 덤 네 가지", PRICE.full, E ? PRICE.early : PRICE.full, ""], ["2027 + 평생 체질 약첩", "평생 체질 편지 여덟 장을 더해요", PRICE.bundle.full, E ? PRICE.bundle.early : PRICE.bundle.full, "추천"]];
+  const pct = (o, p) => Math.round((1 - p / o) * 100);
+  show(`<section class="pay"><h2>약첩 고르기</h2>${OPTS.map(([t, d, o, p, tag], i) => `<div class="opt opt2 ${i ? "" : "on"}" data-i="${i}"><span><b>${t}</b>${tag ? `<em class="badge2">${tag}</em>` : ""}<small>${d}</small></span><span class="pr">${p < o ? `<em>${pct(o, p)}%</em><s>${won(o)}</s>` : ""}<b>${won(p)}</b></span></div>`).join("")}<h2 style="margin-top:24px">휴대폰 번호</h2><p style="font-size:13px;color:#8a7a68;margin-bottom:8px">편지를 다시 찾을 때와 안내에 써요.</p><input style="width:100%;height:52px;border:1px solid var(--line);border-radius:16px;padding:0 16px;font-size:17px" inputmode="numeric" placeholder="010-0000-0000"><h2 style="margin-top:24px">결제 수단</h2><div class="opt on">카카오페이</div><div class="opt">네이버페이</div><div class="opt">카드</div><p style="font-size:13px;color:#aaa;margin-top:12px">시험 중이라 실제로 돈이 나가지 않아요.</p></section>`, `<button class="btn" id="go"></button>`, false);
+  const setBtn = (i) => { const [, , o, p] = OPTS[i]; $("#go").textContent = `${won(p)}에 약첩 받기`; U.plan = i ? "bundle" : "base"; save(); };
+  setBtn(0);
+  document.querySelectorAll(".opt").forEach((o) => (o.onclick = () => { const grp = o.classList.contains("opt2") ? ".opt2" : ".opt:not(.opt2)"; o.parentNode.querySelectorAll(grp).forEach((x) => x.classList.toggle("on", x === o)); if (o.dataset.i != null) setBtn(+o.dataset.i); }));
   $("#go").onclick = P2;
 }
 async function P2() {
@@ -1416,7 +1424,7 @@ async function makeWallpaper(v, NAME) {
 }
 
 /* 가격: 얼리버드는 실제 마감일까지만(여기 한 곳만 고치면 됨) */
-const PRICE = { full: 59000, early: 39000, until: "2026-12-31T23:59:59+09:00" };
+const PRICE = { full: 59000, early: 39000, until: "2026-12-31T23:59:59+09:00", bundle: { full: 118000, early: 69000 } }; // 11/26 다혜: 2027 + 평생 체질 약첩 묶음 69,000원(얼리버드). 1/1 뒤 묶음값은 미정(지금은 118,000원)
 const EARLY = () => Date.now() < Date.parse(PRICE.until);
 const won = (n) => n.toLocaleString() + "원";
 /* 할인 타이머: 얼리버드 마감까지 실제로 줄어듦 */
