@@ -572,6 +572,97 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .cmp strong{display:block;font-size:20px;line-height:30px;color:var(--red)}
 .cmp small{font-size:13px;line-height:19px;color:var(--red)}
 .price .eb{margin:12px 0 0;font-size:13px;line-height:19px;color:var(--red);text-align:center}
+
+/* 11/26 청월당 비교 A 12개 + 덤 */
+.slips{position:absolute;left:0;right:0;bottom:100%;height:220px;pointer-events:none;z-index:3;transition:opacity .4s}
+.slips.off{opacity:0}
+.slips span{position:absolute;bottom:0;max-width:60%;padding:8px 12px;border-radius:16px;background:rgba(255,253,247,.94);border:1px solid var(--line);box-shadow:0 2px 8px rgba(90,60,30,.12);font-family:"KyoboHand","Nanum Pen Script",cursive;font-size:17px;line-height:24px;color:#4a3f35;transform:rotate(var(--r));animation:slipup 5.2s ease-out forwards}
+@keyframes slipup{0%{opacity:0;transform:translateY(24px) rotate(var(--r))}15%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translateY(-160px) rotate(var(--r))}}
+.mk{height:100vh;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 20px;background:radial-gradient(circle at 50% 40%,#3a2a1e,#1c140e);color:#F6E7CF}
+.ring8{position:relative;width:240px;height:240px}
+.ring8 b{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px;border-radius:999px;background:#FFFBF4;font-family:var(--title);font-size:24px;line-height:48px;text-align:center;transform:rotate(var(--a)) translateY(-96px) rotate(calc(-1 * var(--a)));animation:spin8 3s linear infinite;transition:transform .8s ease,opacity .8s ease}
+@keyframes spin8{to{rotate:360deg}}
+.ring8.gather b{transform:rotate(var(--a)) translateY(0) rotate(calc(-1 * var(--a)));opacity:0}
+.ring8 .seal{position:absolute;left:50%;top:50%;width:104px;height:104px;margin:-52px;border:4px solid #D8503A;border-radius:16px;color:#D8503A;font-family:var(--title);font-size:40px;line-height:96px;text-align:center;opacity:0;transform:scale(1.8) rotate(-8deg);transition:all .35s cubic-bezier(.2,1.6,.4,1)}
+.ring8.done .seal{opacity:1;transform:scale(1) rotate(-8deg)}
+.mk .pct{font-family:var(--title);font-size:24px;line-height:34px;font-variant-numeric:tabular-nums}
+.mk .bar{width:200px;height:4px;border-radius:999px;background:rgba(255,255,255,.16);overflow:hidden}.mk .bar i{display:block;height:100%;width:0;background:#E9A94B}
+.mk .say{color:#F6E7CF;min-height:28px}
+.vmore{margin-top:16px;padding:12px 16px;border-radius:16px;background:#F7EFE2}
+.vmore p{font-size:13px;line-height:20px;font-weight:600;color:var(--wood);margin-bottom:4px}
+.vmore ul{list-style:none;margin:0;padding:0}
+.vmore li{font-size:15px;line-height:24px;color:#4a3f35;padding-left:24px;position:relative}
+.vmore li::before{content:"🔒";position:absolute;left:0;font-size:13px}
+.gqa{margin-top:16px;display:grid;gap:8px}
+.gqa div{padding:12px 16px;border-radius:16px;background:#FFFDF8;border:1px solid var(--line)}
+.gqa .q{font-size:13px;line-height:20px;color:var(--red);font-weight:600}
+.gqa .a{font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink)}
+.gday{text-align:center}
+.gday .hearts{font-size:24px;line-height:34px;color:var(--red);letter-spacing:4px}.gday .hearts span{color:#E2CFA6}
+.gday .gd{font-family:var(--title);font-size:24px;line-height:34px;margin:8px 0 0}
+.gday .gs2{font-family:var(--serif);font-size:17px;line-height:27px;color:var(--wood);margin-bottom:12px}
+.callout{font-size:13px;line-height:20px;color:#8a7a68;text-align:center;margin-top:12px}
+.wcmp{margin:8px 16px 48px}
+.wcmp .tt{font-family:var(--serif);font-size:24px;line-height:34px;color:var(--wood);text-align:center;margin-bottom:16px}
+.wcmp .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.wcmp .two>div{border-radius:20px;padding:16px 12px;text-align:center}
+.wcmp .no{background:#F1EEEA}.wcmp .yes{background:#FFF6E6;border:2px solid #E9A94B}
+.wcmp .lab{font-size:13px;line-height:20px;font-weight:600;color:#8a7a68;margin-bottom:8px}.wcmp .yes .lab{color:var(--red)}
+.wcmp .lines{height:120px;padding:8px;border-radius:16px;background:#fff;display:flex;flex-direction:column;gap:8px}
+.wcmp .lines i{display:block;height:4px;border-radius:999px;background:#D8D3CC}.wcmp .lines i:nth-child(3n){width:70%}
+.wcmp .pv{position:relative;height:120px;border-radius:16px;overflow:hidden}
+.wcmp .pv img{width:100%;height:100%;object-fit:cover}
+.wcmp .pv span{position:absolute;right:4px;bottom:4px;padding:4px 8px;border-radius:16px;background:#fff;border:2px solid #1d1d1d;font-family:var(--bubble);font-size:13px;line-height:18px;text-align:left}
+.wcmp .d{margin-top:8px;font-size:13px;line-height:20px;color:#4a3f35}
+.story{margin:0 16px 48px;display:grid;gap:12px}
+.story figure{margin:0;border:2px solid #1d1d1d;border-radius:4px;overflow:hidden;background:#fff}
+.story img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
+.story figcaption{padding:12px 16px;font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink)}
+.sheet .wtab{display:grid;gap:8px}
+.sheet .wr{display:grid;grid-template-columns:48px 1fr 32px 40px 52px;gap:8px;align-items:center}
+.sheet .wn{display:block;height:28px;border-radius:999px;color:#fff;font-size:13px;line-height:28px;text-align:center;font-weight:600}
+.sheet .wb{height:8px;border-radius:999px;background:#EFE5D4;overflow:hidden}.sheet .wb i{display:block;height:100%;border-radius:999px}
+.sheet .wc,.sheet .wp{font-size:13px;line-height:20px;color:#6b5a49;text-align:right;font-variant-numeric:tabular-nums}
+.sheet .wl{font-size:13px;line-height:20px;text-align:center;border-radius:999px;background:#F4EDE2;color:#6b5a49}.sheet .wl.hi{background:var(--redS);color:var(--red)}.sheet .wl.lo{background:#E3E8EF;color:var(--navy)}
+.sheet .roles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:20px 0 4px}
+.sheet .roles div{border-radius:16px;background:#FFFDF8;border:1px solid var(--line);padding:8px 4px;text-align:center}
+.sheet .roles span{display:block;font-size:13px;line-height:20px;color:#8a7a68}.sheet .roles b{font-family:var(--serif);font-size:20px;line-height:30px}
+.sheet .sub{margin:24px 0 8px;font-size:15px;line-height:24px;font-weight:600;color:var(--wood);text-align:center}
+.sheet .seven{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px}
+.sheet .seven span{padding:8px 0;border-radius:16px;background:#F4EDE2;font-size:13px;line-height:16px;text-align:center;color:#8a7a68;word-break:keep-all}
+.sheet .seven span.on{background:var(--wood);color:#fff;font-weight:600}
+.sheet .daeun{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;margin:0 -4px;scroll-snap-type:x mandatory}
+.sheet .daeun div{position:relative;flex:0 0 76px;scroll-snap-align:start;border-radius:16px;background:#FFFDF8;border:1px solid var(--line);padding:8px 4px;text-align:center}
+.sheet .daeun div.cur{border:2px solid var(--red)}
+.sheet .daeun small{display:block;font-size:13px;line-height:20px;color:#8a7a68}
+.sheet .daeun b{display:block;font-family:var(--title);font-size:24px;line-height:34px}.sheet .daeun b i{font-style:normal;display:block}
+.sheet .daeun span{display:block;font-size:13px;line-height:16px;color:#6b5a49;margin-top:4px}
+.sheet .daeun .dsun span{color:#3f7a6e}.sheet .daeun .dhard span{color:var(--red)}
+.sheet .daeun em{position:absolute;top:-8px;left:50%;transform:translateX(-50%);padding:0 8px;border-radius:999px;background:var(--red);color:#fff;font-style:normal;font-size:13px;line-height:20px}
+.band{margin:0 0 24px;background:var(--wood);overflow:hidden;white-space:nowrap}
+.band p{display:inline-flex;animation:band 18s linear infinite}
+.band span{padding:12px 24px;color:#FFF4E2;font-size:15px;line-height:24px;font-weight:600}
+@keyframes band{to{transform:translateX(-50%)}}
+.share{margin:0 16px 48px;padding:24px 20px;border-radius:20px;background:#FAF3E4;text-align:center}
+.share p{font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink);margin-bottom:16px}
+.share button{width:100%;height:52px;border:2px solid var(--wood);border-radius:16px;background:#fff;color:var(--wood);font-size:17px;font-weight:600}
+.share small{display:block;margin-top:8px;font-size:13px;line-height:20px;color:#8a7a68}
+.sbanner{position:fixed;top:0;left:0;right:0;max-width:448px;margin:0 auto;z-index:25;display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(43,34,25,.96);color:#FFF4E2}
+.sbanner p{flex:1;font-size:13px;line-height:20px}.sbanner b{color:#FDE047}
+.sbanner button{flex:none;height:40px;padding:0 16px;border:0;border-radius:999px;background:var(--red);color:#fff;font-size:15px;font-weight:600}
+.cover .snow,.grind .snow,.letter .snow{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.grind,.letter{position:relative;overflow:hidden}
+.dumpage .ey2{font-family:var(--serif);font-size:15px;line-height:24px;color:var(--ink2);margin-top:16px}
+.dumpage .note3{font-size:13px;line-height:20px;color:#8a7a68;margin-bottom:16px}
+.dbox{margin-bottom:16px;padding:20px 16px;border-radius:20px;background:#fff;border:1px solid var(--line)}
+.dbox>b{display:block;font-family:var(--serif);font-size:20px;line-height:30px;color:var(--wood);margin-bottom:4px}
+.dbox>p{font-size:15px;line-height:24px;color:#4a3f35;margin-bottom:12px}
+.dlist{list-style:none;margin:0 0 12px;padding:0;max-height:200px;overflow-y:auto}
+.dlist li{display:grid;grid-template-columns:72px 1fr;font-size:13px;line-height:20px;color:#4a3f35;padding:4px 0;border-bottom:1px dashed #E8DCC8}.dlist li span{color:var(--red);font-weight:600}
+.dbox .wp{border-radius:16px;overflow:hidden;background:#F7EFE2;margin-bottom:12px;text-align:center}.dbox .wp img{width:60%;display:inline-block;margin:12px 0;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.lnkbtn{display:block;line-height:56px;text-align:center;text-decoration:none}
+.dbox .slip{height:96px;min-height:0;margin:0 0 12px;font-size:20px;line-height:28px}
+.mans p{margin-top:12px;padding:16px;border-radius:16px;background:#FAF3E4;font-family:var(--serif);font-size:17px;line-height:27px;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -604,12 +695,15 @@ const LS = { get: (k) => { try { return JSON.parse(localStorage.getItem(k)); } c
 let U = LS.get("yak_user") || { wish: "", name: "", y: "", m: "", d: "", cal: "solar", hour: "", minute: "", known: true, gender: "f", love: "", loveLen: "" };
 if (Q.get("demo")) U = { wish: "내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요?", name: "다혜", y: 1999, m: 1, d: 22, cal: "solar", hour: 17, minute: 30, known: true, gender: "f", love: "연애중", loveLen: "1년 ~ 3년" };
 if (Q.get("demo") && Q.get("wish") != null) { U.wish = Q.get("wish"); const b = (Q.get("b") || "").split("-"); if (b.length >= 3) Object.assign(U, { y: +b[0], m: +b[1], d: +b[2], hour: +(b[3] ?? 12), minute: 0, known: b[3] != null, love: Q.get("love") || "" }); if (Q.get("name")) U.name = Q.get("name"); } // 시험용
-const save = () => LS.set("yak_user", U);
+/* A12 공유 링크로 들어온 사람: 남의 결과를 보여 주고, 버튼은 «나도 짚어 보기» */
+let SHARED = false;
+if (Q.get("s")) { try { const o = JSON.parse(decodeURIComponent(escape(atob(Q.get("s").replace(/-/g, "+").replace(/_/g, "/"))))); U = { wish: "", name: String(o.n || "").slice(0, 10), y: +o.y, m: +o.m, d: +o.d, cal: o.c === "lunar" ? "lunar" : "solar", hour: o.h === "" ? "" : +o.h, minute: o.mi === "" ? "" : +o.mi, known: o.h !== "", gender: o.g === "m" ? "m" : "f", love: String(o.l || ""), loveLen: "" }; SHARED = true; } catch {} }
+const save = () => { if (!SHARED) LS.set("yak_user", U); };
 let CH = null, chP = null;
 function fetchChart() {
   if (chP) return chP;
   const body = { action: "chart", y: +U.y, m: +U.m, d: +U.d, hour: U.known ? +U.hour : null, minute: U.known ? +U.minute : null, calendar: U.cal, gender: U.gender };
-  chP = fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-halmi-key": KEY }, body: JSON.stringify(body) }).then((r) => r.json()).then((j) => { if (!j.ok) throw new Error(j.error || "fail"); CH = j.viz; CH.gender = U.gender; return CH; });
+  chP = fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-halmi-key": KEY }, body: JSON.stringify(body) }).then((r) => r.json()).then((j) => { if (!j.ok) throw new Error(j.error || "fail"); CH = j.viz; CH.gender = U.gender; CH.score = j.tini?.score ?? null; return CH; });
   return chP;
 }
 
@@ -678,7 +772,26 @@ async function S3() {
   const ok = () => ($("#go").disabled = !wb.value.trim()); wb.addEventListener("input", ok); ok();
 
   $("#skip").onclick = () => { U.wish = ""; save(); S4(); };
+  floatSlips(wb);
   await says(["급할 거 하나 없다. 따뜻할 때 차부터 한 모금 마시거라.", "내년 생각하면 자꾸 마음에 걸리는 거 있지? 그거 하나만 여기 적어 보련?"], $("#say"));
+}
+/* A2 남들이 품고 온 걱정: 쪽지가 떠올랐다 사라짐. 적기 시작하면 멈춤 */
+const SLIPS = ["내년엔 이직해도 될까요?", "이 사람이랑 결혼해도 될까요?", "엄마 건강이 자꾸 걱정돼요", "돈이 왜 이렇게 새는지 모르겠어요", "시험 붙을 수 있을까요?", "그 사람한테 다시 연락 올까요?", "가게 열어도 될까요?", "회사에서 버틸 수 있을까요?", "이사 가도 괜찮을까요?", "내년엔 좀 덜 힘들까요?"];
+function floatSlips(wb) {
+  const low = document.querySelector(".sc .low"); if (!low) return;
+  low.insertAdjacentHTML("afterbegin", `<div class="slips" id="slips"></div>`);
+  const box = $("#slips"); let k = 0, alive = true;
+  const stop = () => { alive = false; box.classList.add("off"); };
+  wb.addEventListener("input", () => wb.value.trim() && stop()); wb.addEventListener("focus", stop);
+  (async function run() {
+    await sleep(1800);
+    while (alive && document.body.contains(box)) {
+      const s = document.createElement("span"); s.textContent = SLIPS[k % SLIPS.length];
+      s.style.left = [6, 38, 18, 46][k % 4] + "%"; s.style.setProperty("--r", [-4, 3, -2, 5][k % 4] + "deg");
+      box.appendChild(s); k++; setTimeout(() => s.remove(), 5200);
+      await sleep(1700);
+    }
+  })();
 }
 /* S4 접수표 */
 async function S4() {
@@ -713,14 +826,18 @@ async function S5() {
   const opt = (a, v) => a.map((x) => `<option ${x === v ? "selected" : ""}>${x}</option>`).join("");
   show(scr("S5", `<div id="say"></div><p class="sent">지금은 <select id="lv">${opt(LV, U.love || "선택 안함")}</select> 상태예요.</p><p class="sent">기간은 <select id="ll">${opt(LL, U.loveLen || "선택 안함")}</select> 이에요.</p><p class="hint">답하지 않아도 넘어갈 수 있어요.</p>`, "talk-in s5"), `<button class="btn" id="go">다음으로</button>`);
   $("#go").disabled = true; $("#go").onclick = () => { const a = $("#lv").value, b = $("#ll").value; U.love = a === "선택 안함" ? "" : a; U.loveLen = b === "선택 안함" ? "" : b; save(); S6(); };
-  await says([`${U.name}${hasJ(U.name) ? "이" : ""}라… 고것 참, 이름도 곱구나.`, "하나만 더 묻자꾸나. 요새 마음 주는 사람은 있니?"], $("#say"));
+  /* A1 내 답에 반응: 태어난 철·시간 모름·이름 */
+  const sea = U.cal === "lunar" ? (U.m <= 3 ? "봄" : U.m <= 6 ? "여름" : U.m <= 9 ? "가을" : "겨울") : (U.m >= 3 && U.m <= 5 ? "봄" : U.m >= 6 && U.m <= 8 ? "여름" : U.m >= 9 && U.m <= 11 ? "가을" : "겨울");
+  const SEAS = { 봄: "일찍 깨어나 바삐 살았겠구나.", 여름: "볕이 세니 속에 불이 많겠다.", 가을: "거둘 때라 셈이 빠르겠다.", 겨울: "추운 데서 불씨를 품고 자랐겠다." };
+  await says([`${U.y}년 ${sea}에 났구나.`, SEAS[sea], ...(U.known ? [] : ["시간은 모른다 했지. 괜찮다, 세 기둥으로도 다 보인다."]), `${callName(U.name)}${hasJ(callName(U.name)) ? "이" : ""}라… 고것 참, 이름도 곱구나.`, "하나만 더 묻자꾸나. 요새 마음 주는 사람은 있니?"], $("#say"));
   $("#go").disabled = false;
 }
 /* S6 맥 짚기 (꾹 누르기) */
 async function S6() {
   fetchChart().catch(() => {}); askAnswer();
   show(`<section class="sc split"><div class="pic">${media("S6", 'style="object-position:center bottom"')}<div class="pulse-zone" id="pz"><b></b><svg class="pring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" pathLength="1" id="pg"/></svg></div><p class="ptip off" id="st">여기 손목을 꾹 눌러 주세요</p></div><div class="low"><div id="say"></div></div></section>`, `<button class="btn" id="go" disabled>결과 읽으러 가기</button>`);
-  await says(["태어난 때는 타고난 바탕이고, 맥은 지금 네 기운이란다. 둘을 같이 봐야 앞날이 보이지.", "자, 손목 이리 내 보거라. 가만히, 빼지 말고."], $("#say"));
+  const LOVESAY = { 솔로: "혼자라 했지. 내년에 다가올 사람이 있는지도 같이 보마.", 연애중: "만나는 사람이 있다 했지. 그 사람 얘기도 같이 보마.", 짝사랑중: "혼자 마음에 둔 사람이 있다 했지. 그 마음 갈 데도 같이 보마.", 썸타는중: "오가는 사람이 있다 했지. 그 사이도 같이 보마.", 기혼: "곁에 식구가 있다 했지. 곁 사람 얘기도 같이 보마." };
+  await says([...(LOVESAY[U.love] ? [LOVESAY[U.love]] : []), "태어난 때는 타고난 바탕이고, 맥은 지금 네 기운이란다. 둘을 같이 봐야 앞날이 보이지.", "자, 손목 이리 내 보거라. 가만히, 빼지 말고."], $("#say"));
   if (!document.querySelector("#pz.hold")) $("#st").classList.remove("off");
   const SUB = ["…어디 가만있어 보자", "아이고, 손목이 이게 뭐냐. 얼음장이네", "맥이 가라앉았구나. 요새 많이 지쳤지", "내년 이맘때까지 어디서 탈이 나는지, 할미가 보고 있단다"];
   let p = 0, holding = false, last = 0, beat = 0, done = false;
@@ -737,18 +854,36 @@ async function S6() {
     if (now - beat > 850) { beat = now; navigator.vibrate?.([40, 110, 30]); }
     if (p >= 1) {
       done = true; holding = false; pz.classList.remove("hold"); st.textContent = "맥을 다 짚었어요"; st.classList.remove("off"); setTimeout(() => st.classList.add("off"), 1600);
-      try { await fetchChart(); sayBox.innerHTML = `<p class="say">됐다. 이제 손 거둬도 된다.</p>`; $("#go").disabled = false; $("#go").onclick = S8; }
+      try { await fetchChart(); sayBox.innerHTML = `<p class="say">됐다. 이제 손 거둬도 된다.</p>`; $("#go").disabled = false; $("#go").onclick = S7; }
       catch { sayBox.innerHTML = `<p class="say">맥이 잘 안 잡히는구나. 링크를 다시 확인해 주거라.</p>`; }
       return;
     }
     requestAnimationFrame(loop);
   }
 }
+/* A3 S7 풀이 짓는 중: 여덟 글자가 돌다 丁未 도장으로 모임, 0→55→89→100 */
+async function S7() {
+  const T = Object.fromEntries((CH?.table || []).map((c) => [c.label, c]));
+  const g8 = ["시", "일", "월", "년"].flatMap((l) => [T[l]?.gan || "?", T[l]?.zhi || "?"]);
+  show(`<section class="mk"><div class="ring8">${g8.map((c, i) => `<b style="--a:${i * 45}deg;color:${c === "?" ? "#8a7a68" : WXC[ELOF(c)]}">${c}</b>`).join("")}<p class="seal">丁未</p></div><p class="pct" id="pct">0%</p><div class="bar"><i id="bar"></i></div><div id="say"></div></section>`);
+  const STEP = [[55, "여덟 글자를 하나씩 펼쳐 놓는 중이다."], [89, "내년 글자 丁未를 네 글자에 대 보는 중이다."], [100, "다칠 데를 추리는 중이다."]];
+  let p = 0;
+  for (const [to, t] of STEP) {
+    $("#say").innerHTML = `<p class="say">${t}</p>`;
+    const from = p, ms = to === 55 ? 1300 : to === 89 ? 1100 : 700, t0 = performance.now();
+    await new Promise((r) => { const f = (now) => { const k = Math.min(1, (now - t0) / ms); p = Math.round(from + (to - from) * k); $("#pct").textContent = p + "%"; $("#bar").style.width = p + "%"; k < 1 ? requestAnimationFrame(f) : r(); }; requestAnimationFrame(f); });
+    if (to === 89) { $(".ring8").classList.add("gather"); setTimeout(() => { $(".ring8")?.classList.add("done"); navigator.vibrate?.(30); }, 750); }
+    await sleep(500);
+  }
+  $("#say").innerHTML = `<p class="say">다 됐다. 할미가 본 걸 보여 주마.</p>`;
+  await sleep(1300);
+  S8();
+}
 /* S8 표지 → 결과 */
 async function S8() {
   $("#go") && ($("#go").disabled = true);
   await Promise.race([askAnswer(), new Promise((r) => setTimeout(r, 7000))]); // 대개 맥 짚는 동안 이미 와 있음
-  show(`<section class="cover"><img src="${IMG("S8")}" alt=""><div class="ct"><p class="ey">${U.y}년 ${String(U.m).padStart(2, "0")}월 ${String(U.d).padStart(2, "0")}일생</p><p class="nm">${esc(U.name)}</p><p class="ln">${esc(callName(U.name))}의 2027년,<br>다칠 곳부터 짚어 보마</p><p class="down">아래로 내려 읽어요 ↓</p></div></section><div id="res"></div>`, "", false);
+  show(`<section class="cover"><img src="${IMG("S8")}" alt=""><div class="ct"><p class="ey">${U.y}년 ${String(U.m).padStart(2, "0")}월 ${String(U.d).padStart(2, "0")}일생</p><p class="nm">${esc(U.name)}</p><p class="ln">${esc(callName(U.name))}의 2027년,<br>다칠 곳부터 짚어 보마</p><p class="down">아래로 내려 읽어요 ↓</p></div>${SNOW(28)}</section><div id="res"></div>`, "", false);
   renderResult(CH);
   loadAnswer();
 }
@@ -901,7 +1036,7 @@ function areas(v) {
   return [["돈", c(sc(wealth))], ["마음", c(sc(v.gender === "m" ? wealth : officer))], ["일·명예", c(sc(officer))], ["시험·계약", c(sc(parent))], ["몸", c(sc(child) - (v.climate?.tempLabel === "차가운 사주" ? 1 : 0))]].sort((a, b) => a[1] - b[1]);
 }
 const ORG = { 木: ["간·담", ["간 초음파", "간기능 혈액검사", "담낭 초음파", "눈 검사", "근육·힘줄 검사"], "간 쪽"], 火: ["심장·소장", ["심전도", "심장 초음파", "혈압 24시간 측정", "소장 검사", "혈관 검사"], "가슴이 늘 서늘했지? 심장 쪽"], 土: ["위·비장", ["위내시경", "복부 초음파", "혈당 검사", "췌장 검사", "소화기 검사"], "속이 자주 더부룩했지? 위장 쪽"], 金: ["폐·대장", ["흉부 X-ray", "폐기능 검사", "대장내시경", "피부 검사", "비염 검사"], "숨이 자주 짧았지? 폐 쪽"], 水: ["신장·방광", ["신장기능 혈액검사", "소변 검사", "방광 초음파", "호르몬 검사", "골밀도 검사"], "허리가 자주 시렸지? 콩팥 쪽"] };
-const REL = (dmE, e) => (e === dmE ? ["친구·동료", "같은 편"] : GEN[dmE] === e ? ["후배·아랫사람", "내가 챙기는 사람"] : CTL[dmE] === e ? ["돈이 얽힌 사람", "거래 상대"] : CTL[e] === dmE ? ["윗사람·상사", "나를 재는 사람"] : ["어른·스승", "나를 받쳐 주는 사람"]);
+const REL = (dmE, e) => (e === dmE ? ["친구나 동료", "같은 편"] : GEN[dmE] === e ? ["후배나 아랫사람", "내가 챙기는 사람"] : CTL[dmE] === e ? ["돈이 얽힌 사람", "거래 상대"] : CTL[e] === dmE ? ["윗사람이나 상사", "나를 재는 사람"] : ["어른이나 스승", "나를 받쳐 주는 사람"]);
 function flowSvg(v) {
   const vals = v.flow.map((m) => m.up - m.down), mx = Math.max(1, ...vals.map(Math.abs));
   const W = 340, H = 140, x = (i) => 16 + i * ((W - 32) / 11), y = (n) => H / 2 - (n / mx) * (H / 2 - 14);
@@ -910,6 +1045,39 @@ function flowSvg(v) {
 }
 const MK = (lab) => { const m = String(lab).match(/(\d+)\s*월/); const n = m ? +m[1] : parseInt(lab); return ["", "정월", "이월", "삼월", "사월", "오월", "유월", "칠월", "팔월", "구월", "시월", "동짓달", "섣달"][n] || lab; };
 
+/* 눈 내림(가벼운 CSS 눈송이) */
+const SNOW = (n) => `<div class="snow">${Array.from({ length: n }, (_, i) => `<i style="left:${(i * 37) % 100}%;width:${3 + (i % 3)}px;height:${3 + (i % 3)}px;animation-duration:${8 + (i % 5)}s;animation-delay:-${(i * 0.9).toFixed(1)}s"></i>`).join("")}</div>`;
+/* A4·A5 맥 기록지: 오행 표, 채울 기운, 힘 일곱 칸, 십 년 운 */
+function chartSheet(v, NAME) {
+  const ORD = ["木", "火", "土", "金", "水"], CNT = Object.fromEntries((v.balance || []).map((b) => [b.e, b.now]));
+  const LAB = (p) => (p >= 35 ? ["넘침", "hi"] : p >= 25 ? ["많음", "hi"] : p >= 12 ? ["알맞음", ""] : p >= 5 ? ["모자람", "lo"] : ["없음", "lo"]);
+  const rows = ORD.map((e) => { const [l, c] = LAB(v.pct[e]); return `<div class="wr"><span class="wn" style="background:${WXC[e]}">${WXN[e]}</span><span class="wb"><i style="width:${Math.max(3, Math.min(100, v.pct[e] * 2))}%;background:${WXC[e]}"></i></span><span class="wc">${CNT[e] ?? 0}자</span><span class="wp">${Math.round(v.pct[e])}%</span><b class="wl ${c}">${l}</b></div>`; }).join("");
+  const role = [["채울 기운", v.useful[0], "use"], ["곁들일 기운", v.useful[1], "use2"], ["덜어 낼 기운", v.avoid[0], "avo"]].filter((r) => r[1]);
+  const sc = v.score, SL = ["아주 여림", "여림", "조금 여림", "고름", "조금 셈", "셈", "아주 셈"];
+  const si = sc == null ? (v.power === "강한 편" ? 4 : v.power === "약한 편" ? 2 : 3) : sc <= 20 ? 0 : sc <= 32 ? 1 : sc <= 44 ? 2 : sc < 56 ? 3 : sc < 68 ? 4 : sc < 80 ? 5 : 6;
+  const dtag = (gz) => { let t = 0; for (const c of gz) { const e = ELOF(c); if (v.useful.includes(e)) t++; if (v.avoid.includes(e)) t--; } return t > 0 ? ["볕 드는 십 년", "dsun"] : t < 0 ? ["버티는 십 년", "dhard"] : ["고른 십 년", ""]; };
+  const DA = (v.daeun || []).slice(0, 8), cur = DA.find((d) => d.gz === v.curDaeun) || DA.find((d) => d.year <= 2027 && d.year + 10 > 2027);
+  const curT = cur ? dtag(cur.gz)[0] : "";
+  return `<section class="blk sheet"><p class="ey">${esc(NAME)}${hasJ(NAME) ? "이" : ""} 맥 기록지</p><p class="tt">타고난 다섯 기운</p><div class="wtab">${rows}</div>
+<div class="roles">${role.map(([t, e, c]) => `<div class="${c}"><span>${t}</span><b style="color:${WXC[e]}">${WXN[e]}</b></div>`).join("")}</div>
+<p class="sub">타고난 힘</p><div class="seven">${SL.map((l, i) => `<span class="${i === si ? "on" : ""}">${l}</span>`).join("")}</div><p class="ask">${esc(NAME)}${hasJ(NAME) ? "이" : ""} 힘은 <b>${SL[si]}</b> 쪽이란다.</p>
+${DA.length ? `<p class="sub">십 년마다 바뀌는 운</p><div class="daeun">${DA.map((d) => { const [t, c] = dtag(d.gz); return `<div class="${d === cur ? "cur" : ""} ${c}"><small>${d.age}살부터</small><b><i style="color:${WXC[ELOF(d.gz[0])]}">${d.gz[0]}</i><i style="color:${WXC[ELOF(d.gz[1])]}">${d.gz[1]}</i></b><span>${t}</span>${d === cur ? `<em>지금</em>` : ""}</div>`; }).join("")}</div><p class="ask">지금 네 십 년은 <b>${curT}</b>이다.<br>내년 丁未는 이 십 년 위에 얹혀 온다.</p>` : ""}</section>`;
+}
+/* A12 결과 보내기: 이름·생일만 담은 링크(고민은 뺌). 받은 사람 화면 위엔 «나도 짚어 보기» */
+function shareUrl() {
+  const o = { n: U.name, y: U.y, m: U.m, d: U.d, h: U.known ? U.hour : "", mi: U.known ? U.minute : "", c: U.cal, g: U.gender, l: U.love };
+  const b = btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  return `${location.origin}${location.pathname}?s=${b}#k=${KEY}`;
+}
+function bindShare() {
+  const b = $("#shareBtn"); if (!b) return;
+  b.onclick = async () => {
+    const url = shareUrl(), text = `할미가 내 2027년 맥을 짚어 줬어. 너도 봐 봐.`;
+    try { if (navigator.share) { await navigator.share({ title: "할미약방", text, url }); return; } } catch (e) { if (e.name === "AbortError") return; }
+    try { await navigator.clipboard.writeText(url); b.textContent = "링크를 복사했어요"; } catch { prompt("이 링크를 복사해 보내 주세요", url); }
+  };
+}
+function startOwn() { try { localStorage.removeItem("yak_user"); } catch {} location.href = `${location.pathname}#k=${KEY}`; location.reload(); }
 function renderResult(v) {
   const L = { topic: topicOf(U.wish) }; L.open = L.topic ? `${{ love: "마음", work: "일", money: "돈", body: "몸", people: "사람" }[L.topic]} 얘기부터 하자꾸나. 네가 물은 게 그쪽이니.` : "";
   const NAME = callName(U.name), T = Object.fromEntries((v.table || []).map((c) => [c.label, c]));
@@ -957,7 +1125,7 @@ function renderResult(v) {
   /* R5 약연 → 내년 */
   H.push(`<div class="wt">`);
   H.push(pn({ img: "R5a", h: 440, kind: "full", pos: "center 30%", b: [{ t: "이제 내년 맥이다.<br>이걸 네 손으로<br>곱게 갈아 보거라.", x: 46, y: 56, w: 52 }] }));
-  H.push(`<section class="blk"><p class="tt">약재를 갈면<br>바닥에 적혀 있단다</p><div class="grind" id="grind" style="border:2px solid #1d1d1d"><div class="gradeCard"><p class="gy">2027 丁未年</p><p class="gs">붉은 양의 해, 정미년</p><p class="gk">${esc(NAME)}${hasJ(NAME) ? "이" : ""}의 내년은</p><p class="g gv">${shortV(v.yearVerdict)}</p><p class="gl">${GLINE(v)}</p></div><canvas id="gc"></canvas></div><div id="after" style="display:none"></div></section>`);
+  H.push(`<section class="blk"><p class="tt">약재를 갈면<br>바닥에 적혀 있단다</p><div class="grind" id="grind" style="border:2px solid #1d1d1d"><div class="gradeCard"><p class="gy">2027 丁未年</p><p class="gs">붉은 양의 해, 정미년</p><p class="gk">${esc(NAME)}${hasJ(NAME) ? "이" : ""}의 내년은</p><p class="g gv">${shortV(v.yearVerdict)}</p><p class="gl">${GLINE(v)}</p></div><canvas id="gc"></canvas>${SNOW(8)}</div><div id="after" style="display:none"></div></section>`);
   H.push(`<div style="height:40px"></div>`);
   H.push(pn({ img: "R5c", h: 300, kind: "box", pos: "center 30%", sfx: [{ t: "흠…", x: 70, y: 8, r: 8 }], b: [{ t: "할미는 듣기 좋은<br>소리는 못 한다.", x: 46, y: -24, w: 50 }] }));
   H.push(capt(/힘이 붙/.test(v.yearVerdict) ? `내년은 힘이 붙는 해다.<br>그런데 <em>힘이 붙을 때가<br>제일 크게 새는 때</em>란다.` : `내년은,<br><em>그렇게 버티던 힘이<br>안 통하는 해</em>란다.`));
@@ -983,9 +1151,11 @@ function renderResult(v) {
     people: { img: "VP", name: "사람", see: "웃으면서 다가오는 사람이 하나 있는데…\n얼굴이 잘 안 보이는구나.", more: "처음엔 반가운 얼굴이란다.", hide: [["언제", `${S1} 무렵, 웃으며 온 사람이`, "부탁을 꺼낸다"], ["어디까지", "정으로 들어준 것이", "돈과 시간으로 돌아온다"]], coda: "사람은 오는 것보다 가는 걸 봐야 한단다." },
   };
   const NUM = ["첫째", "둘째", "셋째", "넷째", "다섯째"];
+  /* A6 그림마다 «편지에서 더 풀어 주마» 잠금 목록 */
+  const MORE = { money: ["여섯째 장", ["돈이 새는 달과 그 까닭", "돈 때문에 멀어질 수 있는 사람", "큰돈 결정은 언제 할지"]], work: ["다섯째 장", ["옮길 때와 버틸 때", "붙는 달과 미끄러지는 달", "윗사람과 부딪히는 자리"]], love: ["일곱째 장", couple ? ["둘이 부딪히는 자리와 그날", "그 침묵을 푸는 첫마디", "둘이 같이 정하면 좋은 때"] : ["다가오는 사람을 알아보는 법", "문을 열어도 될 때", "피해야 할 사람"]], body: ["아홉째 장", ["먼저 무너지는 곳", "잠과 밥을 고치는 법", "몸 기운을 돌리는 색과 음식"]], people: ["일곱째 장", ["피해야 할 사람의 버릇", "부탁을 거절해도 될 때", "도와줄 사람을 찾는 곳"]] };
   VO.slice(0, 4).forEach((k, i) => {
-    const x = VIS[k];
-    H.push(`<section class="vis cl" data-i="${i}"><p class="vback"><b>${NUM[i]} 그림</b>눌러서 뒤집어 보거라</p><div class="vimg"><img src="${IMG(x.img)}" alt=""></div><div class="vt"><p class="vn">${NUM[i]} 그림 <span class="vtag">${x.name}</span></p><p class="vs">${esc(x.see)}${i === 0 ? `\n${esc(x.more)}` : ""}</p>${x.hide.map(([a, b, c]) => `<p class="vh2"><span>${a}</span>${esc(b)} <i>${esc(c)}</i></p>`).join("")}<p class="vc">${esc(x.coda)}</p></div></section>`);
+    const x = VIS[k], [mch, mli] = MORE[k];
+    H.push(`<section class="vis cl" data-i="${i}"><p class="vback"><b>${NUM[i]} 그림</b>눌러서 뒤집어 보거라</p><div class="vimg"><img src="${IMG(x.img)}" alt=""></div><div class="vt"><p class="vn">${NUM[i]} 그림 <span class="vtag">${x.name}</span></p><p class="vs">${esc(x.see)}${i === 0 ? `\n${esc(x.more)}` : ""}</p>${x.hide.map(([a, b, c]) => `<p class="vh2"><span>${a}</span>${esc(b)} <i>${esc(c)}</i></p>`).join("")}<p class="vc">${esc(x.coda)}</p><div class="vmore"><p>편지 ${mch}에서 더 풀어 주마</p><ul>${mli.map((t) => `<li>${t}</li>`).join("")}</ul></div></div></section>`);
   });
   H.push(pn({ img: "VS2b", h: 380, kind: "box", pos: "center", b: [{ t: "이 한 장은…<br>할미가 지금<br><b>말로 하기가 좀 그렇구나.</b>", x: 2, y: -22, w: 54 }] }));
   H.push(capt(`그건 편지 안에<br><em>조용히 적어 두마.</em>`));
@@ -997,9 +1167,12 @@ function renderResult(v) {
   H.push(`<div class="wt">`);
   H.push(pn({ img: "R10a", h: 420, kind: "boxR", pos: "center 25%", b: [{ t: "그래도<br>걱정만 할 건<br><b>아니란다.</b>", x: -24, y: 8, w: 50 }] }));
   H.push(capt(`내년엔 너를 도와줄 사람이<br><em>${v.guiren?.in2027 ? "제 발로 찾아온단다." : "가까이 와 있단다. 찾아가야 만나지."}</em>`));
-  H.push(`<section class="blk"><p class="ey">내년에 오는 귀인</p><p class="tt">이런 사람을 놓치지 마라</p><div class="guiren"><img src="${IMG(GRIMG)}" alt=""><div><p><span>어디서</span><b>${esc(gP)}</b></p><p><span>어떤 사람</span><b>${{ 木: "먼저 손 내미는 사람", 火: "밝고 말이 시원한 사람", 土: "말수 적고 믿음직한 사람", 金: "셈이 정확하고 단호한 사람", 水: "조용하고 생각 깊은 사람" }[v.useful[0]]}</b></p><p><span>그 사람 기운</span><b>${WXN[v.useful[0]]} 기운</b></p><p><span>가까워지는 때</span><b class="blur">${esc(MK(om[0] || ""))}</b></p></div></div><p class="callout">🔒 이 사람을 <b>어떻게 알아보는지</b>, <b>무엇을 부탁해야 하는지</b>는<br>편지 일곱째 장에 적어 두마.</p></section>`);
+  H.push(`<section class="blk"><p class="ey">내년에 오는 귀인</p><p class="tt">이런 사람을 놓치지 마라</p><div class="guiren"><img src="${IMG(GRIMG)}" alt=""><div><p><span>어디서</span><b>${esc(gP)}</b></p><p><span>어떤 사람</span><b>${{ 木: "먼저 손 내미는 사람", 火: "밝고 말이 시원한 사람", 土: "말수 적고 믿음직한 사람", 金: "셈이 정확하고 단호한 사람", 水: "조용하고 생각 깊은 사람" }[v.useful[0]]}</b></p><p><span>그 사람 기운</span><b>${WXN[v.useful[0]]} 기운</b></p></div></div><div class="gqa">${[["언제 도움을 받니?", { money: "돈이 빠져나가 막막할 때", work: "일터에서 네 자리가 흔들릴 때", love: "마음이 엇갈려 말이 막힐 때", body: "몸이 지쳐 주저앉을 때", people: "사람한테 데여 마음을 닫을 때" }[VO[0]], ""], ["언제 가까워지니?", `${SEA(om[0] || "")} 무렵, <span class="blur">${esc(MK(om[0] || ""))}</span>`, ""], ["어떤 사이니?", `${esc(gP)}, ${esc(gDesc)}${hasJ(gDesc) ? "이다" : "다"}`, ""], ["무얼 해 주니?", { 木: "막힌 길을 터 주고 새 자리로 이끌어 준다", 火: "네 이름을 알리고 앞에 세워 준다", 土: "흔들릴 때 버팀목이 되어 준다", 金: "끊을 건 끊게 정리를 도와준다", 水: "필요한 소식과 지혜를 먼저 건네준다" }[v.useful[0]], ""]].map(([q, a, c]) => `<div><p class="q">${q}</p><p class="a ${c}">${a}</p></div>`).join("")}</div><p class="callout">🔒 이 사람을 <b>어떻게 알아보는지</b>, <b>무엇을 부탁해야 하는지</b>는<br>편지 일곱째 장에 적어 두마.</p></section>`);
   H.push(capt(`그래도 내년에<br><em>볕 드는 데가 세 군데 있단다.</em>`));
   H.push(`<section class="sun">${[["귀인", `${esc(gP)} 쪽에서 너를 도와줄 사람이 ${v.guiren?.in2027 ? "온다" : "기다린다"}.`], ["풀리는 때", `${SEA(om[0] || "")}엔 막혔던 게 풀린다.`], ["모이는 달", "돈과 사람이 모이는 달이 따로 있다."]].map(([t, d], k) => `<div><span>${["一", "二", "三"][k]}</span><b>${t}</b><p>${d}</p></div>`).join("")}<p class="note2">어느 달인지, 어떻게 붙잡는지는 편지 여섯째, 일곱째, 여덟째 장에 적어 두마.</p></section>`);
+  /* A8 좋은 날 하나: 날짜는 가리고 철과 까닭만 */
+  H.push(capt(`그중에서도<br><em>제일 좋은 날이 하루 있단다.</em>`));
+  H.push(`<section class="blk gday"><p class="ey">내년에 제일 좋은 날</p><p class="hearts">♥♥♥♥<span>♥</span></p><p class="gd"><span class="blur">●월 ●●일</span></p><p class="gs2">${SEA(om[0] || "")} 어느 날</p><p class="ask">그날은 네게 필요한 ${WXN[v.useful[0]]} 기운이 들어오는 날이다.<br>미뤄 둔 말을 꺼내도, 도장을 찍어도 된다.</p><p class="callout">🔒 어느 날인지는 편지 여덟째 장에 적어 두마.</p></section>`);
   H.push(`<section class="blk"><p class="ey">내년 네 돈은</p><p class="tt">${["버는 해", "지키는 해", "새는 해"][moneyY]}란다</p><div class="pouch">${["버는 해", "지키는 해", "새는 해"].map((t, k) => `<div class="${k === moneyY ? "on" : ""}"><i>${["↗", "＝", "↘"][k]}</i><b>${t}</b></div>`).join("")}</div><p class="ask pask">${["들어올 길이 열린다. 다만 들어온 만큼 새는 데도 막아야 한다.", "크게 벌기보다 있는 걸 지키는 게 이기는 해다.", "나가는 길이 먼저 열린다. 어디로 새는지 알면 막는다."][moneyY]}</p></section>`);
   H.push(`</div>`);
   /* 고민: 답 대신 «걸려 있다» */
@@ -1030,6 +1203,8 @@ function renderResult(v) {
   /* 편지 미리보기 */
   H.push(capt(`편지는 이렇게 생겼단다.`, "결혼을 앞둔 다른 손주의 실제 편지 한 장이에요. 셋째 장, 첫째 그림."));
   H.push(`<section class="lp"><div class="lph"><span>셋째 장</span><b>할미 눈에 보인 그림 다섯 장</b></div><div class="lpb"><h4>첫째 그림 · 사람<br>약속하고 서류 맞추다 말이 날카로워지는 너</h4><p>할미 눈에는 날짜와 예식장, 집 문제를 맞추다 사소한 말 한마디에 서로 얼굴이 굳는 네가 보인다.</p><div class="kv"><b>무엇이</b><p>큰 싸움이 아니라 작은 말 한마디가 며칠씩 가는 그림이다. «그때 내가 말했잖아» 하는 말이 먼저 나오기 쉽다.</p></div><div class="kv"><b>왜</b><p>네 곁 사람 자리의 마른 흙에 내년 마른 흙이 닿아, 고집이 두 배로 단단해진다.</p></div><div class="kv bl"><b>언제</b><p>●월이 가장 크다. 조심할 날은 ●/●, ●/●, ●/●다. 이 사흘에는 도장 찍는 일을 피해라.</p></div><div class="kv bl"><b>바닥까지 가면</b><p>사소한 말다툼이 쌓여 «정말 맞는 걸까» 하는 의심으로 번진다. 물러서지도 못하고 속으로만 곪다가…</p></div><div class="kv bl"><b>할미의 역제안</b><p>첫째, 날짜, 비용, 서류는 입으로 정하지 말고 둘이 같이 쓰는 메모 하나에 전부 적어라. 둘째, 마음이 상하면…</p></div></div><p class="lpf">이런 그림이 다섯 장, 장은 모두 아홉 장이에요.</p></section>`);
+  /* A9 줄글 결과지 대신 그림과 말로 */
+  H.push(`<section class="wcmp"><p class="tt">읽다 마는 결과지 말고</p><div class="two"><div class="no"><p class="lab">줄글 결과지</p><div class="lines">${"<i></i>".repeat(9)}</div><p class="d">글자만 빽빽해서<br>끝까지 못 읽어요</p></div><div class="yes"><p class="lab">할미 편지</p><div class="pv"><img src="${IMG("R2a")}" alt=""><span>네 글자부터<br>짚어 보마.</span></div><p class="d">장마다 할미 그림 한 장,<br>할미가 말로 풀어 줘요</p></div></div></section>`);
   /* 예시 풀이 */
   H.push(capt(`실제로는 이렇게 써 준단다.`, "다른 손주의 편지 일부예요. 이름과 고민은 바꿨어요."));
   H.push(`<section class="blk sample"><p class="q">«내년에 이직하려는데 지금 옮겨도 될까요?»<small>병오일주, 이OO 님의 고민</small></p><div class="a"><p>결론부터 말하마. 옮기는 건 맞는데, 봄은 아니다.</p><p>네 일 자리에 내년 마른 흙이 정면으로 부딪힌다. 봄에 서둘러 나가면 새 자리에서 윗사람과 먼저 부딪히고, 석 달 만에 다시 짐을 싸게 된다.</p><p class="fade">할미라면 여름까지는 지금 자리에서 이력부터 정리하고, 가을 문턱에 움직인다. 그때는 네 필요한 기운이 들어와서…</p></div></section>`);
@@ -1038,9 +1213,17 @@ function renderResult(v) {
   H.push(`<section class="stat"><p class="live"><i></i>지금 이 순간에도 <b>41초마다 한 명씩</b> 할미를 찾아와요</p><div class="nums"><div><b data-n="128407">0</b><span>누적 손주</span></div><div><b data-n="9312">0</b><span>이번 달</span></div><div><b data-n="1284" id="today">0</b><span>오늘</span></div></div><div class="rate"><span class="stars">★★★★★</span><b>4.9</b><span>후기 3,218개</span></div></section>`);
   const RV = [["김*진", "3번째", "1시간 전", "말 안 해도 다 아는 것 같아서 소름 돋았어요. 작년에 참다 터진 거 그대로 맞혔어요."], ["이*은", "첫 구매", "3시간 전", "좋은 말만 해 주는 데랑 달라요. 할머니가 혼내는데 이상하게 위로가 돼요."], ["박*수", "2번째", "어제", "이직 고민이었는데 언제 움직이라는 게 딱 나와서 달력에 적어 뒀어요."], ["최*아", "4번째", "어제", "엄마랑 같이 봤어요. 둘 다 귀인 쪽 얘기가 너무 맞아서 놀랐어요."], ["정*훈", "첫 구매", "2일 전", "웹툰처럼 읽혀서 끝까지 봤어요. 편지는 출퇴근길에 나눠 읽는 중이에요."], ["한*비", "2번째", "3일 전", "결혼 앞두고 봤는데, 말다툼 조심하라는 달에 진짜 싸울 뻔했어요. 미리 알아서 넘겼어요."]];
   H.push(`<section class="rv"><p class="tt">손주들이 남긴 말</p><div class="rvs" id="rvs">${RV.map(([n, c, t, x]) => `<div class="r"><p class="h"><span class="stars">★★★★★</span><b>${n}</b><small>${c} · ${t}</small></p><p>${x}</p></div>`).join("")}</div><p class="dots2">${RV.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</p></section>`);
+  /* A11 [시안] 후기형 웹툰: 어느 손주 이야기(실제 후기 아님, 출시 땐 실제 후기로 바꾸거나 빼기) */
+  H.push(capt(`어느 손주 이야기를<br><em>하나 들려주마.</em>`));
+  H.push(`<section class="story">${[["K1", "내년이 궁금해서<br>잠이 안 오던 밤."], ["K2", "«이런 적 있었을 게다»<br>어떻게 알았지?"], ["K3", "할미가 짚어 준 날,<br>달력에 동그라미를 쳐 뒀어요."], ["K4", "그날, 말을 아꼈어요.<br>그래서 넘겼어요."]].map(([im, t]) => `<figure><img src="${IMG(im)}" alt="" loading="lazy"><figcaption>${t}</figcaption></figure>`).join("")}</section>`);
+  /* A4·A5 맥 기록지 원본: 오행 표, 채울 기운, 힘 일곱 칸, 십 년 운 */
+  H.push(capt(`이제 할미가 적어 둔<br><em>네 맥 기록지를 보여 주마.</em>`, "아까 저울에 단 것을 그대로 옮겨 적었어요."));
+  H.push(chartSheet(v, NAME));
   /* 할미가 보는 법 */
   H.push(`<section class="blk detail"><p class="tt">할미가 보는 법</p><ol class="steps"><li><b>1</b><p><strong>만세력 계산기로 정확히 계산해요.</strong> 태어난 시간 보정(30분)과 절기 경계까지 따져서, 몇 번을 봐도 같은 여덟 글자가 나와요.</p></li><li><b>2</b><p><strong>고전 명리 기준으로 채울 기운을 정해요.</strong> 무엇을 채우고 무엇을 덜어야 하는지(용신)를 정한 뒤, 그 위에서만 풀어요.</p></li><li><b>3</b><p><strong>2027년 글자를 네 사주에 하나씩 대 봐요.</strong> 어느 자리와 부딪히고 어느 달에 몰리는지 계산한 값으로만 써요. 없는 말은 지어내지 않아요.</p></li><li><b>4</b><p><strong>좋은 말만 해 주지 않아요.</strong> 다칠 데를 먼저 말하고, 같은 자리에서 막는 법을 같이 줘요.</p></li></ol></section>`);
   H.push(`<section class="blk detail"><p class="tt">이렇게 받아요</p><ol class="steps"><li><b>1</b><p>복채를 내면 할미가 바로 편지를 쓰기 시작해요. 1분쯤이면 다 써요.</p></li><li><b>2</b><p>다 쓰면 이 화면에서 바로 읽을 수 있어요.</p></li><li><b>3</b><p>받은 편지는 링크로 언제든 다시 열어 볼 수 있어요.</p></li></ol></section>`);
+  /* 덤: 실제로 주는 것만(결제 뒤 P3에서 받음) */
+  H.push(`<section class="blk detail dum"><p class="ey">약첩에 같이 넣어 주마</p><p class="tt">할미 덤 네 가지</p><ol class="steps">${[["조심 달력", "조심할 날과 볕 드는 날을 폰 달력에 넣어 줘요. 그날 아침 할미가 한마디 해요."], ["할미 부적 배경화면", "네 글자 그림에 채울 기운과 색을 얹은 폰 배경화면이에요."], ["다시 펴 볼 날", "편지를 다시 펴 볼 날도 달력에 같이 넣어 둬요. 그날 할미가 불러요."], ["한 번 더 묻기", "편지를 읽고 궁금한 게 생기면 하나 더 물어보거라. 할미가 짧게 답해 줘요."]].map(([t, d], k) => `<li><b>${k + 1}</b><p><strong>${t}</strong> ${d}</p></li>`).join("")}</ol></section>`);
   H.push(`<section class="blk detail"><p class="tt">이런 손주한테 권한다</p><ul class="rec">${["내년에 뭘 조심해야 할지 미리 알고 싶은 사람", "결혼, 이직, 이사처럼 큰일을 앞둔 사람", "참고 버티다 한 번에 무너진 적이 있는 사람", "돈이 새는 달과 모이는 달을 알고 싶은 사람", "내년에 나를 도와줄 사람이 누구인지 궁금한 사람", "좋은 말보다 진짜 말을 듣고 싶은 사람"].map((t) => `<li>${t}</li>`).join("")}</ul></section>`);
   H.push(`</div>`);
   /* 왜 지금 */
@@ -1051,18 +1234,22 @@ function renderResult(v) {
   H.push(`</div>`);
   /* R16 가격 */
   H.push(pn({ img: "R16", h: 280, kind: "box", pos: "center", b: [{ t: "듣기 좋은 말이야<br>어디서든 듣지.<br><b>할미는 미리 막아 주는 거란다.</b>", x: 40, y: -26, w: 58 }] }));
+  const BAND = "타고난 체질, 내년 총운, 일, 돈, 마음, 몸, 귀인은 물론 열두 달 흐름까지!";
+  H.push(`<div class="band"><p><span>${BAND}</span><span aria-hidden="true">${BAND}</span></p></div>`);
   H.push(`<section class="cmp"><div><span>철학관 대면 신년운세</span><s>150,000원</s></div><b>VS</b><div class="me"><span>할미약방 약첩</span><strong>${won(EARLY() ? PRICE.early : PRICE.full)}</strong><small>하루 ${Math.round((EARLY() ? PRICE.early : PRICE.full) / 365)}원꼴</small></div></section>`);
   H.push(capt(`철학관 앞에 줄 설 것 없이,<br><em>이불 속에서 받아 보거라.</em>`));
   H.push(`<section class="price"><p class="ey" style="text-align:center;font-family:var(--serif);color:#6b5a49">아프기 전에 짓는 약</p><h3>할미약방</h3><p style="text-align:center;font-size:14px;color:#6b5a49;margin:6px 0 16px">할미 편지 한 통 (9장, 약 1만 7천 자)</p>${EARLY() ? `<div class="r"><span>복채</span><s>${won(PRICE.full)}</s></div><div class="r"><span>얼리버드 ${Math.round((1 - PRICE.early / PRICE.full) * 100)}%</span><span style="color:var(--red)">-${won(PRICE.full - PRICE.early)}</span></div><div class="fin"><span>최종</span><b>${won(PRICE.early)}</b></div><p class="eb">얼리버드는 12월 31일까지예요. 1월 1일부터 ${won(PRICE.full)}이에요.</p>` : `<div class="fin"><span>복채</span><b>${won(PRICE.full)}</b></div>`}</section>`);
   /* R17 편지 */
-  H.push(`<section class="letter">우리 ${esc(NAME)}${voc(NAME)}. 할미는 좋은 말부터 꺼내는 사람이 못 된다. 다칠 데가 먼저 보이면 그것부터 말해 주는 사람이지. 듣기 싫었을 거다, 미안하구나. 그래도 미리 알면 막을 수 있으니… 여기까지 왔으면 약은 꼭 받아 가거라. 밥 잘 챙겨 먹고.<p class="sig">— 끝까지 네 편인 할미가</p></section>`);
+  H.push(`<section class="letter">우리 ${esc(NAME)}${voc(NAME)}. 할미는 좋은 말부터 꺼내는 사람이 못 된다. 다칠 데가 먼저 보이면 그것부터 말해 주는 사람이지. 듣기 싫었을 거다, 미안하구나. 그래도 미리 알면 막을 수 있으니… 여기까지 왔으면 약은 꼭 받아 가거라. 밥 잘 챙겨 먹고.<p class="sig">— 끝까지 네 편인 할미가</p>${SNOW(10)}</section>`);
+  if (!SHARED) H.push(`<section class="share"><p>가까운 사람한테도<br>네 맥 기록을 보여 주련?</p><button id="shareBtn">내 결과 보내기</button><small>고민 쪽지는 빼고 보내져요.</small></section>`);
   $("#res").innerHTML = `<div class="res">${H.join("")}</div>`;
   /* 하단 결제 버튼: 탈 구간(#ctaAt)에 닿으면 나타남 */
   const ca = $("#ctaAt"); if (ca) new IntersectionObserver((es, o) => es.forEach((e) => { if (e.isIntersecting || e.boundingClientRect.top < 0) { $("#cta").classList.add("on"); o.disconnect(); } })).observe(ca);
   /* 말풍선 등장 */
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -18% 0px" });
   document.querySelectorAll(".past,.ms,.bb,.bbs,.sfx,.wish").forEach((el) => io.observe(el));
-  fitWish(); document.fonts.ready.then(fitWish); bindScale(v); bindGrind(); bindCrisis(v, CR);
+  fitWish(); document.fonts.ready.then(fitWish); bindScale(v); bindGrind(); bindCrisis(v, CR); bindShare();
+  if (SHARED) document.querySelector(".res").insertAdjacentHTML("afterbegin", `<div class="sbanner"><p><b>${esc(callName(U.name))}</b>${hasJ(callName(U.name)) ? "이" : ""}가 할미약방에서 받은<br>2027년 맥 기록이에요</p><button onclick="startOwn()">나도 맥 짚어 보기</button></div>`);
 }
 
 /* 쪽지 손글씨가 종이 안에 들어가게 글자 크기를 줄여 맞춤 */
@@ -1122,7 +1309,9 @@ const undot = (root) => { const w = document.createTreeWalker(root, NodeFilter.S
 new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach((x) => x.nodeType === 1 ? undot(x) : x.nodeType === 3 && x.parentElement && undot(x.parentElement)))).observe(document.body, { childList: true, subtree: true });
 /* 끈 묶기 → 결제 → 부채질 */
 document.addEventListener("contextmenu", (e) => { if (e.target.closest(".sc, .cover")) e.preventDefault(); });
+if (SHARED) { $("#buy").textContent = "나도 맥 짚어 보기"; const lab = $("#cta p"); if (lab) lab.innerHTML = "나도 내년에 다칠 데가 있는지 짚어 보거라"; }
 $("#buy").onclick = () => {
+  if (SHARED) return startOwn();
   document.body.insertAdjacentHTML("beforeend", `<div class="tie" id="tie"><div class="box"><img src="${IMG("R16")}" alt=""><svg viewBox="0 0 300 200" preserveAspectRatio="none"><path pathLength="1" d="M60 70 C 120 60, 200 60, 250 80 M150 30 C 140 80, 160 130, 150 180 M150 100 C 120 80, 110 130, 150 105 C 185 80, 190 130, 150 105"/></svg><p>할미가 약첩을 묶는 중…</p></div></div>`);
   navigator.vibrate?.([30, 60, 30]);
   setTimeout(() => { $("#tie").remove(); P1(); }, 1600);
@@ -1141,8 +1330,80 @@ async function P2() {
     if (heat >= 14) return; heat++; navigator.vibrate?.(12);
     $("#pg").style.width = (heat / 14) * 100 + "%"; const f = $("#fire"); f.style.opacity = 0.3 + heat * 0.05; f.style.transform = `scale(${1 + heat * 0.06})`;
     if (heat === 7) $("#say").innerHTML = `<p class="say">그래그래, 잘한다. 거의 다 됐다.</p>`;
-    if (heat === 14) { $("#say").innerHTML = `<p class="say">다 됐다. 할미가 처방 다 지었단다.</p>`; $("#st").textContent = "약이 다 달여졌어요"; $("#go").disabled = false; $("#go").onclick = () => alert("결제 뒤 처방(편지 아홉 첩) 연결은 다음 단계예요."); }
+    if (heat === 14) { $("#say").innerHTML = `<p class="say">다 됐다. 할미가 처방 다 지었단다.</p>`; $("#st").textContent = "약이 다 달여졌어요"; $("#go").disabled = false; $("#go").onclick = P3; }
   };
+}
+
+/* P3 덤 받기(결제 뒤): 조심 달력(.ics, 다시 펴 볼 날 포함), 부적 배경화면, 한 번 더 묻기 */
+async function P3() {
+  const v = CH; if (!v) return;
+  const NAME = callName(U.name);
+  show(`<section class="pay dumpage"><p class="ey2">할미가 약첩에 같이 넣었다</p><h2>할미 덤</h2>
+  <p class="note3">편지 읽는 화면은 다음 단계에서 붙어요. 덤은 지금 바로 받을 수 있어요.</p>
+  <div class="dbox"><b>一 조심 달력 + 다시 펴 볼 날</b><p>조심할 날, 볕 드는 달, 편지를 다시 펴 볼 날을 폰 달력에 한 번에 넣어요. 그날 아침 9시에 할미가 한마디 해요.</p><ul class="dlist" id="dlist"></ul><button class="btn" id="ics">폰 달력에 넣기</button></div>
+  <div class="dbox"><b>二 할미 부적 배경화면</b><p>네 글자 그림에 채울 기운과 색을 얹었어요. 길게 눌러 사진에 저장하세요.</p><div class="wp"><img id="wpimg" alt="할미 부적 배경화면"></div><a class="btn lnkbtn" id="wpdl" download="halmi-bujeok.png">배경화면 받기</a></div>
+  <div class="dbox"><b>三 한 번 더 묻기</b><p>편지를 읽고 궁금한 게 생기면 하나만 더 물어보거라.</p><textarea class="slip" id="more" maxlength="300" placeholder="예) 그럼 이직은 가을까지 미루는 게 맞을까요?"></textarea><button class="btn" id="ask" disabled>할미한테 묻기</button><div class="mans" id="mans"></div></div>
+  </section>`, "", false);
+  const ev = calEvents(v);
+  $("#dlist").innerHTML = ev.map((e) => `<li><span>${e.m}월 ${e.d}일</span>${esc(e.t)}</li>`).join("");
+  $("#ics").onclick = () => { const blob = new Blob([icsText(ev)], { type: "text/calendar;charset=utf-8" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "halmi-2027.ics"; document.body.appendChild(a); a.click(); a.remove(); $("#ics").textContent = "달력 파일을 열어 «모두 추가»를 눌러요"; };
+  makeWallpaper(v, NAME).then((url) => { $("#wpimg").src = url; $("#wpdl").href = url; }).catch(() => { $("#wpimg").alt = "배경화면을 못 만들었어요"; });
+  const used = LS.get("yak_more");
+  if (used) { $("#more").value = used.q; $("#more").disabled = true; $("#mans").innerHTML = `<p>${esc(used.a)}</p>`; $("#ask").textContent = "한 번 물어봤어요"; }
+  else {
+    $("#more").addEventListener("input", () => ($("#ask").disabled = !$("#more").value.trim()));
+    $("#ask").onclick = async () => {
+      const q = $("#more").value.trim(); if (!q) return; $("#ask").disabled = true; $("#ask").textContent = "할미가 생각하는 중…";
+      try {
+        const j = await fetch(API, { method: "POST", headers: { "content-type": "application/json", "x-halmi-key": KEY }, body: JSON.stringify({ action: "answer", mode: "more", question: q, love: U.love, y: +U.y, m: +U.m, d: +U.d, hour: U.known ? +U.hour : null, minute: U.known ? +U.minute : null, calendar: U.cal, gender: U.gender }) }).then((r) => r.json());
+        const a = j.crisis ? "많이 힘들었구나. 지금은 할미 말보다 곁에 있는 사람이 먼저다. 힘들 땐 109, 자살예방상담전화로 바로 전화하거라." : j.text || "할미가 지금 말이 잘 안 나오는구나. 조금 뒤에 다시 물어 주거라.";
+        $("#mans").innerHTML = `<p>${esc(a)}</p>`;
+        if (j.text) { LS.set("yak_more", { q, a }); $("#more").disabled = true; $("#ask").textContent = "한 번 물어봤어요"; } else { $("#ask").disabled = false; $("#ask").textContent = "다시 묻기"; }
+      } catch { $("#mans").innerHTML = `<p>연결이 끊겼어요. 다시 눌러 주세요.</p>`; $("#ask").disabled = false; $("#ask").textContent = "다시 묻기"; }
+    };
+  }
+}
+/* 달력 일정: 조심 날(계산값 days «7/12»), 볕 드는 달(1일), 다시 펴 볼 날(첫 조심 날 7일 전). 2월~12월은 2027년, 1월은 2028년 */
+function calEvents(v) {
+  const yOf = (m) => (m >= 2 ? 2027 : 2028), out = [];
+  const SAY = ["오늘은 말을 아껴라. 하고 싶은 말은 내일 해도 늦지 않다.", "오늘은 큰 도장은 미뤄라.", "오늘은 일찍 들어가 쉬거라. 몸이 먼저다."];
+  let k = 0;
+  for (const c of v.caution || []) for (const ds of c.days || []) { const [m, d] = String(ds).split("/").map(Number); if (m && d) out.push({ y: yOf(m), m, d, t: `할미: ${SAY[k++ % SAY.length]}` }); }
+  for (const i of v.chance || []) { const n = parseInt(String(v.flow[i]?.label || "").match(/(\d+)\s*월/)?.[1] || 0); if (n) out.push({ y: yOf(n), m: n, d: 1, t: "할미: 이달은 볕 드는 달이다. 미뤄 둔 일을 꺼내 보거라." }); }
+  out.sort((a, b) => new Date(a.y, a.m - 1, a.d) - new Date(b.y, b.m - 1, b.d));
+  const first = out.find((e) => /아껴라|미뤄라|쉬거라/.test(e.t));
+  if (first) { const r = new Date(first.y, first.m - 1, first.d - 7); out.push({ y: r.getFullYear(), m: r.getMonth() + 1, d: r.getDate(), t: "할미: 편지를 다시 펴 볼 날이다. 다음 주가 조심할 때란다." }); }
+  return out.sort((a, b) => new Date(a.y, a.m - 1, a.d) - new Date(b.y, b.m - 1, b.d));
+}
+function icsText(ev) {
+  const p = (n) => String(n).padStart(2, "0"), ymd = (e, plus = 0) => { const t = new Date(e.y, e.m - 1, e.d + plus); return `${t.getFullYear()}${p(t.getMonth() + 1)}${p(t.getDate())}`; };
+  const link = `${location.origin}${location.pathname}#k=${KEY}`, now = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
+  const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//halmi-yakbang//KO", "CALSCALE:GREGORIAN", "X-WR-CALNAME:할미약방 2027"];
+  ev.forEach((e, i) => L.push("BEGIN:VEVENT", `UID:halmi-${ymd(e)}-${i}@yakbang`, `DTSTAMP:${now}`, `DTSTART;VALUE=DATE:${ymd(e)}`, `DTEND;VALUE=DATE:${ymd(e, 1)}`, `SUMMARY:${e.t}`, `DESCRIPTION:할미 편지 다시 열기 ${link}`, "BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${e.t}`, "TRIGGER:PT9H", "END:VALARM", "END:VEVENT"));
+  L.push("END:VCALENDAR");
+  return L.join("\r\n");
+}
+/* 부적 배경화면: 1080×2340 캔버스에 내 글자 그림 + 채울 기운 + 이름 */
+async function makeWallpaper(v, NAME) {
+  const T = Object.fromEntries((v.table || []).map((c) => [c.label, c])), me = T["일"]?.gan || "", base = T["월"]?.zhi || "";
+  const W = 1080, H = 2340, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const g = cv.getContext("2d");
+  const load = (src) => new Promise((r, j) => { const im = new Image(); im.onload = () => r(im); im.onerror = j; im.src = src; });
+  await Promise.all([document.fonts.load('200px "HSB"'), document.fonts.load('600 60px "KoPub"'), document.fonts.load('40px "Pretendard Variable"')]).catch(() => {});
+  g.fillStyle = "#F7EFE2"; g.fillRect(0, 0, W, H);
+  const im = await load(`img/s/${encodeURIComponent(me + base)}.jpg`).catch(() => load("img/l/L1-7.jpg"));
+  const ih = 1300, sc = Math.max(W / im.width, ih / im.height), dw = im.width * sc, dh = im.height * sc;
+  g.save(); g.beginPath(); g.rect(0, 0, W, ih); g.clip(); g.drawImage(im, (W - dw) / 2, (ih - dh) / 2, dw, dh); g.restore();
+  const gr = g.createLinearGradient(0, ih - 360, 0, ih); gr.addColorStop(0, "rgba(247,239,226,0)"); gr.addColorStop(1, "#F7EFE2"); g.fillStyle = gr; g.fillRect(0, ih - 360, W, 360);
+  const u = v.useful[0], u2 = v.useful[1];
+  g.textAlign = "center"; g.fillStyle = "#6B5A49"; g.font = '500 44px "KoPub", serif'; g.fillText("2027 丁未年, 무사히 지나가거라", W / 2, ih + 40);
+  g.fillStyle = WXC[u]; g.font = '320px "HSB", serif'; g.fillText(u, W / 2, ih + 400);
+  g.fillStyle = "#2B2219"; g.font = '600 64px "KoPub", serif'; g.fillText(`채울 기운 ${WXN[u]}`, W / 2, ih + 520);
+  if (u2) { g.fillStyle = "#6B5A49"; g.font = '500 44px "KoPub", serif'; g.fillText(`곁들일 기운 ${WXN[u2]}`, W / 2, ih + 600); }
+  [u, u2].filter(Boolean).forEach((e, i, a) => { g.fillStyle = WXC[e]; g.beginPath(); g.arc(W / 2 + (i - (a.length - 1) / 2) * 120, ih + 700, 40, 0, 7); g.fill(); });
+  g.fillStyle = "#2B2219"; g.font = '600 56px "KoPub", serif'; g.fillText(`우리 ${NAME}${voc(NAME)}`, W / 2, ih + 860);
+  g.save(); g.translate(W - 190, H - 250); g.rotate(-0.08); g.strokeStyle = "#B8402F"; g.lineWidth = 8; g.strokeRect(-70, -70, 140, 140); g.fillStyle = "#B8402F"; g.font = '64px "HSB", serif'; g.fillText("할미", 0, 22); g.restore();
+  g.fillStyle = "#A0907D"; g.font = '36px "Pretendard Variable", sans-serif'; g.fillText("할미약방 부적", W / 2, H - 120);
+  return cv.toDataURL("image/png");
 }
 
 /* 가격: 얼리버드는 실제 마감일까지만(여기 한 곳만 고치면 됨) */
@@ -1155,6 +1416,7 @@ let end = Date.parse(PRICE.until);
 
 /* 시작 */
 if (!KEY) $("#app").innerHTML = `<p style="padding:40px 20px;text-align:center;color:#B8402F">링크의 #k= 키를 확인해 주세요.</p>`;
+else if (SHARED) fetchChart().then(() => S8()).catch((e) => ($("#app").innerHTML = `<p style="padding:40px;text-align:center">계산을 못 했어요 (${esc(e.message)})</p>`));
 else if (Q.get("demo")) (askAnswer(), fetchChart()).then(() => S8()).catch((e) => ($("#app").innerHTML = `<p style="padding:40px;text-align:center">계산을 못 했어요 (${esc(e.message)})</p>`));
 else S1();
 </script>
