@@ -955,7 +955,8 @@ function crisis(v) {
   const EG = { 비겁: dmE, 식상: GEN[dmE], 재성: CTL[dmE], 관성: off, 인성: par }, GOF = (e) => Object.keys(EG).find((g) => EG[g] === e);
   const gp = Object.fromEntries(Object.entries(EG).map(([g, e]) => [g, v.pct[e] || 0]));
   const ord = Object.entries(gp).sort((a, b) => a[1] - b[1]), lo = ord[0][0], hi = ord[4][0];
-  const key = isBal(v) ? "bal" : gp[lo] < 8 ? "miss:" + lo : gp[hi] >= 35 ? "over:" + hi : "miss:" + lo, T = TYPES[key];
+  /* 11/26 유형 몰림 완화: 모자람과 넘침 중 더 크게 기운 쪽(넘침은 /32로 덜 셈). 150명 시험 최다 유형 21%→17%, 11가지 다 나옴 */
+  const key = isBal(v) ? "bal" : (gp[hi] - 20) / 32 > (20 - gp[lo]) / 20 ? "over:" + hi : "miss:" + lo, T = TYPES[key];
   const gF = GOF("火"), gE = GOF("土");
   const hits = (v.meet || []).map((m) => ({ ...m, bad: (m.rels || []).filter((r) => r !== "합") })).filter((m) => m.bad.length && SEATW[m.seat]);
   const PRI = ["일지", "월지", "년지", "시지", "월간", "시간", "년간"]; hits.sort((a, b) => PRI.indexOf(a.seat) - PRI.indexOf(b.seat));
@@ -1078,8 +1079,11 @@ function bindShare() {
   };
 }
 function startOwn() { try { localStorage.removeItem("yak_user"); } catch {} location.href = `${location.pathname}#k=${KEY}`; location.reload(); }
+/* 11/26 고민 속 사람이 남일 때(«엄마 건강»): 그림은 네 몫(걱정하다 상하는 너), 고민 칸은 «○○ 일은» */
+const WHO_RE = /(엄마|아빠|어머니|아버지|부모님|부모|어머님|아버님|시어머니|시아버지|장모님|장인어른|남동생|여동생|동생|언니|오빠|누나|형|할머니|할아버지|남편|아내|와이프|아들|딸|아이|애기|남자친구|여자친구|남친|여친|애인|친구|동료)/;
+const whoOf = (w) => { const m = String(w || "").match(new RegExp(WHO_RE.source + "(?:의|가|이|는|은|도|랑|이랑)?\\s*(건강|병|수술|아프|아픈|입원|취업|시험|수능|일|사업|빚|돈|결혼|이혼|진로)")); if (!m) return null; const k = m[2]; return { who: m[1], topic: /건강|병|수술|아프|입원/.test(k) ? "body" : /빚|돈/.test(k) ? "money" : /결혼|이혼/.test(k) ? "people" : "work" }; };
 function renderResult(v) {
-  const L = { topic: topicOf(U.wish) }; L.open = L.topic ? `${{ love: "마음", work: "일", money: "돈", body: "몸", people: "사람" }[L.topic]} 얘기부터 하자꾸나. 네가 물은 게 그쪽이니.` : "";
+  const WO = whoOf(U.wish), L = { topic: WO ? WO.topic : topicOf(U.wish), who: WO ? WO.who : "" }; L.open = L.topic ? `${{ love: "마음", work: "일", money: "돈", body: "몸", people: "사람" }[L.topic]} 얘기부터 하자꾸나. 네가 물은 게 그쪽이니.` : "";
   const NAME = callName(U.name), T = Object.fromEntries((v.table || []).map((c) => [c.label, c]));
   const meCh = T["일"]?.gan || "", baseCh = T["월"]?.zhi || "", me = T["일"]?.ganM || "", base = T["월"]?.zhiM || "";
   const months = v.flow.map((m) => m.label), cm = v.caution.map((c) => ({ m: months[c.idx], days: c.days })), om = v.chance.map((i) => months[i]);
@@ -1147,9 +1151,10 @@ function renderResult(v) {
     money: { img: "VM", name: "돈", see: "통장에서 뭔가 빠져나가는데,\n네가 막지를 못하는구나.", more: "생각보다 큰돈이란다.", hide: [["언제", `${S1} 무렵, 큰돈이`, "한 번에 빠져나가는 달이 있다"], ["누구 때문에", "가까운 사람의 부탁을", "들어주다 네 몫부터 빈다"]], coda: "돈 얘기는 늘 사람 얘기더구나." },
     work: { img: "VW", name: "일", see: "다들 자리를 떴는데,\n너 혼자 책상 앞에 남아 있구나.", more: "그 자리가 오래가지는 않을 게다.", hide: [["언제", `${S1} 무렵, 일터에서`, "네 자리가 흔들리는 달이 있다"], ["누구 때문에", "윗사람의 한마디로", "네가 한 일이 남의 것이 된다"]], coda: "열심히 하는 게 늘 답은 아니란다." },
     love: { img: couple ? "VC" : "VD", name: "마음", see: couple ? "둘이 마주 앉았는데,\n아무도 먼저 입을 안 여는구나." : "누가 다가오는데,\n네가 먼저 문을 닫는구나.", more: couple ? "그 침묵이 생각보다 길구나." : "그 사람이 그냥 지나가지는 않는구나.", hide: couple ? [["언제", `${S1} 무렵, 말 한마디가`, "크게 번지는 날이 온다"], ["어디까지", "그 침묵이", "둘이 그리던 앞날까지 멈춰 세운다"]] : [["언제", `${S2} 무렵, 다가오는 사람이`, "하나 있다"], ["어디까지", "네가 문을 닫으면", "그 사람은 다시 오지 않는다"]], coda: "마음은 미리 알면 덜 다친단다." },
-    body: { img: "VB", name: "몸", see: `밤에 잠이 안 와서\n${PLACE}를 쓸어내리는 네가 보이는구나.`, more: "처음엔 별것 아닌 줄 알 게다.", hide: [["언제", `${S1} 무렵, 잠이`, "먼저 무너진다"], ["어디까지", "처음엔 피로인 줄 알다가", "한 철 내내 끌고 간다"]], coda: "몸은 거짓말을 안 한단다." },
+    body: { img: "VB", name: "몸", see: `밤에 잠이 안 와서\n${JO(PLACE, "을", "를")} 쓸어내리는 네가 보이는구나.`, more: "처음엔 별것 아닌 줄 알 게다.", hide: [["언제", `${S1} 무렵, 잠이`, "먼저 무너진다"], ["어디까지", "처음엔 피로인 줄 알다가", "한 철 내내 끌고 간다"]], coda: "몸은 거짓말을 안 한단다." },
     people: { img: "VP", name: "사람", see: "웃으면서 다가오는 사람이 하나 있는데…\n얼굴이 잘 안 보이는구나.", more: "처음엔 반가운 얼굴이란다.", hide: [["언제", `${S1} 무렵, 웃으며 온 사람이`, "부탁을 꺼낸다"], ["어디까지", "정으로 들어준 것이", "돈과 시간으로 돌아온다"]], coda: "사람은 오는 것보다 가는 걸 봐야 한단다." },
   };
+  if (L.who) { const w = L.who; VIS.body.see = `${w} 걱정에 밤잠을 설치다\n${JO(PLACE, "을", "를")} 쓸어내리는 네가 보이는구나.`; VIS.body.more = "남 걱정이 네 몸으로 먼저 온단다."; VIS.money.see = `${w} 일로 통장에서 뭔가 빠져나가는데,\n네가 막지를 못하는구나.`; VIS.work.see = `${w} 일까지 떠안고\n너 혼자 책상 앞에 남아 있구나.`; VIS.people.see = `${w} 일로 오가는 사람들 틈에서\n네 얼굴이 점점 지쳐 가는구나.`; }
   const NUM = ["첫째", "둘째", "셋째", "넷째", "다섯째"];
   /* A6 그림마다 «편지에서 더 풀어 주마» 잠금 목록 */
   const MORE = { money: ["여섯째 장", ["돈이 새는 달과 그 까닭", "돈 때문에 멀어질 수 있는 사람", "큰돈 결정은 언제 할지"]], work: ["다섯째 장", ["옮길 때와 버틸 때", "붙는 달과 미끄러지는 달", "윗사람과 부딪히는 자리"]], love: ["일곱째 장", couple ? ["둘이 부딪히는 자리와 그날", "그 침묵을 푸는 첫마디", "둘이 같이 정하면 좋은 때"] : ["다가오는 사람을 알아보는 법", "문을 열어도 될 때", "피해야 할 사람"]], body: ["아홉째 장", ["먼저 무너지는 곳", "잠과 밥을 고치는 법", "몸 기운을 돌리는 색과 음식"]], people: ["일곱째 장", ["피해야 할 사람의 버릇", "부탁을 거절해도 될 때", "도와줄 사람을 찾는 곳"]] };
@@ -1172,7 +1177,7 @@ function renderResult(v) {
   H.push(`<section class="sun">${[["귀인", `${esc(gP)} 쪽에서 너를 도와줄 사람이 ${v.guiren?.in2027 ? "온다" : "기다린다"}.`], ["풀리는 때", `${SEA(om[0] || "")}엔 막혔던 게 풀린다.`], ["모이는 달", "돈과 사람이 모이는 달이 따로 있다."]].map(([t, d], k) => `<div><span>${["一", "二", "三"][k]}</span><b>${t}</b><p>${d}</p></div>`).join("")}<p class="note2">어느 달인지, 어떻게 붙잡는지는 편지 여섯째, 일곱째, 여덟째 장에 적어 두마.</p></section>`);
   /* A8 좋은 날 하나: 날짜는 가리고 철과 까닭만 */
   H.push(capt(`그중에서도<br><em>제일 좋은 날이 하루 있단다.</em>`));
-  H.push(`<section class="blk gday"><p class="ey">내년에 제일 좋은 날</p><p class="hearts">♥♥♥♥<span>♥</span></p><p class="gd"><span class="blur">●월 ●●일</span></p><p class="gs2">${SEA(om[0] || "")} 어느 날</p><p class="ask">그날은 네게 필요한 ${WXN[v.useful[0]]} 기운이 들어오는 날이다.<br>미뤄 둔 말을 꺼내도, 도장을 찍어도 된다.</p><p class="callout">🔒 어느 날인지는 편지 여덟째 장에 적어 두마.</p></section>`);
+  H.push(`<section class="blk gday"><p class="ey">내년에 제일 좋은 날</p><p class="hearts">♥♥♥♥<span>♥</span></p><p class="gd"><span class="blur">●월 ●●일</span></p><p class="gs2">${SEA(om[0] || "")} 어느 날</p><p class="ask">그날은 네게 필요한 ${WXN[v.useful[0]]} 기운이 들어오는 날이다.<br>미뤄 둔 말을 꺼내기 좋은 날이다.</p><p class="callout">🔒 어느 날인지는 편지 여덟째 장에 적어 두마.</p></section>`);
   H.push(`<section class="blk"><p class="ey">내년 네 돈은</p><p class="tt">${["버는 해", "지키는 해", "새는 해"][moneyY]}란다</p><div class="pouch">${["버는 해", "지키는 해", "새는 해"].map((t, k) => `<div class="${k === moneyY ? "on" : ""}"><i>${["↗", "＝", "↘"][k]}</i><b>${t}</b></div>`).join("")}</div><p class="ask pask">${["들어올 길이 열린다. 다만 들어온 만큼 새는 데도 막아야 한다.", "크게 벌기보다 있는 걸 지키는 게 이기는 해다.", "나가는 길이 먼저 열린다. 어디로 새는지 알면 막는다."][moneyY]}</p></section>`);
   H.push(`</div>`);
   /* 고민: 답 대신 «걸려 있다» */
@@ -1180,7 +1185,7 @@ function renderResult(v) {
     H.push(`<div class="wt">`);
     H.push(pn({ img: "R11", h: 460, kind: "full", pos: "center 25%", b: [{ t: `네가 물은 거,<br>할미가 잊지<br>않았다.`, x: 46, y: 58, w: 52 }] }));
     H.push(`<p class="quote">«${esc(wishQ)}»</p>`);
-    H.push(capt(`이 일은 아까 본<br>${VIS[VO[0]].name} 그림에 <em>단단히 걸려 있구나.</em>`, "해도 되는지, 언제 움직여야 하는지는 편지 넷째 장에 적어 두마."));
+    H.push(L.who ? capt(`${L.who} 일은 아까 본<br>${VIS[VO[0]].name} 그림에 <em>단단히 걸려 있구나.</em>`, `${L.who} 사주가 아니라 네 사주로 본 거란다. 네가 어떻게 곁을 지킬지는 편지 넷째 장에 적어 두마.`) : capt(`이 일은 아까 본<br>${VIS[VO[0]].name} 그림에 <em>단단히 걸려 있구나.</em>`, "해도 되는지, 언제 움직여야 하는지는 편지 넷째 장에 적어 두마."));
     H.push(`</div>`);
   }
   /* 쥐여 줌: 약첩 */
@@ -1201,8 +1206,12 @@ function renderResult(v) {
   ];
   H.push(`<section class="blk detail"><p class="tt">할미 편지에 든 것</p><p class="ask">${esc(NAME)}${hasJ(NAME) ? "이" : ""} 사주로만 쓰는 아홉 장짜리 편지예요.<br>약 1만 7천 자, 천천히 읽으면 40분쯤 걸려요.</p><ol class="chs">${CH9.map(([n, t, d, im, say]) => `<li><img class="thumb" src="${IMG(im)}" alt=""><div><p class="cn"><span class="no">${n}</span><b>${t}</b></p><p>${d}</p><ul class="subs">${(SUBS[n] || []).map((x) => `<li>${x}</li>`).join("")}</ul><p class="smp">«${esc(say)}»</p></div></li>`).join("")}</ol></section>`);
   /* 편지 미리보기 */
-  H.push(capt(`편지는 이렇게 생겼단다.`, "결혼을 앞둔 다른 손주의 실제 편지 한 장이에요. 셋째 장, 첫째 그림."));
-  H.push(`<section class="lp"><div class="lph"><span>셋째 장</span><b>할미 눈에 보인 그림 다섯 장</b></div><div class="lpb"><h4>첫째 그림 · 사람<br>약속하고 서류 맞추다 말이 날카로워지는 너</h4><p>할미 눈에는 날짜와 예식장, 집 문제를 맞추다 사소한 말 한마디에 서로 얼굴이 굳는 네가 보인다.</p><div class="kv"><b>무엇이</b><p>큰 싸움이 아니라 작은 말 한마디가 며칠씩 가는 그림이다. «그때 내가 말했잖아» 하는 말이 먼저 나오기 쉽다.</p></div><div class="kv"><b>왜</b><p>네 곁 사람 자리의 마른 흙에 내년 마른 흙이 닿아, 고집이 두 배로 단단해진다.</p></div><div class="kv bl"><b>언제</b><p>●월이 가장 크다. 조심할 날은 ●/●, ●/●, ●/●다. 이 사흘에는 도장 찍는 일을 피해라.</p></div><div class="kv bl"><b>바닥까지 가면</b><p>사소한 말다툼이 쌓여 «정말 맞는 걸까» 하는 의심으로 번진다. 물러서지도 못하고 속으로만 곪다가…</p></div><div class="kv bl"><b>할미의 역제안</b><p>첫째, 날짜, 비용, 서류는 입으로 정하지 말고 둘이 같이 쓰는 메모 하나에 전부 적어라. 둘째, 마음이 상하면…</p></div></div><p class="lpf">이런 그림이 다섯 장, 장은 모두 아홉 장이에요.</p></section>`);
+  /* 11/26 성별 예시: 여자는 결혼 준비(사람), 남자는 일. «실제» 표현은 뺌 */
+  const LPX = U.gender === "m"
+    ? ["이직을 고민하던 다른 손주의 편지 한 장이에요. 셋째 장, 첫째 그림.", "첫째 그림, 일<br>남의 일까지 떠안고 혼자 밤을 새우는 너", "할미 눈에는 다들 퇴근한 사무실에서, 남이 미룬 일까지 붙잡고 앉아 있는 네가 보인다.", "일이 많은 게 아니라, 거절 못 해 쌓인 일이 한 번에 몰리는 그림이다. «제가 할게요»가 먼저 나오기 쉽다.", "네 일 자리에 내년 마른 흙이 겹쳐, 맡은 짐이 두 배로 무거워진다.", "●월이 가장 크다. 조심할 날은 ●/●, ●/●다. 이 이틀에는 새 일을 받지 마라.", "공은 남이 가져가고 실수만 네 이름으로 남는다. 참다 참다 윗사람 앞에서…", "첫째, 새 일을 받을 땐 «언제까지»부터 물어라. 둘째, 일주일에 한 번은…"]
+    : ["결혼을 앞둔 다른 손주의 편지 한 장이에요. 셋째 장, 첫째 그림.", "첫째 그림, 사람<br>약속하고 서류 맞추다 말이 날카로워지는 너", "할미 눈에는 날짜와 예식장, 집 문제를 맞추다 사소한 말 한마디에 서로 얼굴이 굳는 네가 보인다.", "큰 싸움이 아니라 작은 말 한마디가 며칠씩 가는 그림이다. «그때 내가 말했잖아» 하는 말이 먼저 나오기 쉽다.", "네 곁 사람 자리의 마른 흙에 내년 마른 흙이 닿아, 고집이 두 배로 단단해진다.", "●월이 가장 크다. 조심할 날은 ●/●, ●/●, ●/●다. 이 사흘에는 도장 찍는 일을 피해라.", "사소한 말다툼이 쌓여 «정말 맞는 걸까» 하는 의심으로 번진다. 물러서지도 못하고 속으로만 곪다가…", "첫째, 날짜, 비용, 서류는 입으로 정하지 말고 둘이 같이 쓰는 메모 하나에 전부 적어라. 둘째, 마음이 상하면…"];
+  H.push(capt(`편지는 이렇게 생겼단다.`, LPX[0]));
+  H.push(`<section class="lp"><div class="lph"><span>셋째 장</span><b>할미 눈에 보인 그림 다섯 장</b></div><div class="lpb"><h4>${LPX[1]}</h4><p>${LPX[2]}</p><div class="kv"><b>무엇이</b><p>${LPX[3]}</p></div><div class="kv"><b>왜</b><p>${LPX[4]}</p></div><div class="kv bl"><b>언제</b><p>${LPX[5]}</p></div><div class="kv bl"><b>바닥까지 가면</b><p>${LPX[6]}</p></div><div class="kv bl"><b>할미의 역제안</b><p>${LPX[7]}</p></div></div><p class="lpf">이런 그림이 다섯 장, 장은 모두 아홉 장이에요.</p></section>`);
   /* A9 줄글 결과지 대신 그림과 말로 */
   H.push(`<section class="wcmp"><p class="tt">읽다 마는 결과지 말고</p><div class="two"><div class="no"><p class="lab">줄글 결과지</p><div class="lines">${"<i></i>".repeat(9)}</div><p class="d">글자만 빽빽해서<br>끝까지 못 읽어요</p></div><div class="yes"><p class="lab">할미 편지</p><div class="pv"><img src="${IMG("R2a")}" alt=""><span>네 글자부터<br>짚어 보마.</span></div><p class="d">장마다 할미 그림 한 장,<br>할미가 말로 풀어 줘요</p></div></div></section>`);
   /* 예시 풀이 */
@@ -1213,7 +1222,7 @@ function renderResult(v) {
   H.push(`<section class="stat"><p class="live"><i></i>지금 이 순간에도 <b>41초마다 한 명씩</b> 할미를 찾아와요</p><div class="nums"><div><b data-n="128407">0</b><span>누적 손주</span></div><div><b data-n="9312">0</b><span>이번 달</span></div><div><b data-n="1284" id="today">0</b><span>오늘</span></div></div><div class="rate"><span class="stars">★★★★★</span><b>4.9</b><span>후기 3,218개</span></div></section>`);
   const RV = [["김*진", "3번째", "1시간 전", "말 안 해도 다 아는 것 같아서 소름 돋았어요. 작년에 참다 터진 거 그대로 맞혔어요."], ["이*은", "첫 구매", "3시간 전", "좋은 말만 해 주는 데랑 달라요. 할머니가 혼내는데 이상하게 위로가 돼요."], ["박*수", "2번째", "어제", "이직 고민이었는데 언제 움직이라는 게 딱 나와서 달력에 적어 뒀어요."], ["최*아", "4번째", "어제", "엄마랑 같이 봤어요. 둘 다 귀인 쪽 얘기가 너무 맞아서 놀랐어요."], ["정*훈", "첫 구매", "2일 전", "웹툰처럼 읽혀서 끝까지 봤어요. 편지는 출퇴근길에 나눠 읽는 중이에요."], ["한*비", "2번째", "3일 전", "결혼 앞두고 봤는데, 말다툼 조심하라는 달에 진짜 싸울 뻔했어요. 미리 알아서 넘겼어요."]];
   H.push(`<section class="rv"><p class="tt">손주들이 남긴 말</p><div class="rvs" id="rvs">${RV.map(([n, c, t, x]) => `<div class="r"><p class="h"><span class="stars">★★★★★</span><b>${n}</b><small>${c} · ${t}</small></p><p>${x}</p></div>`).join("")}</div><p class="dots2">${RV.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</p></section>`);
-  /* A11 [시안] 후기형 웹툰: 어느 손주 이야기(실제 후기 아님, 출시 땐 실제 후기로 바꾸거나 빼기) */
+  /* A11 어느 손주 이야기(후기 아님, 이야기로 둠 — 11/26 다혜 결정. «후기»라고 부르지 말 것) */
   H.push(capt(`어느 손주 이야기를<br><em>하나 들려주마.</em>`));
   H.push(`<section class="story">${[["K1", "내년이 궁금해서<br>잠이 안 오던 밤."], ["K2", "«이런 적 있었을 게다»<br>어떻게 알았지?"], ["K3", "할미가 짚어 준 날,<br>달력에 동그라미를 쳐 뒀어요."], ["K4", "그날, 말을 아꼈어요.<br>그래서 넘겼어요."]].map(([im, t]) => `<figure><img src="${IMG(im)}" alt="" loading="lazy"><figcaption>${t}</figcaption></figure>`).join("")}</section>`);
   /* A4·A5 맥 기록지 원본: 오행 표, 채울 기운, 힘 일곱 칸, 십 년 운 */
