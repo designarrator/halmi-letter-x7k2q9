@@ -777,7 +777,7 @@ const media = (img, extra = "") => (VIDS.has(img) ? `<video class="mv" src="vid/
 const scr = (img, inner, cls = "") => `<section class="sc ${cls}"><div class="pic">${media(img)}</div><div class="low">${inner}</div></section>`;
 
 /* S1 첫 화면 (11/28: «2027 신년운세», 줄마다 차례로 뜸. 영상이 생기면 S1VID = true) */
-const S1VID = false;
+const S1VID = true;
 function S1() {
   const snow = Array.from({ length: 36 }, (_, i) => `<i style="left:${(i * 29) % 100}%;width:${3 + (i % 3)}px;height:${3 + (i % 3)}px;animation-duration:${7 + (i % 6)}s;animation-delay:-${(i * 0.6).toFixed(1)}s"></i>`).join("");
   const bg = S1VID ? `<video class="s1v" src="vid/S1v.mp4?v=1" poster="${IMG("S1")}" autoplay muted playsinline></video>` : `<img src="${IMG("S1")}" alt="">`;
