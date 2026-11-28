@@ -703,7 +703,8 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .rx .rxs{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;line-height:20px;color:#C9B79F}
 .rx .rxs i{font-style:normal;display:inline-block;padding:0 4px;border:2px solid #D8503A;border-radius:4px;color:#D8503A;font-family:var(--title);font-size:13px;line-height:18px;transform:rotate(-6deg)}
 .rx .snow{position:absolute;inset:0;pointer-events:none}
-.s1 .tt p{margin:0!important}.s1 .tt .ny{margin-top:12px!important}.s1 .tt h1{margin:16px 0 4px!important}.s1 .tt .b{margin-top:8px!important}
+/* 11/28 첫 화면 글줄 간격: 띠, 제목, 두 줄 사이 눈에 보이는 간격을 고르게(재서 맞춤) */
+.s1 .tt p{margin:0!important}.s1 .tt .ny{margin:0!important}.s1 .tt h1{margin:var(--g1,8px) 0 var(--g2,16px)!important;line-height:72px!important}.s1 .tt .a{line-height:30px!important}.s1 .tt .b{margin-top:var(--g3,8px)!important;line-height:24px!important}
 </style>
 </head>
 <body>
@@ -782,7 +783,7 @@ function S1() {
   const snow = Array.from({ length: 36 }, (_, i) => `<i style="left:${(i * 29) % 100}%;width:${3 + (i % 3)}px;height:${3 + (i % 3)}px;animation-duration:${7 + (i % 6)}s;animation-delay:-${(i * 0.6).toFixed(1)}s"></i>`).join("");
   const bg = S1VID ? `<video class="s1v" src="vid/S1v.mp4?v=1" poster="${IMG("S1")}" autoplay muted playsinline></video>` : `<img src="${IMG("S1")}" alt="">`;
   const glit = Array.from({ length: 10 }, (_, i) => `<b style="left:${8 + ((i * 37) % 84)}%;top:${6 + ((i * 23) % 40)}%;animation-delay:${(i * 0.37).toFixed(2)}s"></b>`).join("");
-  show(`<section class="sc s1"><div class="pic">${bg}<div class="snow">${snow}</div><div class="glit">${glit}</div><div class="tt"><p class="y rv" style="--d:.2s">丁未年, 붉은 양의 해</p><p class="ny rv" style="--d:.8s"><span>2027</span> 신년운세</p><h1 class="rv brush" style="--d:1.4s">할미약방</h1><p class="a rv" style="--d:2.3s">아프기 전에 짓는 약</p><p class="b rv" style="--d:2.9s">새해 맥을 짚어, 다칠 데를 미리 막아 주마</p></div></div></section>`, `<button class="btn rv" style="--d:3.5s" id="go">약방 문 열기</button>`);
+  show(`<section class="sc s1"><div class="pic">${bg}<div class="snow">${snow}</div><div class="glit">${glit}</div><div class="tt"><p class="ny rv" style="--d:.3s"><span>2027</span> 신년운세</p><h1 class="rv brush" style="--d:.9s">할미약방</h1><p class="a rv" style="--d:1.8s">아프기 전에 짓는 약</p><p class="b rv" style="--d:2.4s">새해 맥을 짚어, 다칠 데를 미리 막아 주마</p></div></div></section>`, `<button class="btn rv" style="--d:3s" id="go">약방 문 열기</button>`);
   $("#go").onclick = S2;
 }
 /* S2 문 열기 — 세 장면, 장면마다 움직이는 그림(8초 반복 영상)으로 바뀜 */
