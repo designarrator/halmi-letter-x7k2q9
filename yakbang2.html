@@ -666,6 +666,44 @@ body.noscroll{overflow:hidden;position:fixed;inset:0;width:100%}
 .opt2{align-items:flex-start;gap:12px}.opt2>span:first-child{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}.opt2 b{font-size:17px;line-height:24px}.opt2 small{flex-basis:100%;font-size:13px;line-height:20px;color:#8a7a68}
 .opt2 .badge2{font-style:normal;padding:0 8px;border-radius:999px;background:var(--red);color:#fff;font-size:13px;line-height:20px}
 .opt2 .pr{display:flex;flex-direction:column;align-items:flex-end;white-space:nowrap}.opt2 .pr b{font-size:17px}
+
+/* 11/28 첫 화면 신년·차례로 뜨기, 뒤로, 원클릭 고민, 입력 서식 */
+.rv{opacity:0;transform:translateY(12px);animation:rvin .7s cubic-bezier(.2,.8,.2,1) var(--d,0s) forwards}
+@keyframes rvin{to{opacity:1;transform:none}}
+.s1 .tt .ny{display:inline-flex;align-items:baseline;gap:8px;margin-top:12px;padding:4px 16px;border:1px solid rgba(242,196,107,.8);border-radius:999px;background:rgba(184,64,47,.88);font-family:var(--serif);font-size:20px;line-height:30px;font-weight:600;color:#FFF4E2;text-shadow:none;letter-spacing:1px}
+.s1 .tt .ny span{font-family:var(--title);font-weight:900;color:#F2C46B}
+.s1 .tt h1.brush{clip-path:inset(0 100% 0 0);opacity:1;transform:none;animation:brushin 1.1s cubic-bezier(.6,0,.2,1) var(--d,0s) forwards}
+@keyframes brushin{to{clip-path:inset(0 0 0 0)}}
+.s1 .glit{position:absolute;inset:0;z-index:1;pointer-events:none}
+.s1 .glit b{position:absolute;width:4px;height:4px;border-radius:999px;background:#FDE7A6;box-shadow:0 0 8px 2px rgba(253,231,166,.8);opacity:0;animation:twk 2.4s ease-in-out infinite}
+@keyframes twk{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1)}}
+.s1 .pic video.s1v{display:block;width:100%;height:100%;object-fit:cover}
+.back{position:absolute;z-index:40;top:calc(12px + env(safe-area-inset-top));left:12px;width:44px;height:44px;border:0;border-radius:999px;background:rgba(255,253,247,.88);color:var(--wood);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(60,40,25,.18)}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:12px -20px 0;padding:0 20px 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;height:36px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:#FFFDF7;color:var(--ink2);font-size:13px;line-height:20px;white-space:nowrap}
+.chips button.on{background:var(--wood);border-color:var(--wood);color:#FFF4E2}
+.form input.bad{border-color:var(--red)!important;background:#FFF6F3!important}
+.err{margin-top:-12px!important;min-height:20px!important}
+
+/* 11/28 캡처 유도: 처방전 한 장 + 출처 표시 */
+.snap{position:relative}
+.snap::after{content:"할미약방 2027 신년운세";position:absolute;right:12px;bottom:8px;z-index:4;font-size:13px;line-height:20px;color:rgba(107,90,73,.55);font-family:var(--serif);pointer-events:none}
+.grind.snap::after{color:rgba(255,244,226,.7)}
+.rx{position:relative;overflow:hidden;margin:0 16px 48px;min-height:min(640px,calc(100svh - 120px));padding:32px 24px 40px;border-radius:20px;background:radial-gradient(circle at 50% 0%,#3a2a1e,#1c140e 75%);color:#F6E7CF;display:flex;flex-direction:column;gap:12px;box-shadow:0 8px 24px rgba(40,25,15,.3)}
+.rx::before{content:"";position:absolute;inset:8px;border:1px solid rgba(242,196,107,.45);border-radius:16px;pointer-events:none}
+.rx .rxh{text-align:center;font-family:var(--serif);font-size:15px;line-height:24px;color:#F2C46B;letter-spacing:1px}
+.rx .rxn{text-align:center;font-family:var(--title);font-weight:900;font-size:24px;line-height:34px;color:#FFF4E2;margin-bottom:4px}
+.rx .rxu{display:flex;align-items:center;justify-content:center;gap:16px;margin:4px 0 8px}
+.rx .rxu b{font-family:var(--brush);font-size:64px;line-height:76px;font-weight:400;text-shadow:0 0 24px rgba(255,255,255,.15)}
+.rx .rxu span{font-size:13px;line-height:20px;color:#C9B79F}.rx .rxu em{font-style:normal;font-family:var(--serif);font-size:20px;line-height:30px;color:#FFF4E2}
+.rx .rxr{display:grid;grid-template-columns:88px 1fr;gap:12px;padding:12px 0;border-top:1px dashed rgba(242,196,107,.3)}
+.rx .rxr span{font-size:13px;line-height:24px;color:#C9B79F}.rx .rxr b{font-family:var(--serif);font-size:17px;line-height:24px;font-weight:600;color:#FFF4E2}
+.rx .rxq{margin-top:auto;text-align:center;font-family:var(--serif);font-size:17px;line-height:27px;color:#F6E7CF}
+.rx .rxs{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;line-height:20px;color:#C9B79F}
+.rx .rxs i{font-style:normal;display:inline-block;padding:0 4px;border:2px solid #D8503A;border-radius:4px;color:#D8503A;font-family:var(--title);font-size:13px;line-height:18px;transform:rotate(-6deg)}
+.rx .snow{position:absolute;inset:0;pointer-events:none}
+.s1 .tt p{margin:0!important}.s1 .tt .ny{margin-top:12px!important}.s1 .tt h1{margin:16px 0 4px!important}.s1 .tt .b{margin-top:8px!important}
 </style>
 </head>
 <body>
@@ -727,15 +765,24 @@ async function says(lines, box) {
     const ps = box.querySelectorAll(".say"); for (let k = 0; k < pair.length; k++) { await typeTo(ps[k], pair[k]); await sleep(220); }
   }
 }
-function show(html, bot = "", lock = true) { document.body.classList.toggle("noscroll", lock); $("#app").innerHTML = html; $("#cta").classList.remove("on"); window.scrollTo(0, 0); const b = document.querySelector(".bot"); if (b) b.remove(); if (bot) document.body.insertAdjacentHTML("beforeend", `<div class="bot"><div>${bot}</div></div>`); }
+/* 11/28 뒤로 가기: 화면마다 history에 쌓고, 왼쪽 위 ‹ 버튼과 폰 뒤로 가기 모두 이전 화면으로. SID는 이전 화면의 늦은 동작을 막는 번호 */
+let SID = 0;
+const NAVS = { S1: () => S1(), S3: () => S3(), S4: () => S4(), S5: () => S5(), S6: () => S6() };
+function nav(name) { history.pushState({ s: name }, ""); NAVS[name](); }
+addEventListener("popstate", (e) => { const n = e.state?.s; if (NAVS[n]) NAVS[n](); });
+const BACK = `<button class="back" aria-label="뒤로" onclick="history.back()"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
+function show(html, bot = "", lock = true, back = false) { SID++; document.body.classList.toggle("noscroll", lock); $("#app").innerHTML = html + (back ? BACK : ""); $("#cta").classList.remove("on"); window.scrollTo(0, 0); const b = document.querySelector(".bot"); if (b) b.remove(); if (bot) document.body.insertAdjacentHTML("beforeend", `<div class="bot"><div>${bot}</div></div>`); }
 const VIDS = new Set(["S3", "S4", "S5", "S6"]);
 const media = (img, extra = "") => (VIDS.has(img) ? `<video class="mv" src="vid/${img}.mp4?v=3" poster="${IMG(img)}" autoplay muted loop playsinline ${extra}></video>` : `<img src="${IMG(img)}?v=3" alt="" ${extra}>`);
 const scr = (img, inner, cls = "") => `<section class="sc ${cls}"><div class="pic">${media(img)}</div><div class="low">${inner}</div></section>`;
 
-/* S1 첫 화면 */
+/* S1 첫 화면 (11/28: «2027 신년운세», 줄마다 차례로 뜸. 영상이 생기면 S1VID = true) */
+const S1VID = false;
 function S1() {
   const snow = Array.from({ length: 36 }, (_, i) => `<i style="left:${(i * 29) % 100}%;width:${3 + (i % 3)}px;height:${3 + (i % 3)}px;animation-duration:${7 + (i % 6)}s;animation-delay:-${(i * 0.6).toFixed(1)}s"></i>`).join("");
-  show(`<section class="sc s1"><div class="pic"><img src="${IMG("S1")}" alt=""><div class="snow">${snow}</div><div class="tt"><p class="y">2027 정미년</p><h1>할미약방</h1><p class="a">아프기 전에 짓는 약</p><p class="b">때와 맥을 짚어, 미리 막는 집</p></div></div></section>`, `<button class="btn" id="go">약방 문 열기</button>`);
+  const bg = S1VID ? `<video class="s1v" src="vid/S1v.mp4?v=1" poster="${IMG("S1")}" autoplay muted playsinline></video>` : `<img src="${IMG("S1")}" alt="">`;
+  const glit = Array.from({ length: 10 }, (_, i) => `<b style="left:${8 + ((i * 37) % 84)}%;top:${6 + ((i * 23) % 40)}%;animation-delay:${(i * 0.37).toFixed(2)}s"></b>`).join("");
+  show(`<section class="sc s1"><div class="pic">${bg}<div class="snow">${snow}</div><div class="glit">${glit}</div><div class="tt"><p class="y rv" style="--d:.2s">丁未年, 붉은 양의 해</p><p class="ny rv" style="--d:.8s"><span>2027</span> 신년운세</p><h1 class="rv brush" style="--d:1.4s">할미약방</h1><p class="a rv" style="--d:2.3s">아프기 전에 짓는 약</p><p class="b rv" style="--d:2.9s">새해 맥을 짚어, 다칠 데를 미리 막아 주마</p></div></div></section>`, `<button class="btn rv" style="--d:3.5s" id="go">약방 문 열기</button>`);
   $("#go").onclick = S2;
 }
 /* S2 문 열기 — 세 장면, 장면마다 움직이는 그림(8초 반복 영상)으로 바뀜 */
@@ -764,20 +811,22 @@ async function S2() {
     const ps = box.querySelectorAll(".say"); for (let i = 0; i < ps.length; i++) { await typeTo(ps[i], lineify(BEATS[k][1][i])); await sleep(220); }
     await tap();
   }
-  S3();
+  nav("S3");
 }
 /* S3 마음에 걸리는 것 */
 async function S3() {
-  show(scr("S3", `<div id="say"></div><textarea class="slip" id="wish" maxlength="200" placeholder="예) 내년에 미국 발령이 날 것 같은데, 가도 괜찮을까요?"></textarea>`, "talk-in scrolly"), `<button class="btn" id="go">다 적었어요</button><button class="lnk" id="skip">딱히 없어요</button>`, false);
+  show(scr("S3", `<div id="say"></div><textarea class="slip" id="wish" maxlength="200" placeholder="직접 적거나, 아래에서 골라도 된다">${esc(U.wish || "")}</textarea><div class="chips" id="chips">${CHIPS.map((c) => `<button type="button">${c}</button>`).join("")}</div>`, "talk-in scrolly"), `<button class="btn" id="go">다 적었어요</button><button class="lnk" id="skip">딱히 없어요</button>`, false, true);
   const wb = $("#wish"), grow = () => { wb.style.height = "auto"; wb.style.height = Math.max(168, wb.scrollHeight + 2) + "px"; }; wb.addEventListener("input", grow); grow();
   wb.addEventListener("focus", () => setTimeout(() => wb.scrollIntoView({ block: "center", behavior: "smooth" }), 300));
-  $("#go").disabled = true; $("#go").onclick = () => { U.wish = $("#wish").value.trim(); save(); S4(); };
+  $("#go").disabled = true; $("#go").onclick = () => { U.wish = $("#wish").value.trim(); save(); nav("S4"); };
   const ok = () => ($("#go").disabled = !wb.value.trim()); wb.addEventListener("input", ok); ok();
-
-  $("#skip").onclick = () => { U.wish = ""; save(); S4(); };
+  document.querySelectorAll("#chips button").forEach((b) => (b.onclick = () => { wb.value = b.textContent; document.querySelectorAll("#chips button").forEach((x) => x.classList.toggle("on", x === b)); wb.dispatchEvent(new Event("input")); grow(); navigator.vibrate?.(8); }));
+  $("#skip").onclick = () => { U.wish = ""; save(); nav("S4"); };
   floatSlips(wb);
   await says(["급할 거 하나 없다. 따뜻할 때 차부터 한 모금 마시거라.", "내년 생각하면 자꾸 마음에 걸리는 거 있지? 그거 하나만 여기 적어 보련?"], $("#say"));
 }
+/* 11/28 원클릭 고민: 쓰는 부담을 덜어 줌. 누르면 쪽지에 들어가고 고쳐 쓸 수 있음 */
+const CHIPS = ["내년엔 연애할 수 있을까요?", "지금 사람이랑 결혼해도 될까요?", "이직해도 될까요?", "내년엔 돈이 좀 모일까요?", "시험 붙을 수 있을까요?", "사업 잘 될까요?", "가족 건강이 걱정돼요", "내년엔 좀 덜 힘들까요?"];
 /* A2 남들이 품고 온 걱정: 쪽지가 떠올랐다 사라짐. 적기 시작하면 멈춤 */
 const SLIPS = ["내년엔 이직해도 될까요?", "이 사람이랑 결혼해도 될까요?", "엄마 건강이 자꾸 걱정돼요", "돈이 왜 이렇게 새는지 모르겠어요", "시험 붙을 수 있을까요?", "그 사람한테 다시 연락 올까요?", "가게 열어도 될까요?", "회사에서 버틸 수 있을까요?", "이사 가도 괜찮을까요?", "내년엔 좀 덜 힘들까요?"];
 function floatSlips(wb) {
@@ -798,47 +847,93 @@ function floatSlips(wb) {
 }
 /* S4 접수표 */
 async function S4() {
-  const b8 = U.y ? `${U.y}${String(U.m).padStart(2, "0")}${String(U.d).padStart(2, "0")}` : "";
+  const b8 = U.y ? `${U.y}.${String(U.m).padStart(2, "0")}.${String(U.d).padStart(2, "0")}` : "";
   const tm = U.known && U.hour !== "" ? `${String(U.hour).padStart(2, "0")}:${String(U.minute).padStart(2, "0")}` : "";
   show(scr("S4", `<div id="say"></div><div class="form">
     <div><label>이름</label><input id="nm" maxlength="10" value="${esc(U.name)}" placeholder="홍길동"></div>
-    <div><label>생년월일</label><div class="row2"><input id="bd" inputmode="numeric" maxlength="8" value="${b8}" placeholder="생년월일 8자리 (예: 19990122)"><div class="seg"><button data-c="solar" class="${U.cal === "solar" ? "on" : ""}">양력</button><button data-c="lunar" class="${U.cal === "lunar" ? "on" : ""}">음력</button></div></div></div>
-    <div><label>태어난 시간</label><div class="row2"><input id="tm" inputmode="numeric" maxlength="5" value="${tm}" placeholder="예: 13:20" ${U.known ? "" : "disabled"}><button type="button" class="pill${U.known ? "" : " on"}" id="unk" aria-pressed="${!U.known}">모름</button></div></div>
+    <div><label>생년월일</label><div class="row2"><input id="bd" inputmode="numeric" maxlength="10" value="${b8}" placeholder="예: 1999.01.22" autocomplete="bday"><div class="seg"><button data-c="solar" class="${U.cal === "solar" ? "on" : ""}">양력</button><button data-c="lunar" class="${U.cal === "lunar" ? "on" : ""}">음력</button></div></div></div>
+    <div><label>태어난 시간</label><div class="row2"><input id="tm" inputmode="numeric" maxlength="5" value="${tm}" placeholder="예: 17:30 (오후 5시 반)" ${U.known ? "" : "disabled"}><button type="button" class="pill${U.known ? "" : " on"}" id="unk" aria-pressed="${!U.known}">모름</button></div></div>
     <div><label>성별</label><div class="seg" id="gd"><button data-g="f" class="${U.gender === "f" ? "on" : ""}">여자</button><button data-g="m" class="${U.gender === "m" ? "on" : ""}">남자</button></div></div>
-    <p class="err" id="err"></p></div>`, "form-sc"), `<button class="btn" id="go">할미한테 맡기기</button>`, false);
+    <p class="err" id="err"></p></div>`, "form-sc"), `<button class="btn" id="go">할미한테 맡기기</button>`, false, true);
+  const sid = SID;
+  bindBirthFormat();
   document.querySelectorAll("[data-c]").forEach((b) => (b.onclick = () => { U.cal = b.dataset.c; document.querySelectorAll("[data-c]").forEach((x) => x.classList.toggle("on", x === b)); }));
   document.querySelectorAll("[data-g]").forEach((b) => (b.onclick = () => { U.gender = b.dataset.g; document.querySelectorAll("[data-g]").forEach((x) => x.classList.toggle("on", x === b)); }));
-  $("#unk").onclick = (e) => { const on = !e.currentTarget.classList.contains("on"); e.currentTarget.classList.toggle("on", on); e.currentTarget.setAttribute("aria-pressed", on); $("#tm").disabled = on; if (on) $("#tm").value = ""; };
+  $("#unk").onclick = (e) => { const on = !e.currentTarget.classList.contains("on"); e.currentTarget.classList.toggle("on", on); e.currentTarget.setAttribute("aria-pressed", on); $("#tm").disabled = on; if (on) $("#tm").value = ""; checkForm(true); };
   $("#go").onclick = () => {
-    const nm = $("#nm").value.trim(), bd = $("#bd").value.replace(/\D/g, ""), t = $("#tm").value.replace(/[^\d]/g, "");
-    if (!nm) return ($("#err").textContent = "이름을 적어 주거라.");
-    if (bd.length !== 8) return ($("#err").textContent = "생년월일은 8자리로 적어 주거라. 예) 19990122");
-    const y = +bd.slice(0, 4), m = +bd.slice(4, 6), d = +bd.slice(6, 8);
-    if (y < 1920 || y > 2015 || m < 1 || m > 12 || d < 1 || d > 31) return ($("#err").textContent = "날짜가 맞는지 한 번 더 봐 주거라.");
-    const unk = $("#unk").classList.contains("on"); let hh = "", mi = "";
-    if (!unk) { if (t.length < 3) return ($("#err").textContent = "시간은 13:20처럼 적거나 «모름»을 눌러라."); hh = +t.slice(0, t.length - 2); mi = +t.slice(-2); if (hh > 23 || mi > 59) return ($("#err").textContent = "시간이 맞는지 봐 주거라."); }
-    Object.assign(U, { name: nm, y, m, d, known: !unk, hour: hh, minute: mi }); save(); chP = null; fetchChart().catch(() => {}); S5();
+    const r = checkForm(false); if (!r) return;
+    Object.assign(U, r); save(); chP = null; fetchChart().catch(() => {}); nav("S5");
   };
   $("#go").disabled = true;
   await says(["먼저 언제 태어났는지부터 적어 보거라. 타고난 바탕이 거기 다 적혀 있거든."], $("#say"));
+  if (sid !== SID) return;
   $("#go").disabled = false;
+}
+/* 11/28 생년월일·시간 서식: 숫자만 받아 1999.01.22 / 17:30 꼴로 맞춤. 달력에 없는 날, 24시 넘는 시간은 바로 알려 줌 */
+const fmtBD = (v) => {
+  const m = String(v).match(/^\s*(\d{4})\D+(\d{1,2})\D+(\d{1,2})/); // 1999-1-22, 1999/1/22, 1999. 1. 22
+  const d = m ? m[1] + m[2].padStart(2, "0") + m[3].padStart(2, "0") : String(v).replace(/\D/g, "").slice(0, 8);
+  return d.length > 6 ? `${d.slice(0, 4)}.${d.slice(4, 6)}.${d.slice(6)}` : d.length > 4 ? `${d.slice(0, 4)}.${d.slice(4)}` : d;
+};
+const fmtTM = (v) => {
+  let d = String(v).replace(/\D/g, "").slice(0, 4);
+  if (d.length >= 1 && +d[0] > 2) d = "0" + d; // 9 → 09
+  d = d.slice(0, 4);
+  return d.length > 2 ? `${d.slice(0, 2)}:${d.slice(2)}` : d;
+};
+function bdErr(digits, cal) {
+  if (digits.length < 8) return digits.length ? "생년월일을 끝까지 적어 주거라. 예) 1999.01.22" : "";
+  const y = +digits.slice(0, 4), m = +digits.slice(4, 6), d = +digits.slice(6, 8);
+  if (y < 1920 || y > 2015) return "1920년부터 2015년생까지 볼 수 있단다.";
+  if (m < 1 || m > 12) return `${m}월은 달력에 없구나. 달을 다시 봐 주거라.`;
+  const last = cal === "lunar" ? 30 : new Date(y, m, 0).getDate();
+  if (d < 1 || d > last) return `${m}월 ${d}일은 달력에 없구나. ${m}월은 ${last}일까지란다.`;
+  return "";
+}
+function tmErr(v) {
+  const d = v.replace(/\D/g, ""); if (!d) return "시간을 적거나 «모름»을 눌러 주거라.";
+  if (d.length < 4) return "시간은 17:30처럼 시와 분을 다 적어 주거라.";
+  const h = +d.slice(0, 2), mi = +d.slice(2);
+  if (h > 23) return `${h}시는 없단다. 0시부터 23시까지로 적어 주거라. 밤 12시는 00:00이야.`;
+  if (mi > 59) return "분은 59분까지란다.";
+  return "";
+}
+function checkForm(soft) {
+  const nm = $("#nm").value.trim(), bd = $("#bd").value.replace(/\D/g, ""), unk = $("#unk").classList.contains("on"), tv = $("#tm").value;
+  const eB = bdErr(bd, U.cal), eT = unk || (soft && !tv) ? "" : tmErr(tv);
+  let e = eB || (bd.length === 8 || soft ? "" : "생년월일을 적어 주거라. 예) 1999.01.22") || eT;
+  if (!e && !nm && !soft) e = "이름을 적어 주거라.";
+  $("#err").textContent = e; $("#bd").classList.toggle("bad", !!eB); $("#tm").classList.toggle("bad", !!eT && !!tv);
+  if (e || soft) return null;
+  const d = tv.replace(/\D/g, "");
+  return { name: nm, y: +bd.slice(0, 4), m: +bd.slice(4, 6), d: +bd.slice(6, 8), known: !unk, hour: unk ? "" : +d.slice(0, 2), minute: unk ? "" : +d.slice(2) };
+}
+function bindBirthFormat() {
+  const bd = $("#bd"), tm = $("#tm"), nm = $("#nm");
+  bd.addEventListener("input", () => { bd.value = fmtBD(bd.value); checkForm(true); });
+  bd.addEventListener("paste", () => setTimeout(() => { bd.value = fmtBD(bd.value); checkForm(true); }, 0));
+  tm.addEventListener("input", () => { tm.value = fmtTM(tm.value); checkForm(true); });
+  nm.addEventListener("input", () => { const c = nm.value.replace(/[^\p{L}\s]/gu, ""); if (c !== nm.value) nm.value = c; checkForm(true); });
+  document.querySelectorAll("[data-c]").forEach((b) => b.addEventListener("click", () => checkForm(true)));
 }
 /* S5 마음 주는 사람 */
 async function S5() {
   const LV = ["선택 안함", "솔로", "연애중", "짝사랑중", "썸타는중", "기혼"], LL = ["선택 안함", "3개월 미만", "3개월 ~ 1년", "1년 ~ 3년", "3년 ~ 5년", "5년 이상"];
   const opt = (a, v) => a.map((x) => `<option ${x === v ? "selected" : ""}>${x}</option>`).join("");
-  show(scr("S5", `<div id="say"></div><p class="sent">지금은 <select id="lv">${opt(LV, U.love || "선택 안함")}</select> 상태예요.</p><p class="sent">기간은 <select id="ll">${opt(LL, U.loveLen || "선택 안함")}</select> 이에요.</p><p class="hint">답하지 않아도 넘어갈 수 있어요.</p>`, "talk-in s5"), `<button class="btn" id="go">다음으로</button>`);
-  $("#go").disabled = true; $("#go").onclick = () => { const a = $("#lv").value, b = $("#ll").value; U.love = a === "선택 안함" ? "" : a; U.loveLen = b === "선택 안함" ? "" : b; save(); S6(); };
+  show(scr("S5", `<div id="say"></div><p class="sent">지금은 <select id="lv">${opt(LV, U.love || "선택 안함")}</select> 상태예요.</p><p class="sent">기간은 <select id="ll">${opt(LL, U.loveLen || "선택 안함")}</select> 이에요.</p><p class="hint">답하지 않아도 넘어갈 수 있어요.</p>`, "talk-in s5"), `<button class="btn" id="go">다음으로</button>`, true, true);
+  const sid = SID;
+  $("#go").disabled = true; $("#go").onclick = () => { const a = $("#lv").value, b = $("#ll").value; U.love = a === "선택 안함" ? "" : a; U.loveLen = b === "선택 안함" ? "" : b; save(); nav("S6"); };
   /* A1 내 답에 반응: 태어난 철·시간 모름·이름 */
   const sea = U.cal === "lunar" ? (U.m <= 3 ? "봄" : U.m <= 6 ? "여름" : U.m <= 9 ? "가을" : "겨울") : (U.m >= 3 && U.m <= 5 ? "봄" : U.m >= 6 && U.m <= 8 ? "여름" : U.m >= 9 && U.m <= 11 ? "가을" : "겨울");
   const SEAS = { 봄: "일찍 깨어나 바삐 살았겠구나.", 여름: "볕이 세니 속에 불이 많겠다.", 가을: "거둘 때라 셈이 빠르겠다.", 겨울: "추운 데서 불씨를 품고 자랐겠다." };
   await says([`${U.y}년 ${sea}에 났구나.`, SEAS[sea], ...(U.known ? [] : ["시간은 모른다 했지. 괜찮다, 세 기둥으로도 다 보인다."]), `${callName(U.name)}${hasJ(callName(U.name)) ? "이" : ""}라… 고것 참, 이름도 곱구나.`, "하나만 더 묻자꾸나. 요새 마음 주는 사람은 있니?"], $("#say"));
+  if (sid !== SID) return;
   $("#go").disabled = false;
 }
 /* S6 맥 짚기 (꾹 누르기) */
 async function S6() {
   fetchChart().catch(() => {}); askAnswer();
-  show(`<section class="sc split"><div class="pic">${media("S6", 'style="object-position:center bottom"')}<div class="pulse-zone" id="pz"><b></b><svg class="pring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" pathLength="1" id="pg"/></svg></div><p class="ptip off" id="st">여기 손목을 꾹 눌러 주세요</p></div><div class="low"><div id="say"></div></div></section>`, `<button class="btn" id="go" disabled>결과 읽으러 가기</button>`);
+  show(`<section class="sc split"><div class="pic">${media("S6", 'style="object-position:center bottom"')}<div class="pulse-zone" id="pz"><b></b><svg class="pring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" pathLength="1" id="pg"/></svg></div><p class="ptip off" id="st">여기 손목을 꾹 눌러 주세요</p></div><div class="low"><div id="say"></div></div></section>`, `<button class="btn" id="go" disabled>결과 읽으러 가기</button>`, true, true);
   const LOVESAY = { 솔로: "혼자라 했지. 내년에 다가올 사람이 있는지도 같이 보마.", 연애중: "만나는 사람이 있다 했지. 그 사람 얘기도 같이 보마.", 짝사랑중: "혼자 마음에 둔 사람이 있다 했지. 그 마음 갈 데도 같이 보마.", 썸타는중: "오가는 사람이 있다 했지. 그 사이도 같이 보마.", 기혼: "곁에 식구가 있다 했지. 곁 사람 얘기도 같이 보마." };
   await says([...(LOVESAY[U.love] ? [LOVESAY[U.love]] : []), "태어난 때는 타고난 바탕이고, 맥은 지금 네 기운이란다. 둘을 같이 봐야 앞날이 보이지.", "자, 손목 이리 내 보거라. 가만히, 빼지 말고."], $("#say"));
   if (!document.querySelector("#pz.hold")) $("#st").classList.remove("off");
@@ -857,7 +952,8 @@ async function S6() {
     if (now - beat > 850) { beat = now; navigator.vibrate?.([40, 110, 30]); }
     if (p >= 1) {
       done = true; holding = false; pz.classList.remove("hold"); st.textContent = "맥을 다 짚었어요"; st.classList.remove("off"); setTimeout(() => st.classList.add("off"), 1600);
-      try { await fetchChart(); sayBox.innerHTML = `<p class="say">됐다. 이제 손 거둬도 된다.</p>`; $("#go").disabled = false; $("#go").onclick = S7; }
+      const sid = SID;
+      try { await fetchChart(); if (sid !== SID) return; sayBox.innerHTML = `<p class="say">됐다. 이제 손 거둬도 된다.</p>`; $("#go").disabled = false; $("#go").onclick = S7; }
       catch { sayBox.innerHTML = `<p class="say">맥이 잘 안 잡히는구나. 링크를 다시 확인해 주거라.</p>`; }
       return;
     }
@@ -1062,7 +1158,7 @@ function chartSheet(v, NAME) {
   const dtag = (gz) => { let t = 0; for (const c of gz) { const e = ELOF(c); if (v.useful.includes(e)) t++; if (v.avoid.includes(e)) t--; } return t > 0 ? ["볕 드는 십 년", "dsun"] : t < 0 ? ["버티는 십 년", "dhard"] : ["고른 십 년", ""]; };
   const DA = (v.daeun || []).slice(0, 8), cur = DA.find((d) => d.gz === v.curDaeun) || DA.find((d) => d.year <= 2027 && d.year + 10 > 2027);
   const curT = cur ? dtag(cur.gz)[0] : "";
-  return `<section class="blk sheet"><p class="ey">${esc(NAME)}${hasJ(NAME) ? "이" : ""} 맥 기록지</p><p class="tt">타고난 다섯 기운</p><div class="wtab">${rows}</div>
+  return `<section class="blk sheet snap"><p class="ey">${esc(NAME)}${hasJ(NAME) ? "이" : ""} 맥 기록지</p><p class="tt">타고난 다섯 기운</p><div class="wtab">${rows}</div>
 <div class="roles">${role.map(([t, e, c]) => `<div class="${c}"><span>${t}</span><b style="color:${WXC[e]}">${WXN[e]}</b></div>`).join("")}</div>
 <p class="sub">타고난 힘</p><div class="seven">${SL.map((l, i) => `<span class="${i === si ? "on" : ""}">${l}</span>`).join("")}</div><p class="ask">${esc(NAME)}${hasJ(NAME) ? "이" : ""} 힘은 <b>${SL[si]}</b> 쪽이란다.</p>
 ${DA.length ? `<p class="sub">십 년마다 바뀌는 운</p><div class="daeun">${DA.map((d) => { const [t, c] = dtag(d.gz); return `<div class="${d === cur ? "cur" : ""} ${c}"><small>${d.age}살부터</small><b><i style="color:${WXC[ELOF(d.gz[0])]}">${d.gz[0]}</i><i style="color:${WXC[ELOF(d.gz[1])]}">${d.gz[1]}</i></b><span>${t}</span>${d === cur ? `<em>지금</em>` : ""}</div>`; }).join("")}</div><p class="ask">지금 네 십 년은 <b>${curT}</b>이다.<br>내년 丁未는 이 십 년 위에 얹혀 온다.</p><p class="callout">🔒 십 년마다 무슨 일이 있는지는 평생 체질 약첩에 적어 두마.</p>` : ""}</section>`;
@@ -1132,7 +1228,7 @@ function renderResult(v) {
   /* R5 약연 → 내년 */
   H.push(`<div class="wt">`);
   H.push(pn({ img: "R5a", h: 440, kind: "full", pos: "center 30%", b: [{ t: "이제 내년 맥이다.<br>이걸 네 손으로<br>곱게 갈아 보거라.", x: 46, y: 56, w: 52 }] }));
-  H.push(`<section class="blk"><p class="tt">약재를 갈면<br>바닥에 적혀 있단다</p><div class="grind" id="grind" style="border:2px solid #1d1d1d"><div class="gradeCard"><p class="gy">2027 丁未年</p><p class="gs">붉은 양의 해, 정미년</p><p class="gk">${esc(NAME)}${hasJ(NAME) ? "이" : ""}의 내년은</p><p class="g gv">${shortV(v.yearVerdict)}</p><p class="gl">${GLINE(v)}</p></div><canvas id="gc"></canvas>${SNOW(8)}</div><div id="after" style="display:none"></div></section>`);
+  H.push(`<section class="blk"><p class="tt">약재를 갈면<br>바닥에 적혀 있단다</p><div class="grind snap" id="grind" style="border:2px solid #1d1d1d"><div class="gradeCard"><p class="gy">2027 丁未年</p><p class="gs">붉은 양의 해, 정미년</p><p class="gk">${esc(NAME)}${hasJ(NAME) ? "이" : ""}의 내년은</p><p class="g gv">${shortV(v.yearVerdict)}</p><p class="gl">${GLINE(v)}</p></div><canvas id="gc"></canvas>${SNOW(8)}</div><div id="after" style="display:none"></div></section>`);
   H.push(`<div style="height:40px"></div>`);
   H.push(pn({ img: "R5c", h: 300, kind: "box", pos: "center 30%", sfx: [{ t: "흠…", x: 70, y: 8, r: 8 }], b: [{ t: "할미는 듣기 좋은<br>소리는 못 한다.", x: 46, y: -24, w: 50 }] }));
   H.push(capt(/힘이 붙/.test(v.yearVerdict) ? `내년은 힘이 붙는 해다.<br>그런데 <em>힘이 붙을 때가<br>제일 크게 새는 때</em>란다.` : `내년은,<br><em>그렇게 버티던 힘이<br>안 통하는 해</em>란다.`));
@@ -1175,12 +1271,12 @@ function renderResult(v) {
   H.push(`<div class="wt">`);
   H.push(pn({ img: "R10a", h: 420, kind: "boxR", pos: "center 25%", b: [{ t: "그래도<br>걱정만 할 건<br><b>아니란다.</b>", x: -24, y: 8, w: 50 }] }));
   H.push(capt(`내년엔 너를 도와줄 사람이<br><em>${v.guiren?.in2027 ? "제 발로 찾아온단다." : "가까이 와 있단다. 찾아가야 만나지."}</em>`));
-  H.push(`<section class="blk"><p class="ey">내년에 오는 귀인</p><p class="tt">이런 사람을 놓치지 마라</p><div class="guiren"><img src="${IMG(GRIMG)}" alt=""><div><p><span>어디서</span><b>${esc(gP)}</b></p><p><span>어떤 사람</span><b>${{ 木: "먼저 손 내미는 사람", 火: "밝고 말이 시원한 사람", 土: "말수 적고 믿음직한 사람", 金: "셈이 정확하고 단호한 사람", 水: "조용하고 생각 깊은 사람" }[v.useful[0]]}</b></p><p><span>그 사람 기운</span><b>${WXN[v.useful[0]]} 기운</b></p></div></div><div class="gqa">${[["언제 도움을 받니?", { money: "돈이 빠져나가 막막할 때", work: "일터에서 네 자리가 흔들릴 때", love: "마음이 엇갈려 말이 막힐 때", body: "몸이 지쳐 주저앉을 때", people: "사람한테 데여 마음을 닫을 때" }[VO[0]], ""], ["언제 가까워지니?", `${SEA(om[0] || "")} 무렵, <span class="blur">${esc(MK(om[0] || ""))}</span>`, ""], ["어떤 사이니?", `${esc(gP)}, ${esc(gDesc)}${hasJ(gDesc) ? "이다" : "다"}`, ""], ["무얼 해 주니?", { 木: "막힌 길을 터 주고 새 자리로 이끌어 준다", 火: "네 이름을 알리고 앞에 세워 준다", 土: "흔들릴 때 버팀목이 되어 준다", 金: "끊을 건 끊게 정리를 도와준다", 水: "필요한 소식과 지혜를 먼저 건네준다" }[v.useful[0]], ""]].map(([q, a, c]) => `<div><p class="q">${q}</p><p class="a ${c}">${a}</p></div>`).join("")}</div><p class="callout">🔒 이 사람을 <b>어떻게 알아보는지</b>, <b>무엇을 부탁해야 하는지</b>는<br>편지 일곱째 장에 적어 두마.</p></section>`);
+  H.push(`<section class="blk snap"><p class="ey">내년에 오는 귀인</p><p class="tt">이런 사람을 놓치지 마라</p><div class="guiren"><img src="${IMG(GRIMG)}" alt=""><div><p><span>어디서</span><b>${esc(gP)}</b></p><p><span>어떤 사람</span><b>${{ 木: "먼저 손 내미는 사람", 火: "밝고 말이 시원한 사람", 土: "말수 적고 믿음직한 사람", 金: "셈이 정확하고 단호한 사람", 水: "조용하고 생각 깊은 사람" }[v.useful[0]]}</b></p><p><span>그 사람 기운</span><b>${WXN[v.useful[0]]} 기운</b></p></div></div><div class="gqa">${[["언제 도움을 받니?", { money: "돈이 빠져나가 막막할 때", work: "일터에서 네 자리가 흔들릴 때", love: "마음이 엇갈려 말이 막힐 때", body: "몸이 지쳐 주저앉을 때", people: "사람한테 데여 마음을 닫을 때" }[VO[0]], ""], ["언제 가까워지니?", `${SEA(om[0] || "")} 무렵, <span class="blur">${esc(MK(om[0] || ""))}</span>`, ""], ["어떤 사이니?", `${esc(gP)}, ${esc(gDesc)}${hasJ(gDesc) ? "이다" : "다"}`, ""], ["무얼 해 주니?", { 木: "막힌 길을 터 주고 새 자리로 이끌어 준다", 火: "네 이름을 알리고 앞에 세워 준다", 土: "흔들릴 때 버팀목이 되어 준다", 金: "끊을 건 끊게 정리를 도와준다", 水: "필요한 소식과 지혜를 먼저 건네준다" }[v.useful[0]], ""]].map(([q, a, c]) => `<div><p class="q">${q}</p><p class="a ${c}">${a}</p></div>`).join("")}</div><p class="callout">🔒 이 사람을 <b>어떻게 알아보는지</b>, <b>무엇을 부탁해야 하는지</b>는<br>편지 일곱째 장에 적어 두마.</p></section>`);
   H.push(capt(`그래도 내년에<br><em>볕 드는 데가 세 군데 있단다.</em>`));
   H.push(`<section class="sun">${[["귀인", `${esc(gP)} 쪽에서 너를 도와줄 사람이 ${v.guiren?.in2027 ? "온다" : "기다린다"}.`], ["풀리는 때", `${SEA(om[0] || "")}엔 막혔던 게 풀린다.`], ["모이는 달", "돈과 사람이 모이는 달이 따로 있다."]].map(([t, d], k) => `<div><span>${["一", "二", "三"][k]}</span><b>${t}</b><p>${d}</p></div>`).join("")}<p class="note2">어느 달인지, 어떻게 붙잡는지는 편지 여섯째, 일곱째, 여덟째 장에 적어 두마.</p></section>`);
   /* A8 좋은 날 하나: 날짜는 가리고 철과 까닭만 */
   H.push(capt(`그중에서도<br><em>제일 좋은 날이 하루 있단다.</em>`));
-  H.push(`<section class="blk gday"><p class="ey">내년에 제일 좋은 날</p><p class="hearts">♥♥♥♥<span>♥</span></p><p class="gd"><span class="blur">●월 ●●일</span></p><p class="gs2">${SEA(om[0] || "")} 어느 날</p><p class="ask">그날은 네게 필요한 ${WXN[v.useful[0]]} 기운이 들어오는 날이다.<br>미뤄 둔 말을 꺼내기 좋은 날이다.</p><p class="callout">🔒 어느 날인지는 편지 여덟째 장에 적어 두마.</p></section>`);
+  H.push(`<section class="blk gday snap"><p class="ey">내년에 제일 좋은 날</p><p class="hearts">♥♥♥♥<span>♥</span></p><p class="gd"><span class="blur">●월 ●●일</span></p><p class="gs2">${SEA(om[0] || "")} 어느 날</p><p class="ask">그날은 네게 필요한 ${WXN[v.useful[0]]} 기운이 들어오는 날이다.<br>미뤄 둔 말을 꺼내기 좋은 날이다.</p><p class="callout">🔒 어느 날인지는 편지 여덟째 장에 적어 두마.</p></section>`);
   H.push(`<section class="blk"><p class="ey">내년 네 돈은</p><p class="tt">${["버는 해", "지키는 해", "새는 해"][moneyY]}란다</p><div class="pouch">${["버는 해", "지키는 해", "새는 해"].map((t, k) => `<div class="${k === moneyY ? "on" : ""}"><i>${["↗", "＝", "↘"][k]}</i><b>${t}</b></div>`).join("")}</div><p class="ask pask">${["들어올 길이 열린다. 다만 들어온 만큼 새는 데도 막아야 한다.", "크게 벌기보다 있는 걸 지키는 게 이기는 해다.", "나가는 길이 먼저 열린다. 어디로 새는지 알면 막는다."][moneyY]}</p></section>`);
   H.push(`</div>`);
   /* 고민: 답 대신 «걸려 있다» */
@@ -1191,6 +1287,11 @@ function renderResult(v) {
     H.push(L.who ? capt(`${L.who} 일은 아까 본<br>${VIS[VO[0]].name} 그림에 <em>단단히 걸려 있구나.</em>`, `${L.who} 사주가 아니라 네 사주로 본 거란다. 네가 어떻게 곁을 지킬지는 편지 넷째 장에 적어 두마.`) : capt(`이 일은 아까 본<br>${VIS[VO[0]].name} 그림에 <em>단단히 걸려 있구나.</em>`, "해도 되는지, 언제 움직여야 하는지는 편지 넷째 장에 적어 두마."));
     H.push(`</div>`);
   }
+  /* 11/28 캡처 유도: 오늘 본 걸 폰 한 화면에 들어가는 처방전 한 장으로. 스토리에 올리기 좋게 */
+  const hitTxt = CR.T.hit.replace(/<br>/g, " ").replace(/<[^>]+>/g, "");
+  const RX = [["타고난 버릇", esc(hitTxt)], ["내년", shortV(v.yearVerdict)], ["귀인", `${esc(gP)} 쪽에서 온다`], ["볕 드는 때", `${SEA(om[0] || "")}`]];
+  H.push(capt(`오늘 본 걸<br><em>처방전 한 장에 적어 주마.</em>`, "캡처해서 간직하거나, 친구한테 보여 줘도 된단다."));
+  H.push(`<section class="rx"><p class="rxh">2027 丁未年 신년운세</p><p class="rxn">${esc(NAME)}의 처방전</p><div class="rxu"><b style="color:${WXC[v.useful[0]]}">${v.useful[0]}</b><span>채울 기운<br><em>${WXN[v.useful[0]]}</em></span></div>${RX.map(([a, b]) => `<div class="rxr"><span>${a}</span><b>${b}</b></div>`).join("")}<p class="rxq">«${esc(VIS[VO[0]].coda)}»</p><p class="rxs"><i>할미</i>할미약방</p>${SNOW(10)}</section>`);
   /* 쥐여 줌: 약첩 */
   H.push(`<div class="wt">`);
   H.push(pn({ img: "R12", h: 280, kind: "tilt", pos: "center", b: [{ t: "다칠 데를 보고도<br>그냥 보내면,", x: 4, y: -22, w: 48 }, { t: "그게 어디<br><b>할미겠니.</b>", x: 52, y: 62, w: 44 }] }));
@@ -1435,7 +1536,7 @@ let end = Date.parse(PRICE.until);
 if (!KEY) $("#app").innerHTML = `<p style="padding:40px 20px;text-align:center;color:#B8402F">링크의 #k= 키를 확인해 주세요.</p>`;
 else if (SHARED) fetchChart().then(() => S8()).catch((e) => ($("#app").innerHTML = `<p style="padding:40px;text-align:center">계산을 못 했어요 (${esc(e.message)})</p>`));
 else if (Q.get("demo")) (askAnswer(), fetchChart()).then(() => S8()).catch((e) => ($("#app").innerHTML = `<p style="padding:40px;text-align:center">계산을 못 했어요 (${esc(e.message)})</p>`));
-else S1();
+else { history.replaceState({ s: "S1" }, ""); S1(); }
 </script>
 </body>
 </html>
